@@ -3,7 +3,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "http://jb-api.rezarizqi.my.id"],
+    domains: ["localhost", "jb-api.rezarizqi.my.id"],
   },
 };
 
