@@ -1,0 +1,56 @@
+import { IconButton, Typography } from "components/common";
+import React from "react";
+import { Facebook, Instagram, Linkedin, Twitter } from "react-feather";
+import { Category } from "service/types";
+import FooterList from "./FooterList";
+
+interface GuestFooterProps {
+  categories: Category[];
+  employersList: any[];
+}
+
+function GuestFooter(props: GuestFooterProps) {
+  const { categories, employersList } = props;
+  return (
+    <div className="flex flex-col md:flex-row justify-between bg-black p-6 gap-8">
+      <div>
+        <Typography className="text-white font-bold mb-3" variant="h5">
+          let&apos;s work anywhere
+        </Typography>
+        <div className="flex gap-2">
+          <IconButton contained color="secondary">
+            <Instagram color="black" size={18} />
+          </IconButton>
+          <IconButton contained color="primary">
+            <Linkedin color="black" size={18} />
+          </IconButton>
+          <IconButton contained color="secondary">
+            <Twitter color="black" size={18} />
+          </IconButton>
+          <IconButton contained color="primary">
+            <Facebook color="black" size={18} />
+          </IconButton>
+        </div>
+      </div>
+
+      <div className="flex gap-8 flex-col md:flex-row">
+        <FooterList
+          title="Categories"
+          list={categories.map((category) => ({
+            route: category.id.toString(),
+            title: category.name,
+          }))}
+        />
+        <FooterList
+          title="Employers"
+          list={employersList.map((item) => ({
+            route: item.route,
+            title: item.title,
+          }))}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default GuestFooter;

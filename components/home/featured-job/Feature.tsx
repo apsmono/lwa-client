@@ -10,7 +10,9 @@ function Feature({ icon, title }: FeatureProps) {
   return (
     <div className="flex items-center gap-1">
       {icon}
-      <Typography variant="small">{title}</Typography>
+      <Typography className="text-xs" variant="small">
+        {title}
+      </Typography>
     </div>
   );
 }

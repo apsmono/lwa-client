@@ -1,21 +1,25 @@
-import { Button, Typography } from "components/common";
+import { Button, TextField, Typography } from "components/common";
 import { GetServerSideProps } from "next";
 import CategoryService from "service/category_service";
 import { GuestLayout } from "components/layout";
 import JobService from "service/job_service";
 import { Category, Job } from "service/types";
-import { FeaturedJob } from "components/home";
+import { FeaturedJob, Jobs, PopularCategory } from "components/home";
+import Image from "next/image";
 
 interface HomePropsInterface {
   categories: Category[];
   featuredJobs: Job[];
+  popularCategories: Category[];
+  jobs: Job[];
 }
 
 function Home(props: HomePropsInterface) {
-  const { categories, featuredJobs } = props;
+  const { categories, featuredJobs, popularCategories, jobs } = props;
+
   return (
     <GuestLayout title="Home" categories={categories}>
-      <div className="md:px-6 py-6">
+      <div className="md:px-6 p-6 max-w-5xl mx-auto">
         <div className="flex justify-center mb-8">
           <div className="flex flex-col items-center">
             <Typography variant="h2" className="font-bold mb-4 text-center">
@@ -52,7 +56,31 @@ function Home(props: HomePropsInterface) {
           </picture>
         </div>
 
-        <FeaturedJob jobs={featuredJobs} />
+        <div className="mb-6">
+          <FeaturedJob jobs={featuredJobs} />
+        </div>
+        <div className="mb-6">
+          <PopularCategory categories={popularCategories} />
+        </div>
+        <div className="mb-6">
+          <Jobs jobs={jobs} />
+        </div>
+      </div>
+      <div className="bg-secondary-300 p-6">
+        <div className="max-w-5xl flex justify-center mx-auto">
+          <div className="relative w-56 h-56 sm:block hidden">
+            <Image src="/subscribe-illustration.svg" fill alt="Subscribe" />
+          </div>
+          <div className="flex flex-col justify-center gap-2">
+            <Typography variant="h3" className="font-bold">
+              Subscribe now to receive daily job updates!
+            </Typography>
+            <TextField placeholder="Type your email here" />
+            <div className="flex justify-center">
+              <Button variant="black">Subscribe</Button>
+            </div>
+          </div>
+        </div>
       </div>
     </GuestLayout>
   );
@@ -62,12 +90,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
 
   const categories = await (await CategoryService.gets()).data;
+  const popularCategories = await (
+    await CategoryService.gets({ offset: 1, limit: 8 })
+  ).data;
   const featuredJobs = await (
     await JobService.gets({ is_featured: true })
   ).data;
+  const jobs = await (await JobService.gets()).data;
 
   props.categories = categories;
   props.featuredJobs = featuredJobs;
+  props.popularCategories = popularCategories;
+  props.jobs = jobs;
 
   return {
     props,

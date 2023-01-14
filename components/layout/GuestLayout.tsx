@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { ReactNode, useMemo, useState } from "react";
 import { Menu } from "react-feather";
 import { Category } from "service/types/category_type";
+import GuestFooter from "./footer/GuestFooter";
 
 interface GuestLayoutProps {
   title: string;
@@ -51,8 +52,8 @@ function GuestLayout(props: GuestLayoutProps) {
           open={openSidebar}
           employersMenu={employersList}
         />
-        <div className="p-6 md:px-24">
-          <div className="flex justify-between items-center mb-4">
+        <div>
+          <div className="flex justify-between items-center mb-4 p-6 md:px-24">
             <div className="relative h-12 w-72">
               <Image src="/logo.svg" fill alt="logo" />
             </div>
@@ -78,6 +79,7 @@ function GuestLayout(props: GuestLayoutProps) {
           {children}
         </div>
       </div>
+      <GuestFooter categories={categories} employersList={employersList} />
       <Backdrop
         show={openSidebar}
         onClick={() => setOpenSidebar(false)}
