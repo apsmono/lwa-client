@@ -19,4 +19,5 @@ export type Job = {
   company_logo: string;
   company_about: string;
   category_name: string;
+  company_offer?: string;
 };

@@ -1,4 +1,5 @@
 import SectionTitle from "components/common/SectionTitle";
+import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { Job } from "service/types";
@@ -10,6 +11,7 @@ interface FeaturedJobProps {
 
 function FeaturedJob({ jobs }: FeaturedJobProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const toLeft = () => {
     const current = scrollRef?.current?.scrollLeft || 0;
@@ -18,6 +20,10 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
   const toRight = () => {
     const current = scrollRef?.current?.scrollLeft || 0;
     scrollRef.current!.scrollLeft = current + 288;
+  };
+
+  const handleClick = (job: Job) => {
+    router.push(`/jobs/${job.id}`);
   };
   return (
     <div className="flex flex-col">
@@ -32,7 +38,11 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
         >
           <div className="flex flex-nowrap gap-4">
             {jobs.map((job) => (
-              <FeaturedJobCard key={job.id} job={job} />
+              <FeaturedJobCard
+                key={job.id}
+                job={job}
+                onClick={() => handleClick(job)}
+              />
             ))}
           </div>
         </div>

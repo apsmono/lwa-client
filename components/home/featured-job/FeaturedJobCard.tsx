@@ -7,12 +7,16 @@ import Feature from "./Feature";
 
 interface FeaturedJobCard {
   job: Job;
+  onClick?: () => void;
 }
 
 function FeaturedJobCard(props: FeaturedJobCard) {
-  const { job } = props;
+  const { job, onClick } = props;
   return (
-    <div className="w-60 py-4 bg-secondary-400 bg-opacity-50 rounded-xl border-2 border-black flex items-center flex-col">
+    <div
+      className="w-60 py-4 bg-secondary-400 bg-opacity-50 rounded-xl border-2 border-black flex items-center flex-col cursor-pointer"
+      onClick={onClick}
+    >
       <div className="w-14 h-14 relative rounded-full object-cover mb-3">
         <Image
           src={`${process.env.NEXT_PUBLIC_API_URL}${job.company_logo}`}

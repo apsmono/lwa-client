@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { Typography } from "components/common";
+import { JobSnippet } from "components/jobs";
 import Image from "next/image";
 import React from "react";
 import { Clock, MapPin } from "react-feather";
@@ -25,40 +26,7 @@ function JobCard(props: JobCardProps) {
       onClick={onClick}
     >
       <div className="flex flex-wrap gap-4">
-        <div className="flex sm:w-auto w-full justify-center">
-          <div className="relative w-12 h-12">
-            <Image
-              fill
-              src={`${process.env.NEXT_PUBLIC_API_URL}${job.company_logo}`}
-              alt="Company logo"
-            />
-          </div>
-        </div>
-        <div>
-          <p>
-            <span className="font-bold">{job.title}</span> | {job.company_name}
-          </p>
-          <div className="flex mt-1 gap-2 flex-wrap">
-            {job.is_worldwide && (
-              <Feature icon={<MapPin size={14} />} title="Worldwide" />
-            )}
-            <Feature
-              icon={
-                <Image
-                  src="/dollar-circle.svg"
-                  alt="$"
-                  width={14}
-                  height={14}
-                />
-              }
-              title={job.salary}
-            />
-            <Feature icon={<Clock size={14} />} title={job.employment_type} />
-            <div className="px-4 py-1 border border-black rounded-full">
-              <Typography className="text-xs">{job.category_name}</Typography>
-            </div>
-          </div>
-        </div>
+        <JobSnippet job={job} className="sm:w-auto w-full" />
       </div>
       <div className="flex gap-1 flex-col">
         <Typography className="text-xs">
