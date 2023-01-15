@@ -25,7 +25,7 @@ function CategoryDetailPage(props: CategoryDetailPageProps) {
       title={`Category Detail | ${category.name}`}
       categories={categories}
     >
-      <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2">
+      <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
         <Typography variant="h1" className="font-bold text-center">
           {category.name} Job
         </Typography>
