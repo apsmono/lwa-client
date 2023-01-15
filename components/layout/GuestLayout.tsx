@@ -38,7 +38,7 @@ function GuestLayout(props: GuestLayoutProps) {
     ];
   }, []);
 
-  const [openSidebar, setOpenSidebar] = useState(true);
+  const [openSidebar, setOpenSidebar] = useState(false);
   return (
     <>
       <Head>
@@ -67,7 +67,7 @@ function GuestLayout(props: GuestLayoutProps) {
                 title="Categories"
                 list={categories.map((item) => ({
                   title: item.name,
-                  route: item.id.toString(),
+                  route: `/categories/${item.id}`,
                 }))}
               />
               <Dropdown title="Employers" list={employersList} />

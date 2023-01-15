@@ -5,4 +5,8 @@ export default class CategoryService {
     const params = new URLSearchParams(payload).toString();
     return sendAndHandleRequest(`/categories?${params}`, "get");
   }
+
+  static async get(id: number) {
+    return sendAndHandleRequest(`/categories/${id}`, "get");
+  }
 }

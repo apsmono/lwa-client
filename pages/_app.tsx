@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Router } from "next/router";
 import { AlertContext } from "context/alertContext";
 import { Alert, Loader } from "components/common";
+import { AppContext } from "context/appContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [showAlert, setShowAlert] = useState(false);
@@ -37,7 +38,9 @@ export default function App({ Component, pageProps }: AppProps) {
         </div>
       ) : null}
 
-      <Component {...pageProps} />
+      <AppContext.Provider value={{ loading, setLoading }}>
+        <Component {...pageProps} />
+      </AppContext.Provider>
     </AlertContext.Provider>
   );
 }

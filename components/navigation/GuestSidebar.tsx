@@ -31,7 +31,7 @@ function GuestSidebar(props: Partial<GuestSidebarProps>) {
           title="Categories"
           list={categories.map((category) => ({
             title: category.name,
-            route: category.id.toString(),
+            route: `/categories/${category.id}`,
           }))}
         />
         <GuestSidebarItem

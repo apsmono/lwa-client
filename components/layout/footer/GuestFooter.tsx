@@ -37,7 +37,7 @@ function GuestFooter(props: GuestFooterProps) {
         <FooterList
           title="Categories"
           list={categories.map((category) => ({
-            route: category.id.toString(),
+            route: `/categories/${category.id}`,
             title: category.name,
           }))}
         />

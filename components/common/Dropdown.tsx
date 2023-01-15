@@ -1,5 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
+import Link from "next/link";
 import React, { Fragment } from "react";
 import { ChevronDown } from "react-feather";
 
@@ -40,9 +41,12 @@ function Dropdown(props: Partial<DropdownPropsInterface>) {
                 {(list || []).map((item) => (
                   <Menu.Item key={item.title}>
                     {({ active }) => (
-                      <a href="#" className={clsx({ "font-medium": active })}>
+                      <Link
+                        href={item.route}
+                        className={clsx({ "font-medium": active })}
+                      >
                         {item.title}
-                      </a>
+                      </Link>
                     )}
                   </Menu.Item>
                 ))}

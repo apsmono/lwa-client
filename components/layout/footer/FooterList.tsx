@@ -1,4 +1,5 @@
 import { Typography } from "components/common";
+import Link from "next/link";
 import React from "react";
 
 interface FooterListProps {
@@ -16,7 +17,9 @@ function FooterList(props: FooterListProps) {
       <ul className="flex flex-col gap-1">
         {list.map((item) => (
           <li key={item.title} className="text-white">
-            <Typography>{item.title}</Typography>
+            <Link href={item.route}>
+              <Typography>{item.title}</Typography>
+            </Link>
           </li>
         ))}
       </ul>
