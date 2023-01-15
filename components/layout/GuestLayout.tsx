@@ -2,6 +2,7 @@ import { Backdrop, Button, Dropdown } from "components/common";
 import { GuestSidebar } from "components/navigation";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { ReactNode, useMemo, useState } from "react";
 import { Menu } from "react-feather";
 import { Category } from "service/types/category_type";
@@ -15,6 +16,7 @@ interface GuestLayoutProps {
 
 function GuestLayout(props: GuestLayoutProps) {
   const { title, children, categories } = props;
+  const router = useRouter();
   const employersList = useMemo(() => {
     return [
       {
@@ -54,7 +56,10 @@ function GuestLayout(props: GuestLayoutProps) {
         />
         <div>
           <div className="flex justify-between items-center mb-4 p-6 md:px-24">
-            <div className="relative h-12 w-72">
+            <div
+              className="relative h-12 w-72 cursor-pointer"
+              onClick={() => router.push("/")}
+            >
               <Image src="/logo.svg" fill alt="logo" />
             </div>
             <div className="hidden md:flex gap-4 items-center">

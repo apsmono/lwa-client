@@ -3,8 +3,7 @@ import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { Router } from "next/router";
 import { AlertContext } from "context/alertContext";
-import { Alert } from "components/common";
-import { Loader } from "react-feather";
+import { Alert, Loader } from "components/common";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [showAlert, setShowAlert] = useState(false);
