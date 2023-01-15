@@ -26,9 +26,9 @@ function GuestSidebarItem(props: Partial<GuestSidebarProps>) {
         </div>
         <ul
           className={clsx(
-            "max-h-52 transition-all pl-4 overflow-y-hidden duration-300",
+            "max-h-0 transition-all pl-4 overflow-y-hidden duration-300",
             {
-              "max-h-0": !expand,
+              "max-h-96": expand,
             }
           )}
         >

@@ -3,6 +3,7 @@ import { JobSnippet } from "components/jobs";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 import CategoryService from "service/category_service";
 import JobService from "service/job_service";
@@ -15,6 +16,7 @@ interface JobDetailPageProps {
 
 function JobDetailPage(props: JobDetailPageProps) {
   const { job, categories } = props;
+  const router = useRouter();
   return (
     <GuestLayout categories={categories} title={`Job Detail | ${job.title}`}>
       <div className="p-6">
@@ -60,6 +62,16 @@ function JobDetailPage(props: JobDetailPageProps) {
               <Typography className="whitespace-pre-line text-justify">
                 {job.company_about}
               </Typography>
+              <div className="flex justify-end">
+                <div>
+                  <Button
+                    onClick={() => router.push(`/companies/${job.company_id}`)}
+                    variant="link"
+                  >
+                    Learn More
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

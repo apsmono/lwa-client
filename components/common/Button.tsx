@@ -72,7 +72,8 @@ function Button(props: Partial<ButtonProps>) {
     <button
       onClick={onClick}
       className={clsx(
-        "text-center px-6 font-medium transition-all cursor-pointer block border-black border-2",
+        "text-center px-6 font-medium transition-all cursor-pointer block",
+        { "border-black border-2": variant !== "link" },
         arrClassNames,
         className,
         [

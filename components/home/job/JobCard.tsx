@@ -1,20 +1,18 @@
 import clsx from "clsx";
 import { Typography } from "components/common";
 import { JobSnippet } from "components/jobs";
-import Image from "next/image";
 import React from "react";
-import { Clock, MapPin } from "react-feather";
 import { Job } from "service/types";
 import { timeDiffRelative } from "utils/date";
-import Feature from "../featured-job/Feature";
 
 interface JobCardProps {
   job: Job;
-  onClick: () => void;
+  onClick?: () => void;
+  showStatus?: boolean;
 }
 
 function JobCard(props: JobCardProps) {
-  const { job, onClick } = props;
+  const { job, onClick, showStatus = true } = props;
   return (
     <div
       className={clsx(
@@ -32,13 +30,15 @@ function JobCard(props: JobCardProps) {
         <Typography className="text-xs">
           Posted {timeDiffRelative(new Date(), new Date(job.created_at))}
         </Typography>
-        <div className="flex justify-center">
-          <div className="py-1 px-2 border border-black rounded-full">
-            <Typography className="text-xs">
-              {job.is_featured ? "FEATURED" : "NEW"}
-            </Typography>
+        {showStatus && (
+          <div className="flex justify-center">
+            <div className="py-1 px-2 border border-black rounded-full">
+              <Typography className="text-xs">
+                {job.is_featured ? "FEATURED" : "NEW"}
+              </Typography>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
