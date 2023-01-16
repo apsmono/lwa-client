@@ -24,7 +24,7 @@ function Home(props: HomePropsInterface) {
           <div className="flex flex-col items-center">
             <Typography
               variant="h2"
-              className="font-bold mb-4 text-center uppercase"
+              className="font-black mb-4 text-center uppercase"
             >
               Find top talent anywhere in the world
             </Typography>
@@ -36,10 +36,10 @@ function Home(props: HomePropsInterface) {
             <div className="flex mb-4">
               <input
                 type="text"
-                className="border-black border-2 rounded-l-full py-2 px-4 w-2/3"
+                className="border-black border-2 rounded-l-full py-2 px-4 w-2/3 with-shadow"
                 placeholder="Search a Job"
               />
-              <select className="border-black border-2 rounded-r-full border-l-0 w-1/3">
+              <select className="border-black border-2 rounded-r-full border-l-0 w-1/3 with-shadow">
                 <option value="">Categories</option>
                 {categories.map((category) => (
                   <option value={category.id} key={category.id}>

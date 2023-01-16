@@ -20,7 +20,7 @@ function JobDetailPage(props: JobDetailPageProps) {
   return (
     <GuestLayout categories={categories} title={`Job Detail | ${job.title}`}>
       <div className="p-6">
-        <div className="p-6 max-w-5xl mx-auto border-2 border-black shadow-md rounded-lg flex flex-col gap-4">
+        <div className="p-6 max-w-5xl mx-auto border-2 border-black shadow-md rounded-lg flex flex-col gap-4 with-shadow">
           <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-2">
             <JobSnippet
               job={job}
@@ -36,7 +36,7 @@ function JobDetailPage(props: JobDetailPageProps) {
             {job.description}
           </Typography>
 
-          <div className="border-2 border-black rounded-lg p-4">
+          <div className="border-2 border-black rounded-lg p-4 with-shadow">
             <Typography className="font-bold">
               What the company offer:
             </Typography>
@@ -44,7 +44,7 @@ function JobDetailPage(props: JobDetailPageProps) {
               {job.company_offer ?? "-"}
             </Typography>
           </div>
-          <div className="border-2 border-black rounded-lg bg-primary-500">
+          <div className="border-2 border-black rounded-lg bg-primary-500 with-shadow">
             <div className="p-4">
               <div className="flex mb-4 gap-4 items-center">
                 <div className="relative w-14 h-14">
@@ -67,6 +67,7 @@ function JobDetailPage(props: JobDetailPageProps) {
                   <Button
                     onClick={() => router.push(`/companies/${job.company_id}`)}
                     variant="link"
+                    className="text-black"
                   >
                     Learn More
                   </Button>

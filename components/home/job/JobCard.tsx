@@ -24,7 +24,7 @@ function JobCard(props: JobCardProps) {
       onClick={onClick}
     >
       <div className="flex flex-wrap gap-4">
-        <JobSnippet job={job} className="sm:w-auto w-full gap-4 px-4 py-1" />
+        <JobSnippet job={job} className="sm:w-auto w-full gap-4 md:px-4 py-1" />
       </div>
       <div className="flex gap-1 flex-col">
         <Typography className="text-xs">

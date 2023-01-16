@@ -81,7 +81,7 @@ function Button(props: Partial<ButtonProps>) {
             (isLoading && "bg-gray-400 hover:bg-gray-400 cursor-not-allowed"),
         ],
         [block && "w-full"],
-        [withShadow && "with-shadow"]
+        [withShadow && variant !== "link" && "with-shadow"]
       )}
       {...otherProps}
     >

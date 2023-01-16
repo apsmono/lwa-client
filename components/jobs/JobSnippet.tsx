@@ -15,7 +15,12 @@ function JobSnippet(props: JobSnippetProps) {
   const { job, className } = props;
 
   return (
-    <div className={clsx("flex justify-center gap-2", className)}>
+    <div
+      className={clsx(
+        "flex justify-center gap-2 flex-col items-center sm:flex-row sm:items-start",
+        className
+      )}
+    >
       <div className="relative w-12 h-12">
         <Image
           fill

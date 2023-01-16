@@ -11,6 +11,7 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText: any;
   labelClassName: string | undefined;
   rounded: boolean;
+  withShadow: boolean;
 }
 
 const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
@@ -24,6 +25,7 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
       helperText,
       rounded = true,
       labelClassName,
+      withShadow = true,
       ...otherProps
     } = props;
     const registerAttr = register ? register(props.name ?? "") : {};
@@ -43,7 +45,8 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
             className,
             [error && "border border-red-500"],
             [rounded && "rounded-full"],
-            [!rounded && "rounded-lg"]
+            [!rounded && "rounded-lg"],
+            [withShadow && "with-shadow"]
           )}
           {...registerAttr}
         />
