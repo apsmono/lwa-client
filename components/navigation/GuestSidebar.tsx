@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { Button } from "components/common";
 import React from "react";
 import { X } from "react-feather";
 import { Category } from "service/types/category_type";
@@ -26,7 +27,7 @@ function GuestSidebar(props: Partial<GuestSidebarProps>) {
           <X />
         </button>
       </div>
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-2 mb-4">
         <GuestSidebarItem
           title="Categories"
           list={categories.map((category) => ({
@@ -42,6 +43,9 @@ function GuestSidebar(props: Partial<GuestSidebarProps>) {
           }))}
         />
       </ul>
+      <Button variant="black" withShadow={false}>
+        Post a Job
+      </Button>
     </div>
   );
 }

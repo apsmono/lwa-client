@@ -24,10 +24,6 @@ function GuestLayout(props: GuestLayoutProps) {
         route: "",
       },
       {
-        title: "Pricing",
-        route: "",
-      },
-      {
         title: "Create Employer Account",
         route: "",
       },
@@ -71,7 +67,7 @@ function GuestLayout(props: GuestLayoutProps) {
                 }))}
                 openOnHover
               />
-              <Dropdown title="Employers" list={employersList} />
+              <Dropdown title="Employers" list={employersList} openOnHover />
               <Button variant="black" withShadow={false}>
                 Post a Job
               </Button>

@@ -50,12 +50,10 @@ function GuestFooter(props: GuestFooterProps) {
         />
         <FooterList
           title="Employers"
-          list={employersList
-            .filter((item) => item.title !== "Pricing")
-            .map((item) => ({
-              route: item.route,
-              title: item.title,
-            }))}
+          list={employersList.map((item) => ({
+            route: item.route,
+            title: item.title,
+          }))}
         />
       </div>
     </div>
