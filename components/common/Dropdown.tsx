@@ -12,20 +12,24 @@ type DropDownListType = {
 interface DropdownPropsInterface {
   title: string;
   list: DropDownListType[];
+  openOnHover?: boolean;
 }
 
 function Dropdown(props: Partial<DropdownPropsInterface>) {
-  const { title, list } = props;
+  const { title, list, openOnHover } = props;
   return (
     <Menu as="div" className="relative">
       {({ open }) => (
         <>
-          <Menu.Button className="flex gap-2 items-center">
+          <Menu.Button
+            className="flex gap-2 items-center"
+            onMouseEnter={({ target }: any) => {
+              if (openOnHover) {
+                target.click();
+              }
+            }}
+          >
             {title}
-            <ChevronDown
-              size={18}
-              className={clsx({ "rotate-180": open }, "transition-all")}
-            />
           </Menu.Button>
           <Transition
             as={Fragment}

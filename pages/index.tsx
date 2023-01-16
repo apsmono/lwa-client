@@ -22,7 +22,10 @@ function Home(props: HomePropsInterface) {
       <div className="md:px-6 p-6 max-w-5xl mx-auto">
         <div className="flex justify-center mb-8">
           <div className="flex flex-col items-center">
-            <Typography variant="h2" className="font-bold mb-4 text-center">
+            <Typography
+              variant="h2"
+              className="font-bold mb-4 text-center uppercase"
+            >
               Find top talent anywhere in the world
             </Typography>
             <Typography className="text-center mb-4">
@@ -66,11 +69,11 @@ function Home(props: HomePropsInterface) {
           <Jobs jobs={jobs} />
         </div>
       </div>
-      <div className="bg-secondary-300 p-6">
+      <div className="bg-primary-500 p-6">
         <div className="max-w-5xl flex justify-center mx-auto">
-          <div className="relative w-56 h-56 sm:block hidden">
+          {/* <div className="relative w-56 h-56 sm:block hidden">
             <Image src="/subscribe-illustration.svg" fill alt="Subscribe" />
-          </div>
+          </div> */}
           <div className="flex flex-col justify-center gap-2">
             <Typography variant="h3" className="font-bold">
               Subscribe now to receive daily job updates!

@@ -16,15 +16,15 @@ function JobCard(props: JobCardProps) {
   return (
     <div
       className={clsx(
-        "flex gap-2 justify-between p-4 rounded-lg border border-black flex-wrap cursor-pointer",
+        "flex gap-2 justify-between p-4 rounded-lg border border-black flex-wrap cursor-pointer with-shadow",
         {
-          "bg-secondary-300": job.is_featured,
+          "bg-secondary-500": job.is_featured,
         }
       )}
       onClick={onClick}
     >
       <div className="flex flex-wrap gap-4">
-        <JobSnippet job={job} className="sm:w-auto w-full" />
+        <JobSnippet job={job} className="sm:w-auto w-full gap-4 px-4 py-1" />
       </div>
       <div className="flex gap-1 flex-col">
         <Typography className="text-xs">

@@ -57,10 +57,10 @@ function GuestLayout(props: GuestLayoutProps) {
         <div>
           <div className="flex justify-between items-center mb-4 p-6 md:px-24">
             <div
-              className="relative h-12 w-72 cursor-pointer"
+              className="relative h-5 w-72 cursor-pointer object-cover"
               onClick={() => router.push("/")}
             >
-              <Image src="/logo.svg" fill alt="logo" />
+              <Image src="/lwa-logo.png" fill alt="logo" />
             </div>
             <div className="hidden md:flex gap-4 items-center">
               <Dropdown
@@ -69,9 +69,12 @@ function GuestLayout(props: GuestLayoutProps) {
                   title: item.name,
                   route: `/categories/${item.id}`,
                 }))}
+                openOnHover
               />
               <Dropdown title="Employers" list={employersList} />
-              <Button variant="secondary">Post a Job</Button>
+              <Button variant="black" withShadow={false}>
+                Post a Job
+              </Button>
             </div>
             <button
               onClick={() => setOpenSidebar(true)}

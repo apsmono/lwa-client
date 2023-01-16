@@ -7,6 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: "primary" | "secondary" | "danger" | "link" | "black";
   block: boolean;
   isLoading: boolean;
+  withShadow: boolean;
 }
 
 function Button(props: Partial<ButtonProps>) {
@@ -20,6 +21,7 @@ function Button(props: Partial<ButtonProps>) {
     block = false,
     disabled,
     isLoading = false,
+    withShadow = true,
     ...otherProps
   } = props;
   const arrClassNames = [];
@@ -61,9 +63,7 @@ function Button(props: Partial<ButtonProps>) {
       );
       break;
     case "black":
-      arrClassNames.push(
-        "text-white bg-black bg-opacity-70 hover:bg-opacity-100"
-      );
+      arrClassNames.push("text-white bg-black");
       break;
     default:
       arrClassNames.push("bg-primary-500 hover:bg-primary-600");
@@ -80,7 +80,8 @@ function Button(props: Partial<ButtonProps>) {
           disabled ||
             (isLoading && "bg-gray-400 hover:bg-gray-400 cursor-not-allowed"),
         ],
-        [block && "w-full"]
+        [block && "w-full"],
+        [withShadow && "with-shadow"]
       )}
       {...otherProps}
     >

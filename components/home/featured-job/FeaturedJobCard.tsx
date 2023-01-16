@@ -14,7 +14,7 @@ function FeaturedJobCard(props: FeaturedJobCard) {
   const { job, onClick } = props;
   return (
     <div
-      className="w-60 py-4 bg-secondary-400 bg-opacity-50 rounded-xl border-2 border-black flex items-center flex-col cursor-pointer"
+      className="w-60 py-4 bg-secondary-500 rounded-xl border-2 border-black flex items-center flex-col cursor-pointer mb-2 with-shadow"
       onClick={onClick}
     >
       <div className="w-14 h-14 relative rounded-full object-cover mb-3">

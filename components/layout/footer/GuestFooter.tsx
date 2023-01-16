@@ -1,6 +1,7 @@
 import { IconButton, Typography } from "components/common";
+import Image from "next/image";
 import React from "react";
-import { Facebook, Instagram, Linkedin, Twitter } from "react-feather";
+import { Instagram } from "react-feather";
 import { Category } from "service/types";
 import FooterList from "./FooterList";
 
@@ -22,13 +23,19 @@ function GuestFooter(props: GuestFooterProps) {
             <Instagram color="black" size={18} />
           </IconButton>
           <IconButton contained color="primary">
-            <Linkedin color="black" size={18} />
+            <div className="relative w-[18px] h-[18px]">
+              <Image src="/linkedin.png" fill alt="Linkedin" />
+            </div>
           </IconButton>
           <IconButton contained color="secondary">
-            <Twitter color="black" size={18} />
+            <div className="relative w-[18px] h-[18px]">
+              <Image src="/twitter.png" fill alt="Linkedin" />
+            </div>
           </IconButton>
           <IconButton contained color="primary">
-            <Facebook color="black" size={18} />
+            <div className="relative w-[18px] h-[18px]">
+              <Image src="/facebook.png" fill alt="Linkedin" />
+            </div>
           </IconButton>
         </div>
       </div>
@@ -43,10 +50,12 @@ function GuestFooter(props: GuestFooterProps) {
         />
         <FooterList
           title="Employers"
-          list={employersList.map((item) => ({
-            route: item.route,
-            title: item.title,
-          }))}
+          list={employersList
+            .filter((item) => item.title !== "Pricing")
+            .map((item) => ({
+              route: item.route,
+              title: item.title,
+            }))}
         />
       </div>
     </div>
