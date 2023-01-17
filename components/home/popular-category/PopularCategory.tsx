@@ -38,7 +38,7 @@ function PopularCategory({ categories, totalItems }: PopularCategoryProps) {
     <div className="flex flex-col">
       <SectionTitle>Popular Categories</SectionTitle>
       <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-4">
-        {categories.map((category) => (
+        {items.map((category) => (
           <CategoryCard
             onClick={() => onClick(category)}
             category={category}
