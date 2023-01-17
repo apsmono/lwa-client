@@ -73,7 +73,10 @@ function Home(props: HomePropsInterface) {
           <FeaturedJob jobs={featuredJobs} />
         </div>
         <div className="mb-6">
-          <PopularCategory categories={popularCategories} />
+          <PopularCategory
+            totalItems={totalPopularCategories}
+            categories={popularCategories}
+          />
         </div>
         <div className="mb-6">
           <Jobs jobs={jobs} totalItems={totalJobs} />
