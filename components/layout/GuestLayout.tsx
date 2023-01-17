@@ -29,7 +29,7 @@ function GuestLayout(props: GuestLayoutProps) {
       },
       {
         title: "Sign In",
-        route: "",
+        route: "/auth/sign-in",
       },
     ];
   }, []);
