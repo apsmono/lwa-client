@@ -12,10 +12,19 @@ interface HomePropsInterface {
   featuredJobs: Job[];
   popularCategories: Category[];
   jobs: Job[];
+  totalJobs: number;
+  totalPopularCategories: number;
 }
 
 function Home(props: HomePropsInterface) {
-  const { categories, featuredJobs, popularCategories, jobs } = props;
+  const {
+    categories,
+    featuredJobs,
+    popularCategories,
+    jobs,
+    totalJobs,
+    totalPopularCategories,
+  } = props;
 
   return (
     <GuestLayout title="Home" categories={categories}>
@@ -67,7 +76,7 @@ function Home(props: HomePropsInterface) {
           <PopularCategory categories={popularCategories} />
         </div>
         <div className="mb-6">
-          <Jobs jobs={jobs} />
+          <Jobs jobs={jobs} totalItems={totalJobs} />
         </div>
       </div>
       <div className="bg-primary-500 p-6">
@@ -94,18 +103,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
 
   const categories = await (await CategoryService.gets()).data;
-  const popularCategories = await (
-    await CategoryService.gets({ offset: 1, limit: 8 })
-  ).data;
+  const popularCategoriesRes = await CategoryService.gets({
+    offset: 1,
+    limit: 8,
+  });
   const featuredJobs = await (
     await JobService.gets({ is_featured: true })
   ).data;
-  const jobs = await (await JobService.gets()).data;
+  const jobRes = await JobService.gets({ offset: 1, limit: 7 });
 
   props.categories = categories;
   props.featuredJobs = featuredJobs;
-  props.popularCategories = popularCategories;
-  props.jobs = jobs;
+  props.popularCategories = popularCategoriesRes.data;
+  props.totalPopularCategories = popularCategoriesRes.page.totalItems;
+  props.jobs = jobRes.data;
+  props.totalJobs = jobRes.page.totalItems;
 
   return {
     props,
