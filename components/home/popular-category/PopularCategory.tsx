@@ -48,9 +48,7 @@ function PopularCategory({ categories, totalItems }: PopularCategoryProps) {
       </div>
       {totalItems > items.length && (
         <div className="flex justify-center">
-          <Button onClick={handleShowMoreCategories} variant="secondary">
-            View More
-          </Button>
+          <Button onClick={handleShowMoreCategories}>View More</Button>
         </div>
       )}
     </div>
