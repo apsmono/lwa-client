@@ -1,11 +1,11 @@
-import { Backdrop, Button, Dropdown } from "components/common";
+import { Backdrop, Button, Dropdown, Typography } from "components/common";
 import { GuestSidebar } from "components/navigation";
 import NavBarDropdown from "components/navigation/nav-bar/NavBarDropdown";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { ReactNode, useMemo, useState } from "react";
-import { Menu } from "react-feather";
+import { Menu, Search } from "react-feather";
 import { Category } from "service/types/category_type";
 import GuestFooter from "./footer/GuestFooter";
 
@@ -59,7 +59,7 @@ function GuestLayout(props: GuestLayoutProps) {
             >
               <Image src="/lwa-logo.png" fill alt="logo" />
             </div>
-            <div className="hidden md:flex gap-4 items-center">
+            <div className="hidden md:flex gap-8 items-center">
               <NavBarDropdown
                 title="Categories"
                 list={categories.map((item) => ({
@@ -67,6 +67,10 @@ function GuestLayout(props: GuestLayoutProps) {
                   route: `/categories/${item.id}`,
                 }))}
               />
+              <button className="flex justify-between gap-2 items-center">
+                <Typography>Find a Job</Typography>
+                <Search size={18} />
+              </button>
               <NavBarDropdown title="Employers" list={employersList} />
               <Button variant="black" withShadow={false}>
                 Post a Job

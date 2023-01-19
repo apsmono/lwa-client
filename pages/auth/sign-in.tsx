@@ -31,7 +31,7 @@ function SignInPage(props: SignInPageProps) {
 
         <div className="relative">
           <div className="max-w-xl w-full mx-auto p-4 bg-gray-100 rounded-lg border-2 border-black with-shadow">
-            <Typography className="text-right">* is required field</Typography>
+            <Typography className="text-right">*Required field</Typography>
             <TextField
               label="Email Address *"
               type="email"
@@ -48,7 +48,7 @@ function SignInPage(props: SignInPageProps) {
               <Button variant="secondary">Sign In</Button>
             </div>
             <Typography>
-              Din&apos;t have an account?{" "}
+              Don&apos;t have an account?{" "}
               <span
                 onClick={handleSignUpClick}
                 className="cursor-pointer underline"

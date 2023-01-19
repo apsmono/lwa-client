@@ -18,7 +18,7 @@ function NavBarDropdown(props: NavBarDropdownPropsInterface) {
   const { title, list } = props;
   return (
     <div className={clsx(styles["dropdown-container"])}>
-      <Typography variant="h6">{title}</Typography>
+      <Typography>{title}</Typography>
       <ul
         className={clsx(
           styles["dropdown-content"],
@@ -26,7 +26,7 @@ function NavBarDropdown(props: NavBarDropdownPropsInterface) {
         )}
       >
         {list.map((item) => (
-          <li key={item.route}>
+          <li className="mb-2" key={item.route}>
             <Link href={item.route}>{item.title}</Link>
           </li>
         ))}

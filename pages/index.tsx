@@ -43,33 +43,14 @@ function Home(props: HomePropsInterface) {
               <br />
               that offer you the freedom to work at home or abroad
             </Typography>
-            <div className="flex mb-4">
-              <input
-                type="text"
-                className="border-black border-2 rounded-l-full py-2 px-4 w-2/3 with-shadow"
-                placeholder="Search a Job"
-              />
-              <select className="border-black border-2 rounded-r-full border-l-0 w-1/3 with-shadow">
-                <option value="">Categories</option>
-                {categories.map((category) => (
-                  <option value={category.id} key={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+            <div className="flex gap-4">
+              <Button variant="secondary">Post a Job</Button>
+              <Button variant="black">Search a Job</Button>
             </div>
-            <Button variant="secondary">Search</Button>
           </div>
-          <picture className="hidden lg:block">
-            <img
-              src="/home-ilustration.svg"
-              alt="Ilustration"
-              className="w-96"
-            />
-          </picture>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-12">
           <FeaturedJob jobs={featuredJobs} />
         </div>
         <div className="mb-6">
