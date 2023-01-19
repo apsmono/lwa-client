@@ -1,0 +1,20 @@
+.dropdown-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.7);
+  position: absolute;
+  z-index: 20;
+  background: #fff;
+}
+
+.dropdown-container:hover ul.dropdown-content {
+  opacity: 100;
+  visibility: visible;
+  transform: scale(1);
+  transition: all 0.2s ease-in-out;
+}

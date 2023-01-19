@@ -15,11 +15,11 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
 
   const toLeft = () => {
     const current = scrollRef?.current?.scrollLeft || 0;
-    scrollRef.current!.scrollLeft = current - 288;
+    scrollRef.current!.scroll({ left: current - 288 * 4, behavior: "smooth" });
   };
   const toRight = () => {
     const current = scrollRef?.current?.scrollLeft || 0;
-    scrollRef.current!.scrollLeft = current + 288;
+    scrollRef.current!.scroll({ left: current + 288 * 4, behavior: "smooth" });
   };
 
   const handleClick = (job: Job) => {

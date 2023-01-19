@@ -1,5 +1,6 @@
 import { Backdrop, Button, Dropdown } from "components/common";
 import { GuestSidebar } from "components/navigation";
+import NavBarDropdown from "components/navigation/nav-bar/NavBarDropdown";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -59,15 +60,14 @@ function GuestLayout(props: GuestLayoutProps) {
               <Image src="/lwa-logo.png" fill alt="logo" />
             </div>
             <div className="hidden md:flex gap-4 items-center">
-              <Dropdown
+              <NavBarDropdown
                 title="Categories"
                 list={categories.map((item) => ({
                   title: item.name,
                   route: `/categories/${item.id}`,
                 }))}
-                openOnHover
               />
-              <Dropdown title="Employers" list={employersList} openOnHover />
+              <NavBarDropdown title="Employers" list={employersList} />
               <Button variant="black" withShadow={false}>
                 Post a Job
               </Button>
