@@ -64,7 +64,7 @@ function GuestLayout(props: GuestLayoutProps) {
                 title="Categories"
                 list={categories.map((item) => ({
                   title: item.name,
-                  route: `/categories/${item.id}`,
+                  route: `/jobs?category_id=${item.id}`,
                 }))}
               />
               <button className="flex justify-between gap-2 items-center">

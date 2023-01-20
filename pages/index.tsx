@@ -6,6 +6,7 @@ import JobService from "service/job_service";
 import { Category, Job } from "service/types";
 import { FeaturedJob, Jobs, PopularCategory } from "components/home";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface HomePropsInterface {
   categories: Category[];
@@ -26,6 +27,8 @@ function Home(props: HomePropsInterface) {
     totalPopularCategories,
   } = props;
 
+  const router = useRouter();
+
   return (
     <GuestLayout title="Home" categories={categories}>
       <div className="md:px-6 p-6 max-w-5xl mx-auto">
@@ -45,7 +48,9 @@ function Home(props: HomePropsInterface) {
             </Typography>
             <div className="flex gap-4">
               <Button variant="secondary">Post a Job</Button>
-              <Button variant="black">Search a Job</Button>
+              <Button variant="black" onClick={() => router.push("/jobs")}>
+                Search a Job
+              </Button>
             </div>
           </div>
         </div>

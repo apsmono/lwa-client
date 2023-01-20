@@ -6,7 +6,7 @@ import Alert from "./Alert";
 import Dropdown from "./Dropdown";
 import Button from "./Button";
 import IconButton from "./IconButton";
-import { TextField, TextAreaField, InputLabel } from "./forms";
+import { TextField, TextAreaField, InputLabel, Select } from "./forms";
 
 export {
   Loader,
@@ -20,4 +20,5 @@ export {
   TextAreaField,
   TextField,
   IconButton,
+  Select,
 };
