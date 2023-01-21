@@ -33,9 +33,7 @@ function JobSnippet(props: JobSnippetProps) {
           <span className="font-bold">{job.title}</span> | {job.company_name}
         </p>
         <div className="flex mt-1 gap-2 flex-wrap">
-          {job.is_worldwide && (
-            <Feature icon={<MapPin size={14} />} title="Worldwide" />
-          )}
+          <Feature icon={<MapPin size={14} />} title={job.location} />
           <Feature
             icon={
               <Image src="/dollar-circle.svg" alt="$" width={14} height={14} />

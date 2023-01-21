@@ -18,7 +18,7 @@ function GuestSidebarItem(props: Partial<GuestSidebarProps>) {
         className="flex cursor-pointer flex-col"
         onClick={() => setExpand(!expand)}
       >
-        <div className="flex justify-between w-full">
+        <div className="flex justify-between w-full mb-2">
           {title}{" "}
           <ChevronDown
             className={clsx({ "rotate-180": expand }, "transition-all")}
@@ -26,9 +26,9 @@ function GuestSidebarItem(props: Partial<GuestSidebarProps>) {
         </div>
         <ul
           className={clsx(
-            "max-h-0 transition-all pl-4 overflow-y-hidden duration-300",
+            "max-h-0 transition-all pl-4 overflow-y-hidden duration-300 flex flex-col gap-1",
             {
-              "max-h-96": expand,
+              "max-h-[500px]": expand,
             }
           )}
         >

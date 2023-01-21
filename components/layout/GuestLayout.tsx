@@ -52,14 +52,14 @@ function GuestLayout(props: GuestLayoutProps) {
           employersMenu={employersList}
         />
         <div>
-          <div className="flex justify-between items-center mb-4 p-6 md:px-24">
+          <div className="flex justify-between items-center mb-4 p-6 lg:px-24">
             <div
               className="relative h-5 w-72 cursor-pointer object-cover"
               onClick={() => router.push("/")}
             >
               <Image src="/lwa-logo.png" fill alt="logo" />
             </div>
-            <div className="hidden md:flex gap-8 items-center">
+            <div className="hidden lg:flex gap-8 items-center">
               <NavBarDropdown
                 title="Categories"
                 list={categories.map((item) => ({
@@ -78,7 +78,7 @@ function GuestLayout(props: GuestLayoutProps) {
             </div>
             <button
               onClick={() => setOpenSidebar(true)}
-              className="block md:hidden"
+              className="block lg:hidden"
             >
               <Menu />
             </button>
@@ -91,7 +91,7 @@ function GuestLayout(props: GuestLayoutProps) {
       <Backdrop
         show={openSidebar}
         onClick={() => setOpenSidebar(false)}
-        className="md:invisible"
+        className="lg:invisible"
       />
     </>
   );

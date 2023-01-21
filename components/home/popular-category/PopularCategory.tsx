@@ -18,7 +18,7 @@ function PopularCategory({ categories, totalItems }: PopularCategoryProps) {
   const { setLoading } = useContext(AppContext);
   const router = useRouter();
   const onClick = (category: Category) => {
-    router.push(`/categories/${category.id}`);
+    router.push(`/jobs?category_id=${category.id}`);
   };
 
   const handleShowMoreCategories = async () => {

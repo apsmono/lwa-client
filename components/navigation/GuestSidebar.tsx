@@ -18,7 +18,7 @@ function GuestSidebar(props: Partial<GuestSidebarProps>) {
   return (
     <div
       className={clsx(
-        "bg-white h-full w-72 visible fixed z-10 transition-all duration-300 overflow-y-auto md:-translate-x-80 p-6",
+        "bg-white h-full w-72 visible fixed z-10 transition-all duration-300 overflow-y-auto lg:-translate-x-80 p-6",
         [!open && "-translate-x-80"]
       )}
     >
@@ -32,7 +32,7 @@ function GuestSidebar(props: Partial<GuestSidebarProps>) {
           title="Categories"
           list={categories.map((category) => ({
             title: category.name,
-            route: `/categories/${category.id}`,
+            route: `/jobs?category_id=${category.id}`,
           }))}
         />
         <GuestSidebarItem

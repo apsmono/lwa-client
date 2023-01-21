@@ -25,8 +25,8 @@ function NavBarDropdown(props: NavBarDropdownPropsInterface) {
           "shadow-md p-2 rounded-md w-52"
         )}
       >
-        {list.map((item) => (
-          <li className="mb-2" key={item.route}>
+        {list.map((item, index) => (
+          <li className="mb-2" key={index}>
             <Link href={item.route}>{item.title}</Link>
           </li>
         ))}

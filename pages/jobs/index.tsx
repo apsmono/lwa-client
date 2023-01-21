@@ -1,22 +1,46 @@
-import { Button, Select, TextField, Typography } from "components/common";
+import { Select, TextField, Typography } from "components/common";
 import JobCard from "components/home/job/JobCard";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import CategoryService from "service/category_service";
+import EmploymentTypeService from "service/employment_type_service";
 import JobService from "service/job_service";
-import { Category, Job } from "service/types";
+import LanguageService from "service/languages_service";
+import LocationService from "service/location_service";
+import {
+  Category,
+  EmploymentType,
+  Job,
+  LanguageType,
+  LocationType,
+} from "service/types";
 
 interface JobListPageProps {
   jobs: Job[];
   category?: Category;
   categories: Category[];
+  languages: LanguageType[];
+  locations: LocationType[];
+  employmentTypes: EmploymentType[];
 }
 
 function JobListPage(props: JobListPageProps) {
-  const { categories, category, jobs } = props;
+  const { categories, category, jobs, employmentTypes, languages, locations } =
+    props;
   const router = useRouter();
+  const [employmentTypeId, setEmploymentTypeId] = useState(null);
+  const [locationId, setLocationId] = useState(null);
+  const [languageId, setLanguageId] = useState(null);
+  const [jobList, setJobList] = useState(jobs);
+  const [jobTitle, setJobTitle] = useState("");
   const handleClick = (job: Job) => {
     router.push(`/jobs/${job.id}`);
   };
@@ -25,6 +49,38 @@ function JobListPage(props: JobListPageProps) {
     if (!category) return "Jobs";
     return `Jobs - ${category.name}`;
   }, [category]);
+
+  const fetchJobs = useCallback(async () => {
+    const params: any = {};
+    if (employmentTypeId) {
+      params.employment_type_id = employmentTypeId;
+    }
+    if (locationId) params.location_id = locationId;
+    if (languageId) params.language_id = languageId;
+    if (category) {
+      params.category_id = category.id;
+    }
+    if (jobTitle) params.title = jobTitle;
+
+    const response = await JobService.gets(params);
+    return response.data;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [employmentTypeId, category, locationId, languageId, jobTitle]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetchJobs();
+      setJobList(res);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [employmentTypeId, locationId, languageId]);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const res = await fetchJobs();
+    setJobList(res);
+  };
+
   return (
     <GuestLayout title={title} categories={categories}>
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
@@ -38,18 +94,52 @@ function JobListPage(props: JobListPageProps) {
             </Typography>
           </>
         ) : null}
-        <TextField placeholder="Search Job" />
-        <div className="flex gap-4">
-          <Select options={[{ text: "Job Type", value: "" }]} />
-          <Select options={[{ text: "Location", value: "" }]} />
-          <Select options={[{ text: "Industry", value: "" }]} />
-          <Select options={[{ text: "Language", value: "" }]} />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            placeholder="Search Job"
+            value={jobTitle}
+            onChange={(e) => setJobTitle(e.target.value)}
+          />
+        </form>
+        <div className="flex gap-4 flex-wrap">
+          <Select
+            options={[
+              { text: "Job Type", value: "" },
+              ...employmentTypes.map((et) => ({
+                text: et.name,
+                value: et.id,
+              })),
+            ]}
+            onChange={(val) => {
+              setEmploymentTypeId(val);
+            }}
+          />
+          <Select
+            options={[
+              { text: "Location", value: "" },
+              ...locations.map((l) => ({
+                text: l.name,
+                value: l.id,
+              })),
+            ]}
+            onChange={(val) => setLocationId(val)}
+          />
+          <Select
+            options={[
+              { text: "Language", value: "" },
+              ...languages.map((l) => ({
+                text: l.name,
+                value: l.id,
+              })),
+            ]}
+            onChange={(val) => setLanguageId(val)}
+          />
         </div>
         <Typography variant="small" className="text-center">
-          &quot;{new Intl.NumberFormat().format(jobs.length)}&quot; Jobs
+          &quot;{new Intl.NumberFormat().format(jobList.length)}&quot; Jobs
           Available
         </Typography>
-        {jobs.map((job) => (
+        {jobList.map((job) => (
           <div className="mb-2" key={job.id}>
             <JobCard onClick={() => handleClick(job)} job={job} />
           </div>
@@ -73,11 +163,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   if (title) props.title = title;
 
-  const jobs = await (await JobService.gets(jobParams)).data;
-  const categories = await (await CategoryService.gets()).data;
-
-  props.jobs = jobs;
-  props.categories = categories;
+  const res = await Promise.all([
+    JobService.gets(jobParams),
+    CategoryService.gets(),
+    LanguageService.gets(),
+    EmploymentTypeService.gets(),
+    LocationService.gets(),
+  ]);
+  props.jobs = res[0].data;
+  props.categories = res[1].data;
+  props.languages = res[2].data;
+  props.employmentTypes = res[3].data;
+  props.locations = res[4].data;
 
   return {
     props,

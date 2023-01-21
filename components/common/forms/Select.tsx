@@ -10,10 +10,18 @@ interface SelectPropsInterface {
   register: UseFormRegister<any>;
   error: boolean;
   className: string;
+  onChange: (e: any) => void;
 }
 
 function Select(props: Partial<SelectPropsInterface>) {
-  const { label, options = [], defaultValue, className, error } = props;
+  const {
+    label,
+    options = [],
+    defaultValue,
+    className,
+    error,
+    onChange,
+  } = props;
   const [value, setValue] = useState(defaultValue);
 
   return (
@@ -26,10 +34,19 @@ function Select(props: Partial<SelectPropsInterface>) {
           className
         )}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          setValue(e.target.value);
+          if (onChange) {
+            onChange(e.target.value);
+          }
+        }}
       >
         {options.map((opt) => (
-          <option value={opt.value} key={opt.value}>
+          <option
+            value={opt.value}
+            onClick={(e) => console.log("test")}
+            key={opt.value}
+          >
             {opt.text}
           </option>
         ))}

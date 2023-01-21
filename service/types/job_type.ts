@@ -7,6 +7,8 @@ export type Job = {
   skill: string;
   employment_type: string;
   is_worldwide: boolean;
+  location: string;
+  language: string;
   timezone: string;
   salary: string;
   description: string;
