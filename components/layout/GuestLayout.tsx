@@ -1,10 +1,17 @@
-import { Backdrop, Button, Dropdown, Typography } from "components/common";
+import clsx from "clsx";
+import {
+  Backdrop,
+  Button,
+  Dropdown,
+  TextField,
+  Typography,
+} from "components/common";
 import { GuestSidebar } from "components/navigation";
 import NavBarDropdown from "components/navigation/nav-bar/NavBarDropdown";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { FormEvent, ReactNode, useMemo, useRef, useState } from "react";
 import { Menu, Search } from "react-feather";
 import { Category } from "service/types/category_type";
 import GuestFooter from "./footer/GuestFooter";
@@ -18,6 +25,7 @@ interface GuestLayoutProps {
 function GuestLayout(props: GuestLayoutProps) {
   const { title, children, categories } = props;
   const router = useRouter();
+  const [openSearchBar, setOpenSearchBar] = useState(false);
   const employersList = useMemo(() => {
     return [
       {
@@ -26,7 +34,7 @@ function GuestLayout(props: GuestLayoutProps) {
       },
       {
         title: "Create Employer Account",
-        route: "",
+        route: "/auth/sign-up",
       },
       {
         title: "Sign In",
@@ -34,8 +42,17 @@ function GuestLayout(props: GuestLayoutProps) {
       },
     ];
   }, []);
+  const [jobTitle, setJobTitle] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [openSidebar, setOpenSidebar] = useState(false);
+
+  const handleSearchJobs = async (e: FormEvent) => {
+    e.preventDefault();
+    if (jobTitle) {
+      router.push(`/jobs?title=${jobTitle}`);
+    }
+  };
   return (
     <>
       <Head>
@@ -52,36 +69,65 @@ function GuestLayout(props: GuestLayoutProps) {
           employersMenu={employersList}
         />
         <div>
-          <div className="flex justify-between items-center mb-4 p-6 lg:px-24">
-            <div
-              className="relative h-5 w-72 cursor-pointer object-cover"
-              onClick={() => router.push("/")}
-            >
-              <Image src="/lwa-logo.png" fill alt="logo" />
-            </div>
-            <div className="hidden lg:flex gap-8 items-center">
-              <NavBarDropdown
-                title="Categories"
-                list={categories.map((item) => ({
-                  title: item.name,
-                  route: `/jobs?category_id=${item.id}`,
-                }))}
-              />
-              <button className="flex justify-between gap-2 items-center">
-                <Typography>Find a Job</Typography>
-                <Search size={18} />
+          <div className="flex flex-col mb-4 p-6 lg:px-24 gap-2">
+            <div className="flex justify-between items-center">
+              <div
+                className="relative h-5 w-72 cursor-pointer object-cover"
+                onClick={() => router.push("/")}
+              >
+                <Image src="/lwa-logo.png" fill alt="logo" />
+              </div>
+              <div className="hidden lg:flex gap-8 items-center">
+                <NavBarDropdown
+                  title="Categories"
+                  list={categories.map((item) => ({
+                    title: item.name,
+                    route: `/jobs?category_id=${item.id}`,
+                  }))}
+                />
+                <button
+                  className="flex justify-between gap-2 items-center"
+                  onClick={() => {
+                    if (!openSearchBar) {
+                      setTimeout(() => {
+                        inputRef.current?.focus();
+                      }, 100);
+                    }
+                    setOpenSearchBar(!openSearchBar);
+                  }}
+                >
+                  <Typography>Find a Job</Typography>
+                  <Search size={18} />
+                </button>
+                <NavBarDropdown title="Employers" list={employersList} />
+                <Button variant="black" withShadow={false}>
+                  Post a Job
+                </Button>
+              </div>
+              <button
+                onClick={() => setOpenSidebar(true)}
+                className="block lg:hidden"
+              >
+                <Menu />
               </button>
-              <NavBarDropdown title="Employers" list={employersList} />
-              <Button variant="black" withShadow={false}>
-                Post a Job
-              </Button>
             </div>
-            <button
-              onClick={() => setOpenSidebar(true)}
-              className="block lg:hidden"
-            >
-              <Menu />
-            </button>
+
+            <div className="lg:block hidden">
+              <div
+                className={clsx("transition-all visible", {
+                  "opacity-0 invisible": !openSearchBar,
+                })}
+              >
+                <form onSubmit={handleSearchJobs}>
+                  <TextField
+                    ref={inputRef}
+                    placeholder="e.g Full stack developer"
+                    value={jobTitle}
+                    onChange={(e) => setJobTitle(e.target.value)}
+                  />
+                </form>
+              </div>
+            </div>
           </div>
 
           {children}

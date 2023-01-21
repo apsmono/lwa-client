@@ -30,17 +30,25 @@ interface JobListPageProps {
   languages: LanguageType[];
   locations: LocationType[];
   employmentTypes: EmploymentType[];
+  jobTitle?: string;
 }
 
 function JobListPage(props: JobListPageProps) {
-  const { categories, category, jobs, employmentTypes, languages, locations } =
-    props;
+  const {
+    categories,
+    category,
+    jobs,
+    employmentTypes,
+    languages,
+    locations,
+    jobTitle: userJobTitle,
+  } = props;
   const router = useRouter();
   const [employmentTypeId, setEmploymentTypeId] = useState(null);
   const [locationId, setLocationId] = useState(null);
   const [languageId, setLanguageId] = useState(null);
   const [jobList, setJobList] = useState(jobs);
-  const [jobTitle, setJobTitle] = useState("");
+  const [jobTitle, setJobTitle] = useState(userJobTitle);
   const handleClick = (job: Job) => {
     router.push(`/jobs/${job.id}`);
   };
@@ -175,6 +183,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   props.languages = res[2].data;
   props.employmentTypes = res[3].data;
   props.locations = res[4].data;
+  props.jobTitle = title;
 
   return {
     props,

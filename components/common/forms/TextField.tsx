@@ -37,6 +37,7 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
           </InputLabel>
         )}
         <input
+          ref={ref}
           {...otherProps}
           autoComplete="off"
           id={id}
