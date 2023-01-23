@@ -44,9 +44,11 @@ function JobListPage(props: JobListPageProps) {
     jobTitle: userJobTitle,
   } = props;
   const router = useRouter();
-  const [employmentTypeId, setEmploymentTypeId] = useState(null);
-  const [locationId, setLocationId] = useState(null);
-  const [languageId, setLanguageId] = useState(null);
+  const [employmentType, setEmploymentType] = useState<any>(null);
+  const [location, setLocation] = useState<any>(null);
+  const [language, setLanguage] = useState<any>(null);
+  const [sorting, setSorting] = useState<any>(null);
+  const [datePosted, setDatePosted] = useState<any>(null);
   const [jobList, setJobList] = useState(jobs);
   const [jobTitle, setJobTitle] = useState(userJobTitle);
   const handleClick = (job: Job) => {
@@ -60,20 +62,40 @@ function JobListPage(props: JobListPageProps) {
 
   const fetchJobs = useCallback(async () => {
     const params: any = {};
-    if (employmentTypeId) {
-      params.employment_type_id = employmentTypeId;
+    if (employmentType?.id) {
+      params.employment_type_id = employmentType!.id;
     }
-    if (locationId) params.location_id = locationId;
-    if (languageId) params.language_id = languageId;
+    if (location?.id) params.location_id = location.id;
+    if (language?.id) params.language_id = language.id;
     if (category) {
       params.category_id = category.id;
     }
+    if (sorting?.val) {
+      console.log({ sorting });
+      params.sort_by = sorting.val;
+      params.sort_direction = "DESC";
+    }
     if (jobTitle) params.title = jobTitle;
+    if (datePosted?.val) {
+      const startDate = new Date();
+      const endDate = new Date();
+      startDate.setDate(startDate.getDate() - datePosted.val);
+      params.start_date = startDate.toLocaleDateString();
+      params.end_date = endDate.toLocaleDateString();
+    }
 
     const response = await JobService.gets(params);
     return response.data;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [employmentTypeId, category, locationId, languageId, jobTitle]);
+  }, [
+    employmentType,
+    category,
+    location,
+    language,
+    jobTitle,
+    sorting,
+    datePosted,
+  ]);
 
   useEffect(() => {
     (async () => {
@@ -81,7 +103,7 @@ function JobListPage(props: JobListPageProps) {
       setJobList(res);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [employmentTypeId, locationId, languageId]);
+  }, [employmentType, location, language, sorting, datePosted]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -112,38 +134,46 @@ function JobListPage(props: JobListPageProps) {
         <div className="flex gap-4 flex-wrap">
           <Select
             options={[
-              { text: "Job Type", value: "" },
-              ...employmentTypes.map((et) => ({
-                text: et.name,
-                value: et.id,
-              })),
+              { val: "", label: "Sort by" },
+              { val: "created_at", label: "Most Recent" },
+              { val: "click_counts", label: "Most Relevant" },
             ]}
-            onChange={(val) => {
-              setEmploymentTypeId(val);
-            }}
+            renderOption={(val) => val?.label}
+            onChange={(val) => setSorting(val)}
+            className="w-36"
           />
           <Select
             options={[
-              { text: "Location", value: "" },
-              ...locations.map((l) => ({
-                text: l.name,
-                value: l.id,
-              })),
+              { val: "", label: "Date Posted" },
+              { val: "", label: "Anytime" },
+              { val: 7, label: "Past week" },
+              { val: 1, label: "Past 24 hours" },
+              { val: 30, label: "Past month" },
             ]}
-            onChange={(val) => setLocationId(val)}
+            renderOption={(val) => val.label}
+            className="w-36"
+            onChange={(val) => setDatePosted(val)}
           />
           <Select
-            options={[
-              { text: "Language", value: "" },
-              ...languages.map((l) => ({
-                text: l.name,
-                value: l.id,
-              })),
-            ]}
-            onChange={(val) => setLanguageId(val)}
+            options={[{ id: 0, name: "Job Type" }, ...employmentTypes]}
+            renderOption={(val) => val?.name}
+            onChange={(val) => setEmploymentType(val)}
+            className="w-36"
+          />
+          <Select
+            options={[{ id: 0, name: "Locations" }, ...locations]}
+            renderOption={(val) => val?.name}
+            onChange={(val) => setLocation(val)}
+            className="w-36"
+          />
+          <Select
+            options={[{ id: 0, name: "Languages" }, ...languages]}
+            renderOption={(val) => val?.name}
+            onChange={(val) => setLanguage(val)}
+            className="w-36"
           />
         </div>
-        <Typography variant="small" className="text-center">
+        <Typography variant="small" className="text-center mt-4">
           &quot;{new Intl.NumberFormat().format(jobList.length)}&quot; Jobs
           Available
         </Typography>
@@ -183,7 +213,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   props.languages = res[2].data;
   props.employmentTypes = res[3].data;
   props.locations = res[4].data;
-  props.jobTitle = title;
+  if (title) props.jobTitle = title;
 
   return {
     props,

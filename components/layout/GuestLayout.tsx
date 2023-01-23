@@ -1,18 +1,12 @@
 import clsx from "clsx";
-import {
-  Backdrop,
-  Button,
-  Dropdown,
-  TextField,
-  Typography,
-} from "components/common";
+import { Backdrop, Button, TextField, Typography } from "components/common";
 import { GuestSidebar } from "components/navigation";
 import NavBarDropdown from "components/navigation/nav-bar/NavBarDropdown";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FormEvent, ReactNode, useMemo, useRef, useState } from "react";
-import { Menu, Search } from "react-feather";
+import { Menu } from "react-feather";
 import { Category } from "service/types/category_type";
 import GuestFooter from "./footer/GuestFooter";
 
@@ -69,7 +63,7 @@ function GuestLayout(props: GuestLayoutProps) {
           employersMenu={employersList}
         />
         <div>
-          <div className="flex flex-col mb-4 p-6 lg:px-24 gap-2">
+          <div className="flex flex-col mb-4 p-6 lg:px-24 gap-6">
             <div className="flex justify-between items-center">
               <div
                 className="relative h-5 w-72 cursor-pointer object-cover"
@@ -86,7 +80,6 @@ function GuestLayout(props: GuestLayoutProps) {
                   }))}
                 />
                 <button
-                  className="flex justify-between gap-2 items-center"
                   onClick={() => {
                     if (!openSearchBar) {
                       setTimeout(() => {
@@ -96,8 +89,7 @@ function GuestLayout(props: GuestLayoutProps) {
                     setOpenSearchBar(!openSearchBar);
                   }}
                 >
-                  <Typography>Find a Job</Typography>
-                  <Search size={18} />
+                  <Typography>Search Job</Typography>
                 </button>
                 <NavBarDropdown title="Employers" list={employersList} />
                 <Button variant="black" withShadow={false}>

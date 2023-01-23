@@ -1,5 +1,14 @@
 import InputLabel from "./InputLabel";
 import TextField from "./TextField";
-import Select from "./Select";
+import NativeSelect from "./NativeSelect";
 import TextAreaField from "./TextAreaField";
-export { InputLabel, TextField, TextAreaField, Select };
+import Autocomplete from "./Autocomplete";
+import Select from "./Select";
+export {
+  InputLabel,
+  TextField,
+  TextAreaField,
+  NativeSelect,
+  Autocomplete,
+  Select,
+};
