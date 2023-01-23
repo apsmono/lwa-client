@@ -12,6 +12,7 @@ import React, {
 } from "react";
 import CategoryService from "service/category_service";
 import EmploymentTypeService from "service/employment_type_service";
+import JobIndustryService from "service/job_industry_service";
 import JobService from "service/job_service";
 import LanguageService from "service/languages_service";
 import LocationService from "service/location_service";
@@ -19,6 +20,7 @@ import {
   Category,
   EmploymentType,
   Job,
+  JobIndustry,
   LanguageType,
   LocationType,
 } from "service/types";
@@ -31,6 +33,7 @@ interface JobListPageProps {
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   jobTitle?: string;
+  jobIndustries: JobIndustry[];
 }
 
 function JobListPage(props: JobListPageProps) {
@@ -42,6 +45,7 @@ function JobListPage(props: JobListPageProps) {
     languages,
     locations,
     jobTitle: userJobTitle,
+    jobIndustries,
   } = props;
   const router = useRouter();
   const [employmentType, setEmploymentType] = useState<any>(null);
@@ -167,6 +171,11 @@ function JobListPage(props: JobListPageProps) {
             className="w-36"
           />
           <Select
+            options={[{ id: 0, name: "Industry" }, ...jobIndustries]}
+            renderOption={(val) => val?.name}
+            className="w-36"
+          />
+          <Select
             options={[{ id: 0, name: "Languages" }, ...languages]}
             renderOption={(val) => val?.name}
             onChange={(val) => setLanguage(val)}
@@ -207,12 +216,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     LanguageService.gets(),
     EmploymentTypeService.gets(),
     LocationService.gets(),
+    JobIndustryService.gets(),
   ]);
   props.jobs = res[0].data;
   props.categories = res[1].data;
   props.languages = res[2].data;
   props.employmentTypes = res[3].data;
   props.locations = res[4].data;
+  props.jobIndustries = res[5].data;
   if (title) props.jobTitle = title;
 
   return {

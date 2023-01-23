@@ -12,3 +12,8 @@ export type EmploymentType = {
   id: number;
   name: string;
 };
+
+export type JobIndustry = {
+  id: number;
+  name: string;
+};
