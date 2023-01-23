@@ -2,44 +2,123 @@ import clsx from "clsx";
 import { Backdrop, Button, TextField, Typography } from "components/common";
 import { GuestSidebar } from "components/navigation";
 import NavBarDropdown from "components/navigation/nav-bar/NavBarDropdown";
+import { AppContext } from "context/appContext";
+import Cookies from "js-cookie";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { FormEvent, ReactNode, useMemo, useRef, useState } from "react";
+import React, {
+  FormEvent,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Menu } from "react-feather";
+import { AuthService } from "service/auth_service";
+import { User } from "service/types";
 import { Category } from "service/types/category_type";
+import { parseErrorMessage } from "utils/api";
+import useAlert from "utils/hooks/useAlert";
+import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import GuestFooter from "./footer/GuestFooter";
 
 interface GuestLayoutProps {
   title: string;
   children: ReactNode;
   categories: Category[];
+  employers?: User;
 }
 
 function GuestLayout(props: GuestLayoutProps) {
   const { title, children, categories } = props;
   const router = useRouter();
   const [openSearchBar, setOpenSearchBar] = useState(false);
+  const { showErrorAlert, showSuccessAlert } = useAlert();
+  const { setLoading } = useContext(AppContext);
+  const [employers, setEmployers] = useState(null);
+  const wrappedLogout = useWrapHandleInvalidToken((refreshToken: string) =>
+    AuthService.logout(refreshToken)
+  );
+
+  const handleLogout = async () => {
+    const refreshToken = Cookies.get("refreshToken")!;
+
+    try {
+      setLoading(true);
+      await wrappedLogout(refreshToken);
+    } catch (error) {
+      showErrorAlert(parseErrorMessage(error));
+      return;
+    } finally {
+      setLoading(false);
+    }
+
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+    setTimeout(() => {
+      showSuccessAlert("Logout success");
+      router.replace("/auth/sign-in");
+    }, 300);
+  };
   const employersList = useMemo(() => {
+    if (!employers) {
+      return [
+        {
+          title: "Post a Job",
+          route: "",
+        },
+        {
+          title: "Create Employer Account",
+          route: "/auth/sign-up",
+        },
+        {
+          title: "Sign In",
+          route: "/auth/sign-in",
+        },
+      ];
+    }
     return [
+      {
+        title: "Dashboard",
+        route: "/employers/dashboard",
+      },
       {
         title: "Post a Job",
         route: "",
       },
       {
-        title: "Create Employer Account",
-        route: "/auth/sign-up",
-      },
-      {
-        title: "Sign In",
-        route: "/auth/sign-in",
+        title: "Logout",
+        route: "/",
+        onClick: handleLogout,
       },
     ];
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [employers]);
   const [jobTitle, setJobTitle] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [openSidebar, setOpenSidebar] = useState(false);
+  const accessToken = Cookies.get("accessToken");
+
+  useEffect(() => {
+    let active = true;
+
+    const fetchData = async () => {
+      const response = await AuthService.fetchMe();
+      if (!active) return;
+      setEmployers(response.data);
+    };
+
+    if (accessToken) fetchData();
+
+    return () => {
+      active = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSearchJobs = async (e: FormEvent) => {
     e.preventDefault();

@@ -7,6 +7,7 @@ import styles from "./NavBarDropdown.module.css";
 type NavBarDropDownListType = {
   route: string;
   title: string;
+  onClick?: () => void;
 };
 
 interface NavBarDropdownPropsInterface {
@@ -27,7 +28,11 @@ function NavBarDropdown(props: NavBarDropdownPropsInterface) {
       >
         {list.map((item, index) => (
           <li className="mb-2" key={index}>
-            <Link href={item.route}>{item.title}</Link>
+            {item.onClick ? (
+              <button onClick={item.onClick}>{item.title}</button>
+            ) : (
+              <Link href={item.route}>{item.title}</Link>
+            )}
           </li>
         ))}
       </ul>

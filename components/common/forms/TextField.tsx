@@ -52,7 +52,7 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
           {...registerAttr}
         />
         {helperText && (
-          <Typography className="text-red-500 text-medium" variant="small">
+          <Typography className="text-red-500 text-medium mt-2" variant="small">
             {helperText}
           </Typography>
         )}

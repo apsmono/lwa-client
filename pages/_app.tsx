@@ -3,14 +3,16 @@ import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { Router } from "next/router";
 import { AlertContext } from "context/alertContext";
-import { Alert, Loader } from "components/common";
+import { Alert, Loader, UnauthorizedModal } from "components/common";
 import { AppContext } from "context/appContext";
+import { AuthContext } from "context/authContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [alertType, setAlertType] = useState();
   const [loading, setLoading] = useState(false);
+  const [openUnauthorizedModal, setOpenUnauthorizedModal] = useState(false);
 
   useEffect(() => {
     Router.events.on("routeChangeStart", (url) => {
@@ -38,9 +40,14 @@ export default function App({ Component, pageProps }: AppProps) {
         </div>
       ) : null}
 
-      <AppContext.Provider value={{ loading, setLoading }}>
-        <Component {...pageProps} />
-      </AppContext.Provider>
+      <AuthContext.Provider
+        value={{ setOpenUnauthorizedModal, openUnauthorizedModal }}
+      >
+        <AppContext.Provider value={{ loading, setLoading }}>
+          <Component {...pageProps} />
+          <UnauthorizedModal open={openUnauthorizedModal} />
+        </AppContext.Provider>
+      </AuthContext.Provider>
     </AlertContext.Provider>
   );
 }

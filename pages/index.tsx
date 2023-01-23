@@ -5,7 +5,6 @@ import { GuestLayout } from "components/layout";
 import JobService from "service/job_service";
 import { Category, Job } from "service/types";
 import { FeaturedJob, Jobs, PopularCategory } from "components/home";
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 interface HomePropsInterface {

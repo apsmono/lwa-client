@@ -6,6 +6,7 @@ import Alert from "./Alert";
 import Dropdown from "./Dropdown";
 import Button from "./Button";
 import IconButton from "./IconButton";
+import UnauthorizedModal from "./UnauthorizedModal";
 import {
   TextField,
   TextAreaField,
@@ -28,4 +29,5 @@ export {
   IconButton,
   Select,
   Autocomplete,
+  UnauthorizedModal,
 };
