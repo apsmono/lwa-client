@@ -7,6 +7,7 @@ import Dropdown from "./Dropdown";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import UnauthorizedModal from "./UnauthorizedModal";
+import Chip from "./Chip";
 import {
   TextField,
   TextAreaField,
@@ -30,4 +31,5 @@ export {
   Select,
   Autocomplete,
   UnauthorizedModal,
+  Chip,
 };

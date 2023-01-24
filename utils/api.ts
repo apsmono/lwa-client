@@ -101,3 +101,20 @@ export async function handleInvalidTokenServerSide(
     return await callback();
   }
 }
+
+export function getURLSearchParams(payload: any) {
+  const params = new URLSearchParams();
+  const keys = Object.keys(payload);
+  keys.forEach((key) => {
+    const val = payload[key];
+    if (Array.isArray(val)) {
+      val.forEach((item) => {
+        params.append(key, item);
+      });
+    } else {
+      params.append(key, val);
+    }
+  });
+
+  return params.toString();
+}

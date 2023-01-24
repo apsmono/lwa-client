@@ -48,9 +48,9 @@ function JobListPage(props: JobListPageProps) {
     jobIndustries,
   } = props;
   const router = useRouter();
-  const [employmentType, setEmploymentType] = useState<any>(null);
-  const [location, setLocation] = useState<any>(null);
-  const [language, setLanguage] = useState<any>(null);
+  const [employmentType, setEmploymentType] = useState<any[]>([]);
+  const [location, setLocation] = useState<any[]>([]);
+  const [language, setLanguage] = useState<any[]>([]);
   const [sorting, setSorting] = useState<any>(null);
   const [datePosted, setDatePosted] = useState<any>(null);
   const [jobList, setJobList] = useState(jobs);
@@ -66,16 +66,15 @@ function JobListPage(props: JobListPageProps) {
 
   const fetchJobs = useCallback(async () => {
     const params: any = {};
-    if (employmentType?.id) {
-      params.employment_type_id = employmentType!.id;
+    if (employmentType.length) {
+      params.employment_type_id = employmentType.map((l) => l.id);
     }
-    if (location?.id) params.location_id = location.id;
-    if (language?.id) params.language_id = language.id;
+    if (location.length) params.location_id = location.map((l) => l.id);
+    if (language.length) params.language_id = language.map((l) => l.id);
     if (category) {
       params.category_id = category.id;
     }
     if (sorting?.val) {
-      console.log({ sorting });
       params.sort_by = sorting.val;
       params.sort_direction = "DESC";
     }
@@ -137,49 +136,57 @@ function JobListPage(props: JobListPageProps) {
         </form>
         <div className="flex gap-4 flex-wrap">
           <Select
+            placeholder="Sort by"
             options={[
-              { val: "", label: "Sort by" },
               { val: "created_at", label: "Most Recent" },
               { val: "click_counts", label: "Most Relevant" },
             ]}
             renderOption={(val) => val?.label}
             onChange={(val) => setSorting(val)}
-            className="w-36"
+            className="sm:w-36 w-full"
           />
           <Select
+            placeholder="Date posted"
             options={[
-              { val: "", label: "Date Posted" },
               { val: "", label: "Anytime" },
               { val: 7, label: "Past week" },
               { val: 1, label: "Past 24 hours" },
               { val: 30, label: "Past month" },
             ]}
             renderOption={(val) => val.label}
-            className="w-36"
+            className="sm:w-36 w-full"
             onChange={(val) => setDatePosted(val)}
           />
           <Select
-            options={[{ id: 0, name: "Job Type" }, ...employmentTypes]}
+            multiple
+            placeholder="Job Type"
+            options={[...employmentTypes]}
             renderOption={(val) => val?.name}
             onChange={(val) => setEmploymentType(val)}
-            className="w-36"
+            className="sm:w-36 w-full"
           />
           <Select
-            options={[{ id: 0, name: "Locations" }, ...locations]}
+            multiple
+            placeholder="Locations"
+            options={[...locations]}
             renderOption={(val) => val?.name}
             onChange={(val) => setLocation(val)}
-            className="w-36"
+            className="sm:w-36 w-full"
           />
           <Select
-            options={[{ id: 0, name: "Industry" }, ...jobIndustries]}
+            multiple
+            placeholder="Industry"
+            options={[...jobIndustries]}
             renderOption={(val) => val?.name}
-            className="w-36"
+            className="sm:w-36 w-full"
           />
           <Select
-            options={[{ id: 0, name: "Languages" }, ...languages]}
+            multiple
+            placeholder="Languages"
+            options={[...languages]}
             renderOption={(val) => val?.name}
             onChange={(val) => setLanguage(val)}
-            className="w-36"
+            className="sm:w-36 w-full"
           />
         </div>
         <Typography variant="small" className="text-center mt-4">

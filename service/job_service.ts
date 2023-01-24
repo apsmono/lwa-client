@@ -1,8 +1,8 @@
-import { sendAndHandleRequest } from "utils/api";
+import { getURLSearchParams, sendAndHandleRequest } from "utils/api";
 
 export default class JobService {
   static async gets(payload: any = {}) {
-    const params = new URLSearchParams(payload).toString();
+    const params = getURLSearchParams(payload);
     return sendAndHandleRequest(`/jobs?${params}`, "get");
   }
 
