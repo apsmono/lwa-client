@@ -33,13 +33,10 @@ function Home(props: HomePropsInterface) {
       <div className="md:px-6 p-6 max-w-5xl mx-auto">
         <div className="flex justify-center mb-8">
           <div className="flex flex-col items-center">
-            <Typography
-              variant="h1"
-              className="font-black mb-4 text-center uppercase font-palo"
-            >
+            <p className="font-black mb-4 text-center uppercase font-palo text-8xl">
               Find top talent anywhere <br className="hidden md:block" /> in the
               world
-            </Typography>
+            </p>
             <Typography className="text-center mb-4">
               Making your job search easier by connecting you with companies{" "}
               <br />
