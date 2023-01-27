@@ -5,14 +5,15 @@ import { X } from "react-feather";
 interface ChipPropsInterface {
   children: React.ReactNode;
   onClose: () => void;
-  variant: "primary" | "secondary";
+  variant: "primary" | "secondary" | "white";
 }
 
 function Chip(props: Partial<ChipPropsInterface>) {
-  const { variant = "primary", children, onClose } = props;
+  const { variant = "white", children, onClose } = props;
   const styles = {
     primary: "bg-primary-500",
     secondary: "bg-secondary-500",
+    white: "bg-white border-2 border-black with-shadow",
   };
   return (
     <span

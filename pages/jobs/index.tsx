@@ -1,4 +1,5 @@
-import { Select, TextField, Typography } from "components/common";
+import { Chip, Select, TextField, Typography } from "components/common";
+import { SelectRefType } from "components/common/forms/Select";
 import JobCard from "components/home/job/JobCard";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
@@ -8,6 +9,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import CategoryService from "service/category_service";
@@ -51,6 +53,7 @@ function JobListPage(props: JobListPageProps) {
   const [employmentType, setEmploymentType] = useState<any[]>([]);
   const [location, setLocation] = useState<any[]>([]);
   const [language, setLanguage] = useState<any[]>([]);
+  const [industries, setIndustries] = useState<any[]>([]);
   const [sorting, setSorting] = useState<any>(null);
   const [datePosted, setDatePosted] = useState<any>(null);
   const [jobList, setJobList] = useState(jobs);
@@ -114,6 +117,11 @@ function JobListPage(props: JobListPageProps) {
     setJobList(res);
   };
 
+  const employmentTypeRef = useRef<SelectRefType>(null);
+  const locationRef = useRef<SelectRefType>(null);
+  const languageRef = useRef<SelectRefType>(null);
+  const jobIndustryRef = useRef<SelectRefType>(null);
+
   return (
     <GuestLayout title={title} categories={categories}>
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
@@ -164,6 +172,7 @@ function JobListPage(props: JobListPageProps) {
             renderOption={(val) => val?.name}
             onChange={(val) => setEmploymentType(val)}
             className="sm:w-36 w-full"
+            ref={employmentTypeRef}
           />
           <Select
             multiple
@@ -172,6 +181,7 @@ function JobListPage(props: JobListPageProps) {
             renderOption={(val) => val?.name}
             onChange={(val) => setLocation(val)}
             className="sm:w-36 w-full"
+            ref={locationRef}
           />
           <Select
             multiple
@@ -179,6 +189,8 @@ function JobListPage(props: JobListPageProps) {
             options={[...jobIndustries]}
             renderOption={(val) => val?.name}
             className="sm:w-36 w-full"
+            ref={jobIndustryRef}
+            onChange={(val) => setIndustries(val)}
           />
           <Select
             multiple
@@ -187,7 +199,50 @@ function JobListPage(props: JobListPageProps) {
             renderOption={(val) => val?.name}
             onChange={(val) => setLanguage(val)}
             className="sm:w-36 w-full"
+            ref={languageRef}
           />
+          <div className="flex gap-2 flex-wrap">
+            {employmentType.map((et, i) => (
+              <Chip
+                key={et.id}
+                onClose={() => {
+                  employmentTypeRef.current!.removeValue(i);
+                }}
+              >
+                {et.name}
+              </Chip>
+            ))}
+            {location.map((l, i) => (
+              <Chip
+                key={l.id}
+                onClose={() => {
+                  locationRef.current!.removeValue(i);
+                }}
+              >
+                {l.name}
+              </Chip>
+            ))}
+            {industries.map((l, i) => (
+              <Chip
+                key={l.id}
+                onClose={() => {
+                  jobIndustryRef.current!.removeValue(i);
+                }}
+              >
+                {l.name}
+              </Chip>
+            ))}
+            {language.map((l, i) => (
+              <Chip
+                key={l.id}
+                onClose={() => {
+                  languageRef.current!.removeValue(i);
+                }}
+              >
+                {l.name}
+              </Chip>
+            ))}
+          </div>
         </div>
         <Typography variant="small" className="text-center mt-4">
           &quot;{new Intl.NumberFormat().format(jobList.length)}&quot; Jobs
