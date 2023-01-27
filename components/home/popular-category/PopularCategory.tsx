@@ -21,6 +21,15 @@ function PopularCategory({ categories, totalItems }: PopularCategoryProps) {
     router.push(`/jobs?category_id=${category.id}`);
   };
 
+  const handleShowLessCategories = () => {
+    const length = items.length;
+    const spliceLength = length % 8 === 0 ? 8 : length % 8;
+    setOffset((oldVal) => oldVal - 1);
+    const copy = [...items];
+    copy.splice(length - spliceLength, spliceLength);
+    setItems(copy);
+  };
+
   const handleShowMoreCategories = async () => {
     try {
       setLoading(true);
@@ -46,11 +55,16 @@ function PopularCategory({ categories, totalItems }: PopularCategoryProps) {
           />
         ))}
       </div>
-      {totalItems > items.length && (
-        <div className="flex justify-center">
+      <div className="flex justify-center">
+        {items.length > 8 && (
+          <Button onClick={handleShowLessCategories} variant="black">
+            View Less
+          </Button>
+        )}
+        {totalItems > items.length && (
           <Button onClick={handleShowMoreCategories}>View More</Button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
