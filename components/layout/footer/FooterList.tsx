@@ -11,14 +11,14 @@ function FooterList(props: FooterListProps) {
   const { list, title } = props;
   return (
     <div className="flex flex-col gap-4">
-      <Typography variant="h6" className="font-bold text-white">
+      <Typography variant="body" className="font-bold text-white">
         {title}
       </Typography>
-      <ul className="flex flex-col gap-1">
+      <ul className="flex flex-col gap-2">
         {list.map((item) => (
           <li key={item.title} className="text-white">
             <Link href={item.route}>
-              <Typography>{item.title}</Typography>
+              <Typography variant="small">{item.title}</Typography>
             </Link>
           </li>
         ))}

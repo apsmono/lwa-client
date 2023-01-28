@@ -7,15 +7,17 @@ import React from "react";
 import { Globe, Mail, MapPin } from "react-feather";
 import CategoryService from "service/category_service";
 import CompanyService from "service/company_service";
-import { Category, Company } from "service/types";
+import JobService from "service/job_service";
+import { Category, Company, Job } from "service/types";
 
 interface CompanyDetailPageProps {
   company: Company;
   categories: Category[];
+  similarJobs: Job[];
 }
 
 function CompanyDetailPage(props: CompanyDetailPageProps) {
-  const { company, categories } = props;
+  const { company, categories, similarJobs } = props;
   return (
     <GuestLayout
       categories={categories}
@@ -68,6 +70,24 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
           const item = { ...job };
           item.company_logo = company.company_logo;
           return (
+            <div key={job.id} className="mb-4">
+              <JobCard job={item} showStatus={false} />
+            </div>
+          );
+        })}
+
+        <Typography variant="h6" className="font-bold">
+          Similar Jobs
+        </Typography>
+        {similarJobs.length === 0 && (
+          <div className="flex justify-center">
+            <Typography>No similar jobs available</Typography>
+          </div>
+        )}
+        {similarJobs.map((job) => {
+          const item = { ...job };
+          item.company_logo = company.company_logo;
+          return (
             <div key={job.id} className="mb-2">
               <JobCard job={item} showStatus={false} />
             </div>
@@ -81,6 +101,7 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
   const company = await (await CompanyService.get(+id!)).data.company;
+  const similarJobs = await (await JobService.getSimilarJobs(+id!)).data;
   if (!company) {
     return {
       notFound: true,
@@ -90,6 +111,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props = {
     company,
     categories,
+    similarJobs,
   };
   return {
     props,

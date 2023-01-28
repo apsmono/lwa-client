@@ -1,6 +1,6 @@
 import { IconButton, Typography } from "components/common";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 import { Instagram } from "react-feather";
 import { Category } from "service/types";
 import FooterList from "./FooterList";
@@ -12,6 +12,12 @@ interface GuestFooterProps {
 
 function GuestFooter(props: GuestFooterProps) {
   const { categories, employersList } = props;
+  const categoryList = useMemo(() => {
+    const firstCol = categories.filter((_, i) => i % 2 === 0);
+    const secondCol = categories.filter((_, i) => i % 2 !== 0);
+
+    return [firstCol, secondCol];
+  }, [categories]);
   return (
     <div className="flex flex-col md:flex-row justify-between bg-black p-6 gap-8">
       <div>
@@ -41,13 +47,17 @@ function GuestFooter(props: GuestFooterProps) {
       </div>
 
       <div className="flex gap-8 flex-col md:flex-row">
-        <FooterList
-          title="Categories"
-          list={categories.map((category) => ({
-            route: `/categories/${category.id}`,
-            title: category.name,
-          }))}
-        />
+        {categoryList.map((cl, i) => (
+          <FooterList
+            key={i}
+            title="Categories"
+            list={cl.map((c) => ({
+              route: `/jobs?category_id=${c.id}`,
+              title: c.name,
+            }))}
+          />
+        ))}
+
         <FooterList
           title="Employers"
           list={employersList.map((item) => ({

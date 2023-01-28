@@ -19,7 +19,7 @@ function JobDetailPage(props: JobDetailPageProps) {
   const router = useRouter();
   return (
     <GuestLayout categories={categories} title={`Job Detail | ${job.title}`}>
-      <div className="p-6">
+      <div className="p-6 mb-12">
         <div className="p-6 max-w-5xl mx-auto border-2 border-black shadow-md rounded-lg flex flex-col gap-4 with-shadow">
           <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-2">
             <JobSnippet

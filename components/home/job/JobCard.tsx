@@ -31,7 +31,7 @@ function JobCard(props: JobCardProps) {
           Posted {timeDiffRelative(new Date(), new Date(job.created_at))}
         </Typography>
         {showStatus && (
-          <div className="flex justify-center">
+          <div className="flex justify-end">
             <div className="py-1 px-2 border border-black rounded-full">
               <Typography className="text-xs">
                 {job.is_featured ? "FEATURED" : "NEW"}

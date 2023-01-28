@@ -6,6 +6,10 @@ export default class JobService {
     return sendAndHandleRequest(`/jobs?${params}`, "get");
   }
 
+  static async getSimilarJobs(companyId: number) {
+    return sendAndHandleRequest(`/jobs/${companyId}/similar`, "get");
+  }
+
   static async get(id: number) {
     return sendAndHandleRequest(`/jobs/${id}`, "get");
   }
