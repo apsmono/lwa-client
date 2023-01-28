@@ -209,7 +209,7 @@ function JobListPage(props: JobListPageProps) {
                   employmentTypeRef.current!.removeValue(i);
                 }}
               >
-                {et.name}
+                <Typography variant="small">{et.name}</Typography>
               </Chip>
             ))}
             {location.map((l, i) => (
@@ -219,7 +219,7 @@ function JobListPage(props: JobListPageProps) {
                   locationRef.current!.removeValue(i);
                 }}
               >
-                {l.name}
+                <Typography variant="small">{l.name}</Typography>
               </Chip>
             ))}
             {industries.map((l, i) => (
@@ -229,7 +229,7 @@ function JobListPage(props: JobListPageProps) {
                   jobIndustryRef.current!.removeValue(i);
                 }}
               >
-                {l.name}
+                <Typography variant="small">{l.name}</Typography>
               </Chip>
             ))}
             {language.map((l, i) => (
@@ -239,7 +239,7 @@ function JobListPage(props: JobListPageProps) {
                   languageRef.current!.removeValue(i);
                 }}
               >
-                {l.name}
+                <Typography variant="small">{l.name}</Typography>
               </Chip>
             ))}
           </div>

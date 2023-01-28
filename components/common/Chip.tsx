@@ -18,7 +18,7 @@ function Chip(props: Partial<ChipPropsInterface>) {
   return (
     <span
       className={clsx(
-        "bg-opacity-70 px-2 inline-flex gap-1 rounded-full",
+        "bg-opacity-70 px-2 inline-flex gap-1 rounded-full items-center",
         styles[variant]
       )}
     >
