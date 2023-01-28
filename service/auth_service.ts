@@ -21,4 +21,12 @@ export class AuthService {
   static async fetchMe(ctx?: GetServerSidePropsContext) {
     return sendAndHandleRequest("/users/me", "get", null, ctx);
   }
+
+  static async signUpEmployers(payload: {
+    email: string;
+    password: string;
+    name: string;
+  }) {
+    return sendAndHandleRequest("/users/employers", "post", payload);
+  }
 }
