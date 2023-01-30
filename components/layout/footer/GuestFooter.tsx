@@ -50,7 +50,7 @@ function GuestFooter(props: GuestFooterProps) {
         {categoryList.map((cl, i) => (
           <FooterList
             key={i}
-            title="Categories"
+            title={i === 0 ? "Categories" : <span>&nbsp;</span>}
             list={cl.map((c) => ({
               route: `/jobs?category_id=${c.id}`,
               title: c.name,

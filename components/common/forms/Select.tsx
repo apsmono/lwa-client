@@ -105,7 +105,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
             <div className="relative">
               <Listbox.Button
                 className={clsx(
-                  "relative w-full cursor-default overflow-hidden rounded-full bg-white text-left focus:outline-none border-black border-2 with-shadow px-2 py-1",
+                  "relative w-full cursor-default overflow-hidden rounded-full bg-white text-left focus:outline-none border-black border-2 with-shadow pl-4 py-1",
                   { "border-red-500": error }
                 )}
               >

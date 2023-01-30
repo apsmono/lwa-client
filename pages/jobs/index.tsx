@@ -14,7 +14,6 @@ import React, {
 } from "react";
 import CategoryService from "service/category_service";
 import EmploymentTypeService from "service/employment_type_service";
-import JobIndustryService from "service/job_industry_service";
 import JobService from "service/job_service";
 import LanguageService from "service/languages_service";
 import LocationService from "service/location_service";
@@ -22,7 +21,6 @@ import {
   Category,
   EmploymentType,
   Job,
-  JobIndustry,
   LanguageType,
   LocationType,
 } from "service/types";
@@ -35,7 +33,6 @@ interface JobListPageProps {
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   jobTitle?: string;
-  jobIndustries: JobIndustry[];
 }
 
 function JobListPage(props: JobListPageProps) {
@@ -47,13 +44,12 @@ function JobListPage(props: JobListPageProps) {
     languages,
     locations,
     jobTitle: userJobTitle,
-    jobIndustries,
   } = props;
   const router = useRouter();
   const [employmentType, setEmploymentType] = useState<any[]>([]);
   const [location, setLocation] = useState<any[]>([]);
   const [language, setLanguage] = useState<any[]>([]);
-  const [industries, setIndustries] = useState<any[]>([]);
+  const [categoriesList, setCategoriesList] = useState<any[]>([]);
   const [sorting, setSorting] = useState<any>(null);
   const [datePosted, setDatePosted] = useState<any>(null);
   const [jobList, setJobList] = useState(jobs);
@@ -69,13 +65,16 @@ function JobListPage(props: JobListPageProps) {
 
   const fetchJobs = useCallback(async () => {
     const params: any = {};
+    const categoryIds = [];
     if (employmentType.length) {
       params.employment_type_id = employmentType.map((l) => l.id);
     }
     if (location.length) params.location_id = location.map((l) => l.id);
     if (language.length) params.language_id = language.map((l) => l.id);
+    if (categoriesList.length)
+      categoriesList.forEach((c) => categoryIds.push(c.id));
     if (category) {
-      params.category_id = category.id;
+      categoryIds.push(category.id);
     }
     if (sorting?.val) {
       params.sort_by = sorting.val;
@@ -89,6 +88,7 @@ function JobListPage(props: JobListPageProps) {
       params.start_date = startDate.toLocaleDateString();
       params.end_date = endDate.toLocaleDateString();
     }
+    if (categoryIds.length) params.category_id = categoryIds.map((c) => c);
 
     const response = await JobService.gets(params);
     return response.data;
@@ -101,6 +101,7 @@ function JobListPage(props: JobListPageProps) {
     jobTitle,
     sorting,
     datePosted,
+    categoriesList,
   ]);
 
   useEffect(() => {
@@ -109,7 +110,7 @@ function JobListPage(props: JobListPageProps) {
       setJobList(res);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [employmentType, location, language, sorting, datePosted]);
+  }, [employmentType, location, language, sorting, datePosted, categoriesList]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -120,7 +121,7 @@ function JobListPage(props: JobListPageProps) {
   const employmentTypeRef = useRef<SelectRefType>(null);
   const locationRef = useRef<SelectRefType>(null);
   const languageRef = useRef<SelectRefType>(null);
-  const jobIndustryRef = useRef<SelectRefType>(null);
+  const categoriesListRef = useRef<SelectRefType>(null);
 
   return (
     <GuestLayout title={title} categories={categories}>
@@ -185,12 +186,12 @@ function JobListPage(props: JobListPageProps) {
           />
           <Select
             multiple
-            placeholder="Industry"
-            options={[...jobIndustries]}
+            placeholder="Category"
+            options={[...categories]}
             renderOption={(val) => val?.name}
             className="sm:w-36 w-full"
-            ref={jobIndustryRef}
-            onChange={(val) => setIndustries(val)}
+            ref={categoriesListRef}
+            onChange={(val) => setCategoriesList(val)}
           />
           <Select
             multiple
@@ -222,11 +223,11 @@ function JobListPage(props: JobListPageProps) {
                 <Typography variant="small">{l.name}</Typography>
               </Chip>
             ))}
-            {industries.map((l, i) => (
+            {categoriesList.map((l, i) => (
               <Chip
                 key={l.id}
                 onClose={() => {
-                  jobIndustryRef.current!.removeValue(i);
+                  categoriesListRef.current!.removeValue(i);
                 }}
               >
                 <Typography variant="small">{l.name}</Typography>
@@ -278,14 +279,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     LanguageService.gets(),
     EmploymentTypeService.gets(),
     LocationService.gets(),
-    JobIndustryService.gets(),
   ]);
   props.jobs = res[0].data;
   props.categories = res[1].data;
   props.languages = res[2].data;
   props.employmentTypes = res[3].data;
   props.locations = res[4].data;
-  props.jobIndustries = res[5].data;
   if (title) props.jobTitle = title;
 
   return {

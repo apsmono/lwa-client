@@ -1,9 +1,9 @@
 import { Typography } from "components/common";
 import Link from "next/link";
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface FooterListProps {
-  title: string;
+  title: string | ReactNode;
   list: { title: string; route: string }[];
 }
 
