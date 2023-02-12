@@ -3,7 +3,7 @@ import { Typography } from "components/common";
 import { FirstStep, SecondStep } from "components/employers/post-a-job";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AuthService } from "service/auth_service";
 import CategoryService from "service/category_service";
 import EmploymentTypeService from "service/employment_type_service";
@@ -19,6 +19,7 @@ import {
   Package,
   User,
 } from "service/types";
+import useJobStore from "components/employers/post-a-job/store/useJobStore";
 
 interface PostJobPageProps {
   categories: Category[];
@@ -33,9 +34,23 @@ function PostJobPage(props: PostJobPageProps) {
   const { categories, employmentTypes, languages, locations, packages, user } =
     props;
   const [step, setStep] = useState(1);
+
+  const { setJob } = useJobStore();
+
+  useEffect(() => {
+    const { company } = user;
+    if (!company) return;
+
+    setJob({
+      ...company,
+      company_id: company.id,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <GuestLayout title="Post a Job" categories={categories}>
-      <div className="max-w-5xl mx-auto flex flex-col gap-2 p-4">
+      <div className="max-w-7xl mx-auto flex flex-col gap-2 p-4">
         <div className="w-full rounded-full with-shadow border border-black">
           <span
             className={clsx("inline-block w-1/2 rounded-full", {
@@ -63,7 +78,6 @@ function PostJobPage(props: PostJobPageProps) {
             languages={languages}
             locations={locations}
             onSubmit={() => setStep(2)}
-            company={user.company}
           />
         )}
         {step === 2 && <SecondStep packages={packages} />}

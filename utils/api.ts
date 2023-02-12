@@ -76,7 +76,6 @@ export async function handleInvalidTokenServerSide(
     const response = await callback();
     return response;
   } catch (e: any) {
-    console.log(e);
     if (e.response.status !== 401) {
       throw e;
     }
@@ -93,9 +92,10 @@ export async function handleInvalidTokenServerSide(
       }
       return { data: null, message: "Unauthorized" };
     }
+    console.log(response.data.access_token);
     if (ctx) {
       ctx.res.setHeader("set-cookie", [
-        `accessToken=${response.data.access_token}`,
+        `accessToken=${response.data.access_token};path=/`,
       ]);
     }
     return await callback();

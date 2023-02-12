@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import { ChevronDown, X } from "react-feather";
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import Chip from "../Chip";
 import Typography from "../Typography";
 import InputLabel from "./InputLabel";
@@ -27,14 +27,16 @@ interface SelectPropsInterface {
   name: string;
   id: string;
   register: UseFormRegister<any>;
+  setFormValue: UseFormSetValue<any>;
   error: boolean;
-  helperText: string;
+  helperText: any;
   getOptionSelected: (val: any) => boolean;
   defaultValue: any | any[];
   className: string;
   multiple: boolean;
   placeholder: string;
   showChip: boolean;
+  getInputValue?: (val: any) => any;
 }
 
 const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
@@ -57,6 +59,8 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
       showChip,
       labelAppend,
       labelDescription,
+      getInputValue = (val: any) => val,
+      setFormValue,
     } = props;
     const [value, setValue] = useState(() => {
       if (defaultValue) return defaultValue;
@@ -88,6 +92,10 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
       if (onChange) {
         onChange(value);
       }
+      if (setFormValue) {
+        setFormValue(name || "", getInputValue(value));
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, onChange]);
 
     const renderValue = () => {
@@ -102,7 +110,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
 
     return (
       <div className={clsx("min-w-[8rem] mb-3", className)}>
-        <input id={id} type="hidden" name={name} {...registerAttr} />
+        <input id={id} hidden {...registerAttr} name={name} />
         <Listbox value={value || ""} onChange={setValue} multiple={multiple}>
           <div className="relative mt-1">
             {label && (

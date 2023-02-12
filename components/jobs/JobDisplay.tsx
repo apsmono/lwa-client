@@ -8,7 +8,7 @@ import { Job } from "service/types";
 import JobSnippet from "./JobSnippet";
 
 interface JobDisplayProps {
-  job: Job;
+  job: Partial<Job>;
   className: string;
 }
 
@@ -20,7 +20,7 @@ function JobDisplay(props: Partial<JobDisplayProps>) {
     <div className={clsx("flex flex-col gap-4", className)}>
       <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-2">
         <JobSnippet job={job} className="sm:flex-row flex-col items-center" />
-        <div>
+        <div className="min-w-[140px]">
           <Button variant="secondary" className="md:w-auto w-full">
             Apply Now
           </Button>

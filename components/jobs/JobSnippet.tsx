@@ -8,7 +8,7 @@ import { Clock, MapPin } from "react-feather";
 import { Job } from "service/types";
 
 interface JobSnippetProps {
-  job: Job;
+  job: Partial<Job>;
   className: string;
 }
 

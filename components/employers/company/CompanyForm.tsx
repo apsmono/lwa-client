@@ -1,45 +1,142 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { TextAreaField, TextField } from "components/common";
 import { Dropzone } from "components/common/forms";
-import React from "react";
+import { DropzoneRefType } from "components/common/forms/Dropzone";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import { useForm } from "react-hook-form";
+import { Company } from "service/types";
+import { getFormAttribute, purgeInitialFormData } from "utils/form";
+import { BASE_BLANK_FORM, schema } from "./constants";
 
-function CompanyForm() {
-  return (
-    <div className="border border-black with-shadow rounded-2xl p-4">
-      <TextField
-        label="Company Name*"
-        labelDescription="Enter your company or oranization's name"
-        placeholder="Type here"
-      />
-
-      <TextField
-        label="Company HQ*"
-        labelDescription="Where your company is officialy headquartered"
-        placeholder="Type here"
-      />
-
-      <Dropzone label="Company Logo*" />
-
-      <TextField
-        label="Company's Website URL*"
-        labelDescription="Example: https://mybusiness.com/"
-        placeholder="Type here"
-      />
-
-      <TextField
-        label="Email*"
-        labelDescription="We'll send your receipt and confirmation email here"
-        type="email"
-        placeholder="Type here"
-      />
-
-      <TextAreaField label="What your company offer" placeholder="Type here" />
-
-      <TextAreaField
-        label="Tell us more about your company*"
-        placeholder="Type here"
-      />
-    </div>
-  );
+interface CompanyFormProps {
+  defaultValue: Partial<Company>;
 }
+
+export interface CompanyFormRef {
+  getValues: () => Partial<Company>;
+}
+
+const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
+  (props, ref) => {
+    const { defaultValue = {} } = props;
+
+    const [initialValue] = useState(() => {
+      return purgeInitialFormData(defaultValue, BASE_BLANK_FORM);
+    });
+
+    const dropZoneRef = useRef<DropzoneRefType>(null);
+
+    const {
+      register,
+      formState: { errors },
+      getValues,
+    } = useForm({
+      defaultValues: initialValue,
+      resolver: yupResolver(schema),
+    });
+
+    const getFieldAttribute = (
+      label: string,
+      name: string,
+      id: string,
+      placeholder: string
+    ) => {
+      return {
+        ...getFormAttribute(label, name, id, register, errors, initialValue),
+        placeholder,
+      };
+    };
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        getValues: () => {
+          const company: Partial<Company> = { ...getValues() };
+          const logo = dropZoneRef.current!.getValue();
+          if (logo.preview) {
+            company.company_logo = logo.preview;
+          }
+          return company;
+        },
+      }),
+      [getValues]
+    );
+    return (
+      <div className="border border-black with-shadow rounded-2xl p-4">
+        <TextField
+          labelDescription="Enter your company or oranization's name"
+          {...getFieldAttribute(
+            "Company Name*",
+            "company_name",
+            "company_name",
+            "Type here"
+          )}
+        />
+
+        <TextField
+          {...getFieldAttribute(
+            "Company HQ*",
+            "company_headquarter",
+            "company_hq",
+            "Type here"
+          )}
+          labelDescription="Where your company is officialy headquartered"
+        />
+
+        <Dropzone
+          label="Company Logo*"
+          ref={dropZoneRef}
+          defaultImage={defaultValue.company_logo}
+        />
+
+        <TextField
+          {...getFieldAttribute(
+            "Company's Website URL*",
+            "company_url",
+            "company_url",
+            "Type here"
+          )}
+          labelDescription="Example: https://mybusiness.com/"
+        />
+
+        <TextField
+          {...getFieldAttribute(
+            "Email *",
+            "company_email",
+            "company_email",
+            "Type here"
+          )}
+          labelDescription="We'll send your receipt and confirmation email here"
+          type="email"
+        />
+
+        <TextAreaField
+          {...getFieldAttribute(
+            "What your company offer",
+            "company_offer",
+            "company_offer",
+            "Type here"
+          )}
+        />
+
+        <TextAreaField
+          {...getFieldAttribute(
+            "Tell us more about your company",
+            "company_about",
+            "company_about",
+            "Type here"
+          )}
+        />
+      </div>
+    );
+  }
+);
+
+CompanyForm.displayName = "CompanyForm";
 
 export default CompanyForm;

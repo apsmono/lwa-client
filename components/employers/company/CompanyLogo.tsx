@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 
 interface CompanyLogoProps {
   src?: string;
@@ -8,6 +8,14 @@ interface CompanyLogoProps {
 }
 
 function CompanyLogo({ src, className }: CompanyLogoProps) {
+  const imgSrc = useMemo(() => {
+    if (!src) return "";
+
+    if (src.includes("blob")) {
+      return src;
+    }
+    return `${process.env.NEXT_PUBLIC_API_URL}${src}`;
+  }, [src]);
   if (!src) {
     return (
       <div
@@ -20,11 +28,7 @@ function CompanyLogo({ src, className }: CompanyLogoProps) {
   }
   return (
     <div className={clsx("w-12 h-12 relative", className)}>
-      <Image
-        fill
-        src={`${process.env.NEXT_PUBLIC_API_URL}${src}`}
-        alt="Company logo"
-      />
+      <Image fill src={imgSrc} alt="Company logo" />
     </div>
   );
 }
