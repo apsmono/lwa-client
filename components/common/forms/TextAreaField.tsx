@@ -7,11 +7,14 @@ import InputLabel from "./InputLabel";
 interface TextAreaFieldProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
+  labelAppend: string;
+  labelDescription: string;
   register: UseFormRegister<any>;
   error: boolean;
   helperText: any;
   labelClassName: string | undefined;
   rounded: boolean;
+  withShadow: boolean;
 }
 
 const TextAreaField = forwardRef<
@@ -27,13 +30,22 @@ const TextAreaField = forwardRef<
     helperText,
     rounded,
     labelClassName,
+    withShadow = true,
+    labelAppend,
+    labelDescription,
     ...otherProps
   } = props;
   const registerAttr = register ? register(props.name ?? "") : {};
   return (
     <div className="mb-4">
       {label && (
-        <InputLabel error={error} htmlFor={id} className={labelClassName}>
+        <InputLabel
+          description={labelDescription}
+          append={labelAppend}
+          error={error}
+          htmlFor={id}
+          className={labelClassName}
+        >
           {label}
         </InputLabel>
       )}
@@ -42,11 +54,12 @@ const TextAreaField = forwardRef<
         id={id}
         rows={5}
         className={clsx(
-          "w-full py-3 px-6 focus:outline-none",
+          "w-full py-2 px-4 focus:outline-none border-2 border-black",
           className,
           [error && "border border-red-500"],
           [rounded && "rounded-full"],
-          [!rounded && "rounded-xl"]
+          [!rounded && "rounded-xl"],
+          [withShadow && "with-shadow"]
         )}
         {...otherProps}
         {...registerAttr}

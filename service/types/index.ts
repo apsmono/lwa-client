@@ -6,6 +6,7 @@ import {
   LanguageType,
   LocationType,
   JobIndustry,
+  Package,
 } from "./master_data_type";
 import { User } from "./user_types";
 
@@ -18,4 +19,5 @@ export type {
   LocationType,
   User,
   JobIndustry,
+  Package,
 };

@@ -1,9 +1,6 @@
-import { Button, Typography } from "components/common";
-import { JobSnippet } from "components/jobs";
+import JobDisplay from "components/jobs/JobDisplay";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
-import Image from "next/image";
-import { useRouter } from "next/router";
 import React from "react";
 import CategoryService from "service/category_service";
 import JobService from "service/job_service";
@@ -16,66 +13,13 @@ interface JobDetailPageProps {
 
 function JobDetailPage(props: JobDetailPageProps) {
   const { job, categories } = props;
-  const router = useRouter();
   return (
     <GuestLayout categories={categories} title={`Job Detail | ${job.title}`}>
       <div className="p-6 mb-12">
-        <div className="p-6 max-w-5xl mx-auto border-2 border-black shadow-md rounded-lg flex flex-col gap-4 with-shadow">
-          <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-2">
-            <JobSnippet
-              job={job}
-              className="sm:flex-row flex-col items-center"
-            />
-            <div>
-              <Button variant="secondary" className="md:w-auto w-full">
-                Apply Now
-              </Button>
-            </div>
-          </div>
-          <Typography className="whitespace-pre-line text-justify">
-            {job.description}
-          </Typography>
-
-          <div className="border-2 border-black rounded-lg p-4 with-shadow">
-            <Typography className="font-bold">
-              What the company offer:
-            </Typography>
-            <Typography className="whitespace-pre-line">
-              {job.company_offer ?? "-"}
-            </Typography>
-          </div>
-          <div className="border-2 border-black rounded-lg bg-primary-500 with-shadow">
-            <div className="p-4">
-              <div className="flex mb-4 gap-4 items-center">
-                <div className="relative w-14 h-14">
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_API_URL}${job.company_logo}`}
-                    fill
-                    alt="Company logo"
-                  />
-                </div>
-                <Typography className="font-bold" variant="h4">
-                  {job.company_name}
-                </Typography>
-              </div>
-              <Typography className="font-bold">About Us:</Typography>
-              <Typography className="whitespace-pre-line text-justify">
-                {job.company_about}
-              </Typography>
-              <div className="flex justify-end">
-                <div>
-                  <Button
-                    onClick={() => router.push(`/companies/${job.company_id}`)}
-                    variant="link"
-                    className="text-black"
-                  >
-                    Learn More
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <JobDisplay
+          job={job}
+          className="p-6 max-w-5xl mx-auto border-2 border-black shadow-md rounded-lg with-shadow"
+        />
       </div>
     </GuestLayout>
   );

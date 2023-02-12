@@ -6,6 +6,8 @@ import InputLabel from "./InputLabel";
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  labelAppend: string;
+  labelDescription: string;
   register: UseFormRegister<any>;
   error: boolean;
   helperText: any;
@@ -26,13 +28,21 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
       rounded = true,
       labelClassName,
       withShadow = true,
+      labelAppend,
+      labelDescription,
       ...otherProps
     } = props;
     const registerAttr = register ? register(props.name ?? "") : {};
     return (
       <div className="mb-3">
         {label && (
-          <InputLabel error={error} htmlFor={id} className={labelClassName}>
+          <InputLabel
+            append={labelAppend}
+            description={labelDescription}
+            error={error}
+            htmlFor={id}
+            className={labelClassName}
+          >
             {label}
           </InputLabel>
         )}

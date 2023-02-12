@@ -21,6 +21,8 @@ interface SelectPropsInterface {
   options: any[];
   renderOption: (val: any) => string;
   label: string;
+  labelAppend: string;
+  labelDescription: string;
   onChange: (val: any) => void;
   name: string;
   id: string;
@@ -53,6 +55,8 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
       multiple,
       placeholder = "-",
       showChip,
+      labelAppend,
+      labelDescription,
     } = props;
     const [value, setValue] = useState(() => {
       if (defaultValue) return defaultValue;
@@ -97,15 +101,23 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
     };
 
     return (
-      <div className={clsx("min-w-[8rem]", className)}>
+      <div className={clsx("min-w-[8rem] mb-3", className)}>
         <input id={id} type="hidden" name={name} {...registerAttr} />
         <Listbox value={value || ""} onChange={setValue} multiple={multiple}>
           <div className="relative mt-1">
-            {label && <InputLabel error={error}>{label}</InputLabel>}
+            {label && (
+              <InputLabel
+                append={labelAppend}
+                description={labelDescription}
+                error={error}
+              >
+                {label}
+              </InputLabel>
+            )}
             <div className="relative">
               <Listbox.Button
                 className={clsx(
-                  "relative w-full cursor-default overflow-hidden rounded-full bg-white text-left focus:outline-none border-black border-2 with-shadow pl-4 py-1",
+                  "relative w-full cursor-default overflow-hidden rounded-full bg-white text-left focus:outline-none border-black border-2 with-shadow pl-4 py-2",
                   { "border-red-500": error }
                 )}
               >

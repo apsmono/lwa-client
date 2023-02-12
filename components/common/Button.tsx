@@ -4,7 +4,7 @@ import React, { ButtonHTMLAttributes } from "react";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size: "sm" | "md" | "lg";
   rounded: boolean;
-  variant: "primary" | "secondary" | "danger" | "link" | "black";
+  variant: "primary" | "secondary" | "danger" | "link" | "black" | "white";
   block: boolean;
   isLoading: boolean;
   withShadow: boolean;
@@ -61,6 +61,9 @@ function Button(props: Partial<ButtonProps>) {
       arrClassNames.push(
         "text-blue-500 hover:decoration-blue-500 hover:underline"
       );
+      break;
+    case "white":
+      arrClassNames.push("bg-white");
       break;
     case "black":
       arrClassNames.push("text-white bg-black");

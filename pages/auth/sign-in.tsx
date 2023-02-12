@@ -78,12 +78,12 @@ function SignInPage(props: SignInPageProps) {
               <TextField
                 type="email"
                 placeholder="your-company@mail.com"
-                {...formAttribute("Email Address *", "email", "email")}
+                {...formAttribute("Email Address*", "email", "email")}
               />
               <TextField
                 type="password"
                 placeholder="*********"
-                {...formAttribute("Password *", "password", "password")}
+                {...formAttribute("Password*", "password", "password")}
               />
             </div>
             <div className="flex flex-col items-center mt-4 gap-2">

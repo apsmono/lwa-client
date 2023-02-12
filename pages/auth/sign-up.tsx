@@ -81,17 +81,17 @@ function SignUpPage(props: SignUpPageProps) {
               <Typography className="text-right">*Required field</Typography>
               <TextField
                 type="email"
-                {...formAttribute("Email Address *", "email", "email")}
+                {...formAttribute("Email Address*", "email", "email")}
                 placeholder="your-company@mail.com"
               />
               <TextField
                 placeholder="Company that you're hiring for"
-                {...formAttribute("Company Name *", "name", "name")}
+                {...formAttribute("Company Name*", "name", "name")}
               />
               <TextField
                 type="password"
                 placeholder="*********"
-                {...formAttribute("Password *", "password", "password")}
+                {...formAttribute("Password*", "password", "password")}
               />
             </div>
             <div className="flex flex-col items-center mt-4 gap-2">

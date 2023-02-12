@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { Typography } from "components/common";
+import { CompanyLogo } from "components/employers/company";
 import Feature from "components/home/featured-job/Feature";
 import Image from "next/image";
 import React from "react";
@@ -8,10 +9,10 @@ import { Job } from "service/types";
 
 interface JobSnippetProps {
   job: Job;
-  className?: string;
+  className: string;
 }
 
-function JobSnippet(props: JobSnippetProps) {
+function JobSnippet(props: Partial<JobSnippetProps>) {
   const { job, className } = props;
 
   return (
@@ -21,28 +22,28 @@ function JobSnippet(props: JobSnippetProps) {
         className
       )}
     >
-      <div className="relative w-12 h-12">
-        <Image
-          fill
-          src={`${process.env.NEXT_PUBLIC_API_URL}${job.company_logo}`}
-          alt="Company logo"
-        />
-      </div>
+      <CompanyLogo src={job?.company_logo} />
       <div>
         <p>
-          <span className="font-bold">{job.title}</span> | {job.company_name}
+          <span className="font-bold">{job?.title || "-"}</span> |{" "}
+          {job?.company_name || "-"}
         </p>
         <div className="flex mt-1 gap-2 flex-wrap">
-          <Feature icon={<MapPin size={14} />} title={job.location} />
+          <Feature icon={<MapPin size={14} />} title={job?.location || "-"} />
           <Feature
             icon={
               <Image src="/dollar-circle.svg" alt="$" width={14} height={14} />
             }
-            title={job.salary}
+            title={job?.salary || "-"}
           />
-          <Feature icon={<Clock size={14} />} title={job.employment_type} />
+          <Feature
+            icon={<Clock size={14} />}
+            title={job?.employment_type || "-"}
+          />
           <div className="px-4 py-1 border border-black rounded-full">
-            <Typography className="text-xs">{job.category_name}</Typography>
+            <Typography className="text-xs">
+              {job?.category_name || "-"}
+            </Typography>
           </div>
         </div>
       </div>

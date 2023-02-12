@@ -22,6 +22,14 @@ export default function App({ Component, pageProps }: AppProps) {
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    if (loading) {
+      document.querySelector("body")!.style.overflowY = "hidden";
+    } else {
+      document.querySelector("body")!.style.overflowY = "scroll";
+    }
+  }, [loading]);
   return (
     <AlertContext.Provider
       value={{
