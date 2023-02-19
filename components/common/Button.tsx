@@ -80,8 +80,8 @@ function Button(props: Partial<ButtonProps>) {
         arrClassNames,
         className,
         [
-          disabled ||
-            (isLoading && "bg-gray-400 hover:bg-gray-400 cursor-not-allowed"),
+          (disabled || isLoading) &&
+            "bg-gray-400 hover:bg-gray-400 cursor-not-allowed",
         ],
         [block && "w-full"],
         [withShadow && variant !== "link" && "with-shadow"]

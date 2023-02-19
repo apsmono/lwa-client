@@ -3,8 +3,13 @@ import { useDropzone } from "react-dropzone";
 import Typography from "../Typography";
 import InputLabel from "./InputLabel";
 
+export type DropzoneValue = {
+  file?: File;
+  preview?: string;
+};
+
 export interface DropzoneRefType {
-  getValue: () => { file?: File; preview?: string };
+  getValue: () => DropzoneValue;
 }
 
 interface DropzoneProps {

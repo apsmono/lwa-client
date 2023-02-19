@@ -1,7 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TextAreaField, TextField } from "components/common";
 import { Dropzone } from "components/common/forms";
-import { DropzoneRefType } from "components/common/forms/Dropzone";
+import {
+  DropzoneRefType,
+  DropzoneValue,
+} from "components/common/forms/Dropzone";
 import React, {
   forwardRef,
   useImperativeHandle,
@@ -18,7 +21,8 @@ interface CompanyFormProps {
 }
 
 export interface CompanyFormRef {
-  getValues: () => Partial<Company>;
+  getValues: () => { company: Partial<Company>; logo: DropzoneValue };
+  submitForm: () => Promise<any>;
 }
 
 const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
@@ -35,6 +39,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
       register,
       formState: { errors },
       getValues,
+      handleSubmit,
     } = useForm({
       defaultValues: initialValue,
       resolver: yupResolver(schema),
@@ -61,10 +66,11 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
           if (logo.preview) {
             company.company_logo = logo.preview;
           }
-          return company;
+          return { company, logo };
         },
+        submitForm: () => new Promise((res, rej) => handleSubmit(res, rej)()),
       }),
-      [getValues]
+      [getValues, handleSubmit]
     );
     return (
       <div className="border border-black with-shadow rounded-2xl p-4">

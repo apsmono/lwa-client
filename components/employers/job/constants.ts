@@ -16,7 +16,7 @@ export const schema = yup.object({
     .number()
     .typeError("This field is required")
     .required("This field is required"),
-  is_worldwide: yup.number(),
+  is_worldwide: yup.number().typeError("This field is required"),
   location_id: yup
     .number()
     .typeError("This field is required")

@@ -29,6 +29,7 @@ interface JobFormProps {
 
 export interface JobFormRef {
   getValues: () => Partial<Job>;
+  submitForm: () => Promise<any>;
 }
 
 const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
@@ -55,6 +56,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     formState: { errors },
     getValues,
     setValue,
+    handleSubmit,
   } = useForm({
     defaultValues: initialValue,
     resolver: yupResolver(schema),
@@ -85,9 +87,11 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
         };
         return job;
       },
+      submitForm: () => new Promise((res, rej) => handleSubmit(res, rej)()),
     }),
     [
       getValues,
+      handleSubmit,
       selectedCategory?.name,
       selectedEmploymentType?.name,
       selectedLanguage?.name,

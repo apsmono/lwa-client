@@ -43,18 +43,31 @@ function FirstStep(props: FirstStepProps) {
     language,
     description,
     setJob,
+    setCompanyLogoFile,
   } = useJobStore();
 
   const jobFormRef = useRef<JobFormRef>(null);
   const companyFormRef = useRef<CompanyFormRef>(null);
 
   const handlePreviewClick = () => {
+    const { company, logo } = companyFormRef.current!.getValues();
     const val = {
       ...jobFormRef.current!.getValues(),
-      ...companyFormRef.current!.getValues(),
+      ...company,
     };
-    console.log({ val });
     setJob(val);
+    if (logo.file) {
+      setCompanyLogoFile(logo);
+    }
+  };
+
+  const handleContinueToPayment = async () => {
+    await Promise.all([
+      jobFormRef.current?.submitForm(),
+      companyFormRef.current?.submitForm(),
+    ]);
+    handlePreviewClick();
+    onSubmit();
   };
   return (
     <>
@@ -116,7 +129,7 @@ function FirstStep(props: FirstStepProps) {
             <Button variant="black" onClick={handlePreviewClick}>
               Preview
             </Button>
-            <Button variant="secondary" onClick={onSubmit}>
+            <Button variant="secondary" onClick={handleContinueToPayment}>
               Confirm & Pay
             </Button>
           </div>

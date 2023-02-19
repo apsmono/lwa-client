@@ -6,6 +6,7 @@ export type Job = {
   package_id: number;
   skill: string;
   employment_type: string;
+  employment_type_id: number;
   is_worldwide: boolean;
   location: string;
   language: string;

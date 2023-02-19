@@ -1,8 +1,15 @@
 import clsx from "clsx";
 import { Button, Typography } from "components/common";
-import React, { useState } from "react";
+import { AppContext } from "context/appContext";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect, useState } from "react";
+import JobService from "service/job_service";
 import { Package } from "service/types/master_data_type";
+import { parseErrorMessage } from "utils/api";
+import useAlert from "utils/hooks/useAlert";
+import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import PackageCard from "./PackageCard";
+import useJobStore from "./store/useJobStore";
 
 interface SecondStepProps {
   packages: Package[];
@@ -10,7 +17,88 @@ interface SecondStepProps {
 
 function SecondStep(props: SecondStepProps) {
   const { packages } = props;
+  const { showErrorAlert, showSuccessAlert } = useAlert();
+  const [paymentUrl, setPaymentUrl] = useState("");
   const [selectedPackage, setSelectedPackage] = useState<Package>();
+  const { loading, setLoading } = useContext(AppContext);
+  const wrappedCreateItem = useWrapHandleInvalidToken((params: any) =>
+    JobService.create(params)
+  );
+  const router = useRouter();
+  const {
+    title,
+    apply_link,
+    category_id,
+    skill,
+    is_worldwide,
+    timezone,
+    salary,
+    description,
+    package_id,
+    company_name,
+    company_headquarter,
+    company_url,
+    company_email,
+    company_offer,
+    company_about,
+    employment_type_id,
+    setJob,
+    companyLogoFile,
+  } = useJobStore();
+
+  useEffect(() => {
+    if (selectedPackage) {
+      setJob({ package_id: selectedPackage.id });
+    }
+  }, [selectedPackage, setJob]);
+  const handlePaymentClick = async () => {
+    try {
+      const formData = new FormData();
+      const job = {
+        title,
+        apply_link,
+        category_id,
+        skill,
+        employment_type_id,
+        is_worldwide,
+        timezone,
+        salary,
+        description,
+        package_id,
+      };
+      formData.append("job", JSON.stringify(job));
+
+      const company = {
+        company_name,
+        company_headquarter,
+        company_url,
+        company_about,
+        company_email,
+        company_offer,
+      };
+      formData.append("company", JSON.stringify(company));
+
+      if (companyLogoFile.file) {
+        formData.append("company_logo", companyLogoFile.file);
+      }
+
+      setLoading(true);
+      const response = await wrappedCreateItem(formData);
+      console.log(response);
+      showSuccessAlert(response.message);
+      const { payment_url } = response.data;
+      setPaymentUrl(payment_url);
+      setLoading(false);
+      if (payment_url) {
+        window.location = payment_url;
+        return;
+      }
+      router.replace("/");
+    } catch (error) {
+      showErrorAlert(parseErrorMessage(error));
+      setLoading(false);
+    }
+  };
   return (
     <>
       `
@@ -63,7 +151,15 @@ function SecondStep(props: SecondStepProps) {
             <Typography className="text-right font-bold">
               Total: ${selectedPackage?.price || 0}
             </Typography>
-            <Button variant="white">Make Payment</Button>
+          </div>
+          <div className="flex justify-end">
+            <Button
+              onClick={handlePaymentClick}
+              disabled={!selectedPackage || Boolean(paymentUrl)}
+              variant="secondary"
+            >
+              Confirm & Pay
+            </Button>
           </div>
         </div>
       </div>
