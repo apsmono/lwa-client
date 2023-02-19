@@ -68,7 +68,7 @@ function GuestLayout(props: GuestLayoutProps) {
       return [
         {
           title: "Post a Job",
-          route: "",
+          route: "/employers/post-a-job",
         },
         {
           title: "Create Employer Account",
@@ -87,7 +87,7 @@ function GuestLayout(props: GuestLayoutProps) {
       },
       {
         title: "Post a Job",
-        route: "",
+        route: "/employers/post-a-job",
       },
       {
         title: "Logout",
@@ -171,7 +171,11 @@ function GuestLayout(props: GuestLayoutProps) {
                   <Typography>Search Job</Typography>
                 </button>
                 <NavBarDropdown title="Employers" list={employersList} />
-                <Button variant="black" withShadow={false} onClick={()=> router.push("/employers/post-a-job")}>
+                <Button
+                  variant="black"
+                  withShadow={false}
+                  onClick={() => router.push("/employers/post-a-job")}
+                >
                   Post a Job
                 </Button>
               </div>

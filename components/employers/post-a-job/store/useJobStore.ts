@@ -49,7 +49,7 @@ const useJobStore = create<JobState>((set) => ({
   setCompanyLogoFile: (val: DropzoneValue) => {
     set((state) => ({
       ...state,
-      ...val,
+      companyLogoFile: val,
     }));
   },
 }));
