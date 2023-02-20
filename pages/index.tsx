@@ -31,13 +31,13 @@ function Home(props: HomePropsInterface) {
   return (
     <GuestLayout title="Home" categories={categories}>
       <div className="md:px-6 p-6 max-w-5xl mx-auto">
-        <div className="flex justify-center mb-8">
-          <div className="flex flex-col items-center">
-            <p className="font-black mb-4 text-center uppercase font-palo text-8xl">
+        <div className="flex mb-8 justify-between">
+          <div className="flex flex-col">
+            <p className="font-black mb-4 text-left uppercase font-palo text-7xl">
               Find top talent anywhere <br className="hidden md:block" /> in the
               world
             </p>
-            <Typography className="text-center mb-4">
+            <Typography className="mb-4">
               Making your job search easier by connecting you with companies{" "}
               <br />
               that offer you the freedom to work at home or abroad
@@ -49,8 +49,12 @@ function Home(props: HomePropsInterface) {
               </Button>
             </div>
           </div>
+          <div className="hidden md:block relative w-80 h-[400px]">
+            <picture>
+              <img src="/home-illustration.png" alt="" />
+            </picture>
+          </div>
         </div>
-
         <div className="mb-12">
           <FeaturedJob jobs={featuredJobs} />
         </div>
@@ -65,10 +69,7 @@ function Home(props: HomePropsInterface) {
         </div>
       </div>
       <div className="bg-primary-500 p-6">
-        <div className="max-w-5xl flex justify-center mx-auto">
-          {/* <div className="relative w-56 h-56 sm:block hidden">
-            <Image src="/subscribe-illustration.svg" fill alt="Subscribe" />
-          </div> */}
+        <div className="max-w-5xl flex justify-center mx-auto py-12">
           <div className="flex flex-col justify-center gap-2">
             <Typography variant="h3" className="font-bold">
               Subscribe now to receive daily job updates!

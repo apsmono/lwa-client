@@ -55,16 +55,18 @@ function PopularCategory({ categories, totalItems }: PopularCategoryProps) {
           />
         ))}
       </div>
-      <div className="flex justify-center gap-4">
-        {totalItems > items.length && (
+      {totalItems > items.length && (
+        <div className="flex justify-center mb-4">
           <Button onClick={handleShowMoreCategories}>View More</Button>
-        )}
-        {items.length > 8 && (
-          <Button onClick={handleShowLessCategories} variant="black">
+        </div>
+      )}
+      {items.length > 8 && (
+        <div className="flex justify-center">
+          <Button onClick={handleShowLessCategories} variant="link">
             View Less
           </Button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

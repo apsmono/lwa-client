@@ -63,7 +63,7 @@ function SignInPage(props: SignInPageProps) {
   return (
     <GuestLayout title="Sign In" categories={categories}>
       <div className="max-w-5xl mx-auto p-6">
-        <Typography className="text-center font-bold" variant="h3">
+        <Typography className="text-center font-bold mb-4" variant="h3">
           Sign in to your Employers Account
         </Typography>
         <Typography className="text-center mb-4">
