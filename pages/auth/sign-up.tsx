@@ -51,8 +51,8 @@ function SignUpPage(props: SignUpPageProps) {
     };
     try {
       setLoading(true);
-      await AuthService.signUpEmployers(payload);
-      showSuccessAlert("Sign up success, please sign in.");
+      const response = await AuthService.signUpEmployers(payload);
+      showSuccessAlert(response.message);
       setLoading(false);
       router.push("/auth/sign-in");
     } catch (error) {

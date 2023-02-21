@@ -29,4 +29,8 @@ export class AuthService {
   }) {
     return sendAndHandleRequest("/users/employers", "post", payload);
   }
+
+  static async verify(token: string) {
+    return sendAndHandleRequest("/users/verify", "post", { token });
+  }
 }
