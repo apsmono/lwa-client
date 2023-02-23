@@ -40,6 +40,7 @@ function GuestSidebar(props: Partial<GuestSidebarProps>) {
           list={employersMenu.map((menu) => ({
             title: menu.title,
             route: menu.route,
+            onClick: menu.onClick,
           }))}
         />
       </ul>

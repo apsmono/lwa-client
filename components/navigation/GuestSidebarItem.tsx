@@ -6,7 +6,7 @@ import { ChevronDown } from "react-feather";
 interface GuestSidebarProps {
   title: string;
   route: string;
-  list: { title: string; route: string }[];
+  list: { title: string; route: string; onClick?: () => void }[];
 }
 
 function GuestSidebarItem(props: Partial<GuestSidebarProps>) {
@@ -34,7 +34,11 @@ function GuestSidebarItem(props: Partial<GuestSidebarProps>) {
         >
           {list.map((item) => (
             <li key={item.title}>
-              <Link href={item.route}>{item.title}</Link>
+              {item.onClick ? (
+                <button onClick={item.onClick}>{item.title}</button>
+              ) : (
+                <Link href={item.route}>{item.title}</Link>
+              )}
             </li>
           ))}
         </ul>
