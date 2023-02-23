@@ -1,5 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import useAlert from "utils/hooks/useAlert";
 import Typography from "../Typography";
 import InputLabel from "./InputLabel";
 
@@ -15,21 +16,43 @@ export interface DropzoneRefType {
 interface DropzoneProps {
   label: string;
   defaultImage?: string;
+  maxSize?: number;
+  onDropFiles?: (file: File) => void;
 }
 
 const Dropzone = forwardRef<DropzoneRefType, Partial<DropzoneProps>>(
   (props, ref) => {
-    const { label, defaultImage } = props;
+    const { label, defaultImage, maxSize = 256000, onDropFiles } = props;
     const [preview, setPreview] = useState<string>(defaultImage || "");
+    const { showErrorAlert } = useAlert();
     const { acceptedFiles, getInputProps, getRootProps } = useDropzone({
       accept: {
         "image/*": [],
       },
       multiple: false,
-      onDrop: (files) => {
-        if (!files.length) setPreview("");
-        setPreview(URL.createObjectURL(files[0]));
+      onDrop: (files, fileRejections) => {
+        try {
+          if (fileRejections.length) {
+            const { code } = fileRejections[0].errors[0];
+            if (code === "file-too-large") {
+              showErrorAlert(
+                `File is too large, max size is ${maxSize / 1000}Kb`
+              );
+            }
+            setPreview("");
+            return;
+          }
+          if (!files.length) setPreview("");
+          if (onDropFiles) {
+            onDropFiles(files[0]);
+          }
+          setPreview(URL.createObjectURL(files[0]));
+        } catch (error) {
+          setPreview("");
+          showErrorAlert("Something went wrong");
+        }
       },
+      maxSize,
     });
 
     useImperativeHandle(ref, () => ({

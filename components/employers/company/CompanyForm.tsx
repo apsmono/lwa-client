@@ -18,6 +18,7 @@ import { BASE_BLANK_FORM, schema } from "./constants";
 
 interface CompanyFormProps {
   defaultValue: Partial<Company>;
+  onLogoDrop: (file: File) => void;
 }
 
 export interface CompanyFormRef {
@@ -27,7 +28,7 @@ export interface CompanyFormRef {
 
 const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
   (props, ref) => {
-    const { defaultValue = {} } = props;
+    const { defaultValue = {}, onLogoDrop } = props;
 
     const [initialValue] = useState(() => {
       return purgeInitialFormData(defaultValue, BASE_BLANK_FORM);
@@ -98,6 +99,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
           label="Company Logo*"
           ref={dropZoneRef}
           defaultImage={defaultValue.company_logo}
+          onDropFiles={onLogoDrop}
         />
 
         <TextField

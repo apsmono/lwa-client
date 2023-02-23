@@ -6,6 +6,12 @@ export class AuthService {
     return sendAndHandleRequest("/authentications", "post", payload);
   }
 
+  static signInByRegistrationToken(token: string) {
+    return sendAndHandleRequest("/authentications/registration-token", "post", {
+      token,
+    });
+  }
+
   static async refreshAccessToken(refreshToken: string) {
     return sendAndHandleRequest("/authentications", "put", {
       refresh_token: refreshToken,

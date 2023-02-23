@@ -31,7 +31,7 @@ function Home(props: HomePropsInterface) {
   return (
     <GuestLayout title="Home" categories={categories}>
       <div className="md:px-6 p-6 max-w-5xl mx-auto">
-        <div className="flex mb-8 justify-between">
+        <div className="flex mb-8 justify-between items-center">
           <div className="flex flex-col">
             <p className="font-black mb-4 text-left uppercase font-palo text-7xl">
               Find top talent anywhere <br className="hidden md:block" /> in the

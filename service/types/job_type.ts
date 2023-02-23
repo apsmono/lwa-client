@@ -23,5 +23,6 @@ export type Job = {
   company_about: string;
   category_name: string;
   company_offer?: string;
+  company_headquarter: string;
   company_id: number;
 };

@@ -14,6 +14,7 @@ import { AuthService } from "service/auth_service";
 import Cookies from "js-cookie";
 import useAlert from "utils/hooks/useAlert";
 import { parseErrorMessage } from "utils/api";
+import useAuthStore from "store/useAuthStore";
 
 interface SignInPageProps {
   categories: Category[];
@@ -28,6 +29,7 @@ function SignInPage(props: SignInPageProps) {
   const { categories } = props;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { setAuth } = useAuthStore();
   const {
     formState: { errors },
     register,
@@ -40,11 +42,17 @@ function SignInPage(props: SignInPageProps) {
   };
 
   const handleSignUpClick = () => {
+    const jobString = Cookies.get("job");
+    if (jobString) {
+      router.push("/auth/sign-up?ref=post-a-job");
+      return;
+    }
     router.push("/auth/sign-up");
   };
 
   const onSubmit = async (val: any) => {
     const payload = { email: val.email, password: val.password };
+    const jobString = Cookies.get("job");
     try {
       setLoading(true);
       const response = await AuthService.signIn(payload);
@@ -52,9 +60,17 @@ function SignInPage(props: SignInPageProps) {
         response.data;
       Cookies.set("accessToken", accessToken);
       Cookies.set("refreshToken", refreshToken);
+      setAuth({
+        accessToken,
+        refreshToken,
+      });
       showSuccessAlert(response.message);
       setLoading(false);
-      router.push("/");
+      if (jobString) {
+        router.push("/post-a-job?step=PAYMENT");
+      } else {
+        router.push("/");
+      }
     } catch (error) {
       setLoading(false);
       showErrorAlert(parseErrorMessage(error));

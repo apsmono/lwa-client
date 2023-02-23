@@ -1,21 +1,50 @@
+import { AppContext } from "context/appContext";
+import Cookies from "js-cookie";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect } from "react";
 import { AuthService } from "service/auth_service";
+import useAuthStore from "store/useAuthStore";
 
-function verify({ token }: { token: string }) {
+function VerifyPage({
+  token,
+  redirectTo,
+}: {
+  token: string;
+  redirectTo: string;
+}) {
+  const router = useRouter();
+  const { setAuth } = useAuthStore();
+  const { setLoading } = useContext(AppContext);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const response = await AuthService.signInByRegistrationToken(token);
+      const { access_token: accessToken, refresh_token: refreshToken } =
+        response.data;
+      Cookies.set("accessToken", accessToken);
+      Cookies.set("refreshToken", refreshToken);
+      setAuth({
+        accessToken,
+        refreshToken,
+      });
+      setLoading(false);
+      router.replace(redirectTo);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <p>Your account has been verified</p>
-      <Link href="/" className="text-blue-500">
-        Back to Home
-      </Link>
+      <p>Redirecting</p>
     </div>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { token } = context.query;
+  const { token, ref } = context.query;
   if (!token) {
     return {
       notFound: true,
@@ -32,8 +61,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       token,
+      redirectTo: ref === "post-a-job" ? "/post-a-job?step=PAYMENT" : "/",
     },
   };
 };
 
-export default verify;
+export default VerifyPage;

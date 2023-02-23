@@ -1,12 +1,16 @@
 import { Button, Typography } from "components/common";
 import JobDisplay from "components/jobs/JobDisplay";
-import React, { useRef } from "react";
+import { AppContext } from "context/appContext";
+import React, { useContext, useRef } from "react";
+import CompanyService from "service/company_service";
 import {
   Category,
   EmploymentType,
   LanguageType,
   LocationType,
 } from "service/types";
+import { parseErrorMessage } from "utils/api";
+import useAlert from "utils/hooks/useAlert";
 import { CompanyForm } from "../company";
 import { CompanyFormRef } from "../company/CompanyForm";
 import { JobForm } from "../job";
@@ -43,22 +47,22 @@ function FirstStep(props: FirstStepProps) {
     language,
     description,
     setJob,
-    setCompanyLogoFile,
   } = useJobStore();
 
   const jobFormRef = useRef<JobFormRef>(null);
   const companyFormRef = useRef<CompanyFormRef>(null);
 
+  const { showErrorAlert } = useAlert();
+  const { setLoading } = useContext(AppContext);
+
   const handlePreviewClick = () => {
-    const { company, logo } = companyFormRef.current!.getValues();
+    const { company } = companyFormRef.current!.getValues();
+    const { company_logo, ...otherItems } = company;
     const val = {
       ...jobFormRef.current!.getValues(),
-      ...company,
+      ...otherItems,
     };
     setJob(val);
-    if (logo.file) {
-      setCompanyLogoFile(logo);
-    }
   };
 
   const handleContinueToPayment = async () => {
@@ -68,6 +72,24 @@ function FirstStep(props: FirstStepProps) {
     ]);
     handlePreviewClick();
     onSubmit();
+  };
+
+  const handleCompanyLogoDrop = async (file: File) => {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("company_logo", file);
+      const response = await CompanyService.uploadLogo(formData);
+
+      const { filePath } = response.data;
+
+      setJob({ company_logo: filePath });
+    } catch (error) {
+      showErrorAlert(parseErrorMessage(error));
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -99,6 +121,7 @@ function FirstStep(props: FirstStepProps) {
               company_url,
               company_logo,
             }}
+            onLogoDrop={handleCompanyLogoDrop}
           />
         </div>
         <div className="flex flex-col gap-4">

@@ -17,6 +17,7 @@ import { AuthService } from "service/auth_service";
 
 interface SignUpPageProps {
   categories: Category[];
+  sourceRef: string;
 }
 
 const schema = yup.object().shape({
@@ -26,7 +27,7 @@ const schema = yup.object().shape({
 });
 
 function SignUpPage(props: SignUpPageProps) {
-  const { categories } = props;
+  const { categories, sourceRef } = props;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { showErrorAlert, showSuccessAlert } = useAlert();
@@ -48,6 +49,7 @@ function SignUpPage(props: SignUpPageProps) {
       email: val.email,
       password: val.password,
       name: val.name,
+      source: sourceRef,
     };
     try {
       setLoading(true);
@@ -96,7 +98,7 @@ function SignUpPage(props: SignUpPageProps) {
             </div>
             <div className="flex flex-col items-center mt-4 gap-2">
               <div>
-                <Button type="submit" variant="secondary">
+                <Button isLoading={loading} type="submit" variant="secondary">
                   Sign Up
                 </Button>
               </div>
@@ -127,7 +129,9 @@ function SignUpPage(props: SignUpPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {};
+  const props: any = {
+    sourceRef: context.query.ref || "",
+  };
 
   const categories = await (await CategoryService.gets()).data;
   props.categories = categories;

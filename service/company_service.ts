@@ -6,6 +6,10 @@ export default class CompanyService {
     return sendAndHandleRequest(`/companies?${params}`, "get");
   }
 
+  static async uploadLogo(payload: FormData) {
+    return sendAndHandleRequest("/companies/logo", "post", payload);
+  }
+
   static async get(id: number) {
     return sendAndHandleRequest(`/companies/${id}`, "get");
   }

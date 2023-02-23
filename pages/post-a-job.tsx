@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { Typography } from "components/common";
-import { FirstStep, SecondStep } from "components/employers/post-a-job";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
@@ -10,7 +9,6 @@ import EmploymentTypeService from "service/employment_type_service";
 import LanguageService from "service/languages_service";
 import LocationService from "service/location_service";
 import PackageService from "service/package_service";
-import { handleInvalidTokenServerSide } from "utils/api";
 import {
   Category,
   LocationType,
@@ -20,6 +18,7 @@ import {
   User,
 } from "service/types";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
+import { FirstStep, SecondStep } from "components/employers/post-a-job";
 
 interface PostJobPageProps {
   categories: Category[];
@@ -27,22 +26,45 @@ interface PostJobPageProps {
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   packages: Package[];
-  user: User;
+  user?: User;
+  currentStep?: string;
 }
 
 function PostJobPage(props: PostJobPageProps) {
-  const { categories, employmentTypes, languages, locations, packages, user } =
-    props;
-  const [step, setStep] = useState(1);
+  const {
+    categories,
+    employmentTypes,
+    currentStep,
+    languages,
+    locations,
+    packages,
+    user,
+  } = props;
+  const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
 
-  const { setJob } = useJobStore();
+  const {
+    setJob,
+    company_name,
+    company_email,
+    company_headquarter,
+    company_about,
+    company_url,
+    company_offer,
+  } = useJobStore();
 
   useEffect(() => {
-    const { company } = user;
+    const { company } = user || {};
     if (!company) return;
 
     setJob({
-      ...company,
+      company_about: !company_about ? company.company_about : company_about,
+      company_email: !company_email ? company.company_email : company_email,
+      company_name: !company_name ? company.company_name : company_name,
+      company_offer: !company_offer ? company.company_offer : company_offer,
+      company_url: !company_url ? company.company_url : company_url,
+      company_headquarter: !company_headquarter
+        ? company.company_headquarter
+        : company_headquarter,
       company_id: company.id,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,29 +109,27 @@ function PostJobPage(props: PostJobPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {};
+  const props: any = {
+    currentStep: context.query.step || "",
+  };
   const res = await Promise.all([
     CategoryService.gets(),
     LanguageService.gets(),
     LocationService.gets(),
     EmploymentTypeService.gets(),
     PackageService.gets(),
-    handleInvalidTokenServerSide(() => AuthService.fetchMe(context), context),
   ]);
   props.categories = res[0].data;
   props.languages = res[1].data;
   props.locations = res[2].data;
   props.employmentTypes = res[3].data;
   props.packages = res[4].data;
-  props.user = res[5].data?.user;
+  try {
+    const user = (await AuthService.fetchMe(context)).data?.user || null;
 
-  if (!props.user) {
-    return {
-      redirect: {
-        destination: "/auth/sign-in",
-        permanent: true,
-      },
-    };
+    props.user = user;
+  } catch (error) {
+    props.user = null;
   }
 
   return {

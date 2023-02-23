@@ -1,10 +1,12 @@
 import clsx from "clsx";
 import { Button, Typography } from "components/common";
 import { AppContext } from "context/appContext";
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import JobService from "service/job_service";
 import { Package } from "service/types/master_data_type";
+import useAuthStore from "store/useAuthStore";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
@@ -16,11 +18,12 @@ interface SecondStepProps {
 }
 
 function SecondStep(props: SecondStepProps) {
+  const { accessToken } = useAuthStore();
   const { packages } = props;
   const { showErrorAlert, showSuccessAlert } = useAlert();
   const [paymentUrl, setPaymentUrl] = useState("");
   const [selectedPackage, setSelectedPackage] = useState<Package>();
-  const { loading, setLoading } = useContext(AppContext);
+  const { setLoading } = useContext(AppContext);
   const wrappedCreateItem = useWrapHandleInvalidToken((params: any) =>
     JobService.create(params)
   );
@@ -42,8 +45,10 @@ function SecondStep(props: SecondStepProps) {
     company_offer,
     company_about,
     employment_type_id,
+    location_id,
+    language_id,
     setJob,
-    companyLogoFile,
+    company_logo,
   } = useJobStore();
 
   useEffect(() => {
@@ -53,7 +58,6 @@ function SecondStep(props: SecondStepProps) {
   }, [selectedPackage, setJob]);
   const handlePaymentClick = async () => {
     try {
-      const formData = new FormData();
       const job = {
         title,
         apply_link,
@@ -65,8 +69,9 @@ function SecondStep(props: SecondStepProps) {
         salary,
         description,
         package_id,
+        location_id,
+        language_id,
       };
-      formData.append("job", JSON.stringify(job));
 
       const company = {
         company_name,
@@ -75,16 +80,17 @@ function SecondStep(props: SecondStepProps) {
         company_about,
         company_email,
         company_offer,
+        company_logo,
       };
-      formData.append("company", JSON.stringify(company));
 
-      if (companyLogoFile.file) {
-        formData.append("company_logo", companyLogoFile.file);
+      if (!accessToken) {
+        Cookies.set("job", JSON.stringify({ ...job, ...company }));
+        showErrorAlert("Please sign in first");
+        router.push("/auth/sign-in");
+        return;
       }
-
       setLoading(true);
-      const response = await wrappedCreateItem(formData);
-      console.log(response);
+      const response = await wrappedCreateItem({ ...job, ...company });
       showSuccessAlert(response.message);
       const { payment_url } = response.data;
       setPaymentUrl(payment_url);
@@ -93,6 +99,32 @@ function SecondStep(props: SecondStepProps) {
         window.location = payment_url;
         return;
       }
+      setJob({
+        apply_link: "",
+        category_id: 0,
+        category_name: "",
+        company_about: "",
+        company_email: "",
+        company_headquarter: "",
+        company_id: 0,
+        company_logo: "",
+        company_name: "",
+        company_offer: "",
+        company_url: "",
+        description: "",
+        employment_type: "",
+        employment_type_id: 0,
+        is_featured: false,
+        is_worldwide: false,
+        language: "",
+        location: "",
+        package_id: 0,
+        salary: "",
+        skill: "",
+        status: "",
+        timezone: "",
+        title: "",
+      });
       router.replace("/");
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));
