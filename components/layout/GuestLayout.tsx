@@ -20,6 +20,7 @@ import { Menu } from "react-feather";
 import { AuthService } from "service/auth_service";
 import { User } from "service/types";
 import { Category } from "service/types/category_type";
+import useAuthStore from "store/useAuthStore";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
@@ -38,6 +39,7 @@ function GuestLayout(props: GuestLayoutProps) {
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const { showErrorAlert, showSuccessAlert } = useAlert();
   const { setLoading } = useContext(AppContext);
+  const { setAuth } = useAuthStore();
   const [employers, setEmployers] = useState(null);
   const wrappedLogout = useWrapHandleInvalidToken((refreshToken: string) =>
     AuthService.logout(refreshToken)
@@ -49,6 +51,10 @@ function GuestLayout(props: GuestLayoutProps) {
     try {
       setLoading(true);
       await wrappedLogout(refreshToken);
+      setAuth({
+        accessToken: "",
+        refreshToken: "",
+      });
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));
       return;
