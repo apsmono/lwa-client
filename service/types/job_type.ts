@@ -15,6 +15,7 @@ export type Job = {
   description: string;
   status: string;
   is_featured: boolean;
+  timezone: string;
   created_at: string;
   company_name: string;
   company_email: string;
