@@ -5,7 +5,7 @@ import { create } from "zustand";
 interface JobState extends Job {
   setJob: (val: Partial<Job>) => void;
   location_id: number;
-  language_id: number;
+  language_id: number[];
 }
 
 const useJobStore = create<JobState>((set) => {
@@ -30,7 +30,7 @@ const useJobStore = create<JobState>((set) => {
     id: 0,
     is_featured: false,
     is_worldwide: defaultValue.is_worldwide,
-    language: "",
+    languages: [],
     location: "",
     package_id: defaultValue.package_id,
     salary: defaultValue.salary,
@@ -40,7 +40,7 @@ const useJobStore = create<JobState>((set) => {
     title: defaultValue.title,
     company_offer: defaultValue.company_offer,
     location_id: defaultValue.location_id,
-    language_id: defaultValue.language_id,
+    language_id: defaultValue.language_id || [],
     setJob: (val: Partial<Job>) => {
       set((state) => ({
         ...state,

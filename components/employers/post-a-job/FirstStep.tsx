@@ -44,7 +44,6 @@ function FirstStep(props: FirstStepProps) {
     employment_type,
     is_worldwide,
     location,
-    language,
     description,
     setJob,
   } = useJobStore();
@@ -93,7 +92,7 @@ function FirstStep(props: FirstStepProps) {
   };
   return (
     <>
-      <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-4">
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap:6 lg:gap-12 mt-4">
         <div className="flex flex-col gap-4">
           <Typography variant="h4" className="font-bold">
             Tell us about your Job
@@ -141,7 +140,6 @@ function FirstStep(props: FirstStepProps) {
                 apply_link,
                 description,
                 employment_type,
-                language,
                 location,
                 is_worldwide,
                 company_logo,

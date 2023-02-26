@@ -1,3 +1,5 @@
+import { LanguageType } from "./master_data_type";
+
 export type Job = {
   id: number;
   title: string;
@@ -9,8 +11,6 @@ export type Job = {
   employment_type_id: number;
   is_worldwide: boolean;
   location: string;
-  language: string;
-  timezone: string;
   salary: string;
   description: string;
   status: string;
@@ -25,4 +25,5 @@ export type Job = {
   company_offer?: string;
   company_headquarter: string;
   company_id: number;
+  languages: LanguageType[];
 };

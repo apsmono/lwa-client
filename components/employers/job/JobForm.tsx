@@ -7,7 +7,7 @@ import {
 } from "components/common";
 import RadioButton from "components/common/forms/RadioButton";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import {
   Category,
   Company,
@@ -48,7 +48,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
   const [selectedCategory, setSelectedCategory] = useState<Category>();
   const [selectedEmploymentType, setSelectedEmploymentType] =
     useState<EmploymentType>();
-  const [selectedLanguage, setSelectedLanguage] = useState<LanguageType>();
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageType[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<LocationType>();
 
   const {
@@ -57,9 +57,14 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     getValues,
     setValue,
     handleSubmit,
+    control,
   } = useForm({
     defaultValues: initialValue,
     resolver: yupResolver(schema),
+  });
+  useFieldArray({
+    name: "language_id",
+    control,
   });
 
   const getFieldAttribute = (
@@ -82,8 +87,8 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           ...getValues(),
           category_name: selectedCategory?.name || "",
           location: selectedLocation?.name || "",
-          language: selectedLanguage?.name || "",
           employment_type: selectedEmploymentType?.name || "",
+          languages: selectedLanguage,
         };
         return job;
       },
@@ -94,8 +99,8 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
       handleSubmit,
       selectedCategory?.name,
       selectedEmploymentType?.name,
-      selectedLanguage?.name,
       selectedLocation?.name,
+      selectedLanguage,
     ]
   );
 
@@ -138,11 +143,12 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
       <Select
         options={languages}
         renderOption={(opt) => opt.name}
-        {...getFieldAttribute("Language*", "language_id", "language_id")}
+        {...getFieldAttribute("Language*", "language_id[]", "language_id")}
         getInputValue={(val: any) => val?.id || ""}
         setFormValue={setValue}
         defaultValue={selectedLanguage}
         onChange={(val) => setSelectedLanguage(val)}
+        multiple
       />
 
       <Select

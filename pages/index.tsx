@@ -43,7 +43,12 @@ function Home(props: HomePropsInterface) {
               that offer you the freedom to work at home or abroad
             </Typography>
             <div className="flex gap-4">
-              <Button variant="secondary">Post Job</Button>
+              <Button
+                variant="secondary"
+                onClick={() => router.push("/post-a-job")}
+              >
+                Post Job
+              </Button>
               <Button variant="black" onClick={() => router.push("/jobs")}>
                 Search Job
               </Button>

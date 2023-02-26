@@ -93,7 +93,14 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
         onChange(value);
       }
       if (setFormValue) {
-        setFormValue(name || "", getInputValue(value));
+        if (!multiple) {
+          setFormValue(name || "", getInputValue(value));
+        } else {
+          setFormValue(
+            name || "",
+            value.map((val: any) => getInputValue(val))
+          );
+        }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, onChange]);
@@ -110,7 +117,21 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
 
     return (
       <div className={clsx("min-w-[8rem] mb-3", className)}>
-        <input id={id} hidden {...registerAttr} name={name} />
+        {!multiple ? (
+          <input id={id} hidden {...registerAttr} name={name} />
+        ) : (
+          <>
+            {(value || []).map((val: any, index: number) => (
+              <input
+                key={index}
+                hidden
+                {...registerAttr}
+                name={name}
+                value={getInputValue(val)}
+              />
+            ))}
+          </>
+        )}
         <Listbox value={value || ""} onChange={setValue} multiple={multiple}>
           <div className="relative mt-1">
             {label && (
