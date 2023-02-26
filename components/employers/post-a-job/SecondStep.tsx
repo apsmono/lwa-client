@@ -116,7 +116,6 @@ function SecondStep(props: SecondStepProps) {
         employment_type_id: 0,
         is_featured: false,
         is_worldwide: false,
-        language: "",
         location: "",
         package_id: 0,
         salary: "",
