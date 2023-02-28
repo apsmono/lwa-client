@@ -68,7 +68,7 @@ function SecondStep(props: SecondStepProps) {
         description,
         package_id,
       };
-      if (is_worldwide) {
+      if (!is_worldwide) {
         job.location_id = location_id;
       }
 
