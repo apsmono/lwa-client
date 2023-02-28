@@ -127,7 +127,7 @@ function FirstStep(props: FirstStepProps) {
           <Typography variant="h4" className="font-bold">
             Preview of your job post!
           </Typography>
-          <div className="border-2 border-black with-shadow p-6 rounded-xl">
+          <div className="border-2 border-black with-shadow p-8 rounded-xl">
             <JobDisplay
               job={{
                 company_offer,
@@ -144,6 +144,7 @@ function FirstStep(props: FirstStepProps) {
                 is_worldwide,
                 company_logo,
               }}
+              showLearnMore={false}
             />
           </div>
           <div className="flex justify-between">

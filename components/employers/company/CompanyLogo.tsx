@@ -27,12 +27,12 @@ function CompanyLogo({ src, className }: CompanyLogoProps) {
     );
   }
   return (
-    <div className={clsx("w-12 h-12 relative", className)}>
+    <div className={clsx("w-12 h-12 relative rounded-full", className)}>
       <Image
         fill
         src={imgSrc}
         alt="Company logo"
-        style={{ objectFit: "cover" }}
+        style={{ objectFit: "cover", backgroundPosition: "center" }}
       />
     </div>
   );

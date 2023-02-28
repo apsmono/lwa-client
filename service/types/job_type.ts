@@ -1,5 +1,3 @@
-import { LanguageType } from "./master_data_type";
-
 export type Job = {
   id: number;
   title: string;
@@ -26,5 +24,4 @@ export type Job = {
   company_offer?: string;
   company_headquarter: string;
   company_id: number;
-  languages: LanguageType[];
 };

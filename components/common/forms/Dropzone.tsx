@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import useAlert from "utils/hooks/useAlert";
@@ -18,11 +19,18 @@ interface DropzoneProps {
   defaultImage?: string;
   maxSize?: number;
   onDropFiles?: (file: File) => void;
+  className?: string;
 }
 
 const Dropzone = forwardRef<DropzoneRefType, Partial<DropzoneProps>>(
   (props, ref) => {
-    const { label, defaultImage, maxSize = 256000, onDropFiles } = props;
+    const {
+      label,
+      defaultImage,
+      maxSize = 256000,
+      onDropFiles,
+      className,
+    } = props;
     const [preview, setPreview] = useState<string>(defaultImage || "");
     const { showErrorAlert } = useAlert();
     const { acceptedFiles, getInputProps, getRootProps } = useDropzone({
@@ -67,7 +75,12 @@ const Dropzone = forwardRef<DropzoneRefType, Partial<DropzoneProps>>(
     return (
       <div className="mb-3">
         {label && <InputLabel>{label}</InputLabel>}
-        <div className="border border-black with-shadow p-4 rounded-full cursor-pointer">
+        <div
+          className={clsx(
+            "border border-black with-shadow p-4 rounded-2xl cursor-pointer flex flex-col justify-center",
+            className
+          )}
+        >
           <div className="flex justify-center" {...getRootProps()}>
             <input {...getInputProps()} />
             {preview ? (

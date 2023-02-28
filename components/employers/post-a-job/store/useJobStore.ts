@@ -5,7 +5,6 @@ import { create } from "zustand";
 interface JobState extends Job {
   setJob: (val: Partial<Job>) => void;
   location_id: number;
-  language_id: number[];
 }
 
 const useJobStore = create<JobState>((set) => {

@@ -8,17 +8,11 @@ export const schema = yup.object({
     .typeError("This field is required")
     .required("This field is required"),
   skill: yup.string(),
-  language_id: yup.array().of(yup.number()),
   employment_type_id: yup
     .number()
     .typeError("This field is required")
     .required("This field is required"),
-  is_worldwide: yup.number().typeError("This field is required"),
-  location_id: yup
-    .number()
-    .typeError("This field is required")
-    .required("This field is required"),
-  timezone: yup.string(),
+  is_worldwide: yup.boolean().typeError("This field is required"),
   salary: yup.string(),
   description: yup.string().required("This field is required"),
 });

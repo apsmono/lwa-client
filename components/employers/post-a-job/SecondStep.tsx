@@ -46,7 +46,6 @@ function SecondStep(props: SecondStepProps) {
     company_about,
     employment_type_id,
     location_id,
-    language_id,
     setJob,
     company_logo,
   } = useJobStore();
@@ -58,20 +57,20 @@ function SecondStep(props: SecondStepProps) {
   }, [selectedPackage, setJob]);
   const handlePaymentClick = async () => {
     try {
-      const job = {
+      const job: any = {
         title,
         apply_link,
         category_id,
         skill,
         employment_type_id,
         is_worldwide,
-        timezone,
         salary,
         description,
         package_id,
-        location_id,
-        language_id,
       };
+      if (is_worldwide) {
+        job.location_id = location_id;
+      }
 
       const company = {
         company_name,

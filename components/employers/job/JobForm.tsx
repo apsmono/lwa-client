@@ -5,9 +5,9 @@ import {
   TextAreaField,
   TextField,
 } from "components/common";
-import RadioButton from "components/common/forms/RadioButton";
+import { Radio } from "components/common/forms";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Category,
   Company,
@@ -36,7 +36,6 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
   const {
     categories = [],
     employmentTypes = [],
-    languages = [],
     locations = [],
     defaultValue = {},
   } = props;
@@ -45,10 +44,13 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     purgeInitialFormData(defaultValue, BASE_BLANK_FORM)
   );
 
+  const [isWorldwide, setIsWordwide] = useState<boolean>(
+    initialValue?.is_worldwide || undefined
+  );
+
   const [selectedCategory, setSelectedCategory] = useState<Category>();
   const [selectedEmploymentType, setSelectedEmploymentType] =
     useState<EmploymentType>();
-  const [selectedLanguage, setSelectedLanguage] = useState<LanguageType[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<LocationType>();
 
   const {
@@ -57,14 +59,9 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     getValues,
     setValue,
     handleSubmit,
-    control,
   } = useForm({
     defaultValues: initialValue,
     resolver: yupResolver(schema),
-  });
-  useFieldArray({
-    name: "language_id",
-    control,
   });
 
   const getFieldAttribute = (
@@ -85,27 +82,27 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
       getValues: () => {
         const job: Partial<Job> = {
           ...getValues(),
+          is_worldwide: isWorldwide,
           category_name: selectedCategory?.name || "",
           location: selectedLocation?.name || "",
           employment_type: selectedEmploymentType?.name || "",
-          languages: selectedLanguage,
         };
         return job;
       },
       submitForm: () => new Promise((res, rej) => handleSubmit(res, rej)()),
     }),
     [
+      isWorldwide,
       getValues,
       handleSubmit,
       selectedCategory?.name,
       selectedEmploymentType?.name,
       selectedLocation?.name,
-      selectedLanguage,
     ]
   );
 
   return (
-    <div className="border border-black with-shadow rounded-2xl p-4">
+    <div className="border border-black with-shadow rounded-2xl p-8">
       <TextField
         {...getFieldAttribute(
           "How to apply*",
@@ -141,17 +138,6 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
       />
 
       <Select
-        options={languages}
-        renderOption={(opt) => opt.name}
-        {...getFieldAttribute("Language*", "language_id[]", "language_id")}
-        getInputValue={(val: any) => val?.id || ""}
-        setFormValue={setValue}
-        defaultValue={selectedLanguage}
-        onChange={(val) => setSelectedLanguage(val)}
-        multiple
-      />
-
-      <Select
         options={employmentTypes}
         renderOption={(opt) => opt.name}
         {...getFieldAttribute(
@@ -169,32 +155,31 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
         Is this role open worldwide *
       </InputLabel>
 
-      <div className="flex gap-4">
-        <RadioButton
-          {...getFieldAttribute("Yes", "is_worldwide", "is_worldwide1")}
-          value={1}
-        />
-        <RadioButton
-          {...getFieldAttribute("No", "is_worldwide", "is_worldwide2")}
-          value={0}
-        />
-      </div>
-
-      <Select
-        labelDescription="Where yo want to hire your ideal candidate"
-        options={locations}
-        renderOption={(opt) => opt.name}
-        {...getFieldAttribute("Region*", "location_id", "location_id")}
-        getInputValue={(val: any) => val?.id || ""}
-        setFormValue={setValue}
-        defaultValue={selectedLocation}
-        onChange={(val) => setSelectedLocation(val)}
+      <Radio
+        error={!!errors.is_worldwide}
+        helperText={errors.is_worldwide?.message}
+        register={register}
+        name="is_worldwide"
+        id="is_worldwide"
+        options={[
+          { label: "Yes", value: true },
+          { label: "No", value: false },
+        ]}
+        value={isWorldwide}
+        onChange={(val) => setIsWordwide(val)}
       />
 
-      <TextField
-        labelDescription="Where you want to hire your ideal candidate"
-        {...getFieldAttribute("Timezone", "timezone", "timezone", "GMT")}
-      />
+      {isWorldwide === false ? (
+        <Select
+          options={locations}
+          renderOption={(opt) => opt.name}
+          {...getFieldAttribute("Region*", "location_id", "location_id")}
+          getInputValue={(val: any) => val?.id || ""}
+          setFormValue={setValue}
+          defaultValue={selectedLocation}
+          onChange={(val) => setSelectedLocation(val)}
+        />
+      ) : null}
 
       <TextField
         labelDescription="Highly recommended! Providing salary will five your job more visibility"

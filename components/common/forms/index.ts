@@ -6,6 +6,7 @@ import Autocomplete from "./Autocomplete";
 import Select from "./Select";
 import RadioButton from "./RadioButton";
 import Dropzone from "./Dropzone";
+import Radio from "./Radio";
 
 export {
   InputLabel,
@@ -16,4 +17,5 @@ export {
   Select,
   Dropzone,
   RadioButton,
+  Radio,
 };

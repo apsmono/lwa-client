@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { Button, Typography } from "components/common";
 import { CompanyLogo } from "components/employers/company";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { Job } from "service/types";
@@ -10,10 +9,11 @@ import JobSnippet from "./JobSnippet";
 interface JobDisplayProps {
   job: Partial<Job>;
   className: string;
+  showLearnMore: boolean;
 }
 
 function JobDisplay(props: Partial<JobDisplayProps>) {
-  const { job, className } = props;
+  const { job, className, showLearnMore = true } = props;
 
   const router = useRouter();
   return (
@@ -48,21 +48,23 @@ function JobDisplay(props: Partial<JobDisplayProps>) {
           <Typography className="whitespace-pre-line text-justify">
             {job?.company_about || "-"}
           </Typography>
-          <div className="flex justify-end">
-            <div>
-              <Button
-                onClick={() => {
-                  if (job?.company_id) {
-                    router.push(`/companies/${job!.company_id}`);
-                  }
-                }}
-                variant="link"
-                className="text-black"
-              >
-                Learn More
-              </Button>
+          {showLearnMore ? (
+            <div className="flex justify-end">
+              <div>
+                <Button
+                  onClick={() => {
+                    if (job?.company_id) {
+                      router.push(`/companies/${job!.company_id}`);
+                    }
+                  }}
+                  variant="link"
+                  className="text-black"
+                >
+                  Learn More
+                </Button>
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </div>

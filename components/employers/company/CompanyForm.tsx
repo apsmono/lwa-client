@@ -74,7 +74,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
       [getValues, handleSubmit]
     );
     return (
-      <div className="border border-black with-shadow rounded-2xl p-4">
+      <div className="border border-black with-shadow rounded-2xl p-8">
         <TextField
           labelDescription="Enter your company or oranization's name"
           {...getFieldAttribute(
@@ -100,6 +100,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
           ref={dropZoneRef}
           defaultImage={defaultValue.company_logo}
           onDropFiles={onLogoDrop}
+          className="h-32"
         />
 
         <TextField

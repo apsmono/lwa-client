@@ -9,6 +9,7 @@ interface RadioButtonProps extends InputHTMLAttributes<HTMLInputElement> {
   register: UseFormRegister<any>;
   error: boolean;
   helperText: any;
+  onClick: (val: any) => void;
 }
 
 function RadioButton(props: Partial<RadioButtonProps>) {
@@ -21,12 +22,17 @@ function RadioButton(props: Partial<RadioButtonProps>) {
     register,
     error = false,
     helperText,
+    checked,
+    onClick = () => {},
   } = props;
   const registerAttr = register ? register(props.name ?? "") : {};
 
   return (
     <div className="mb-3">
-      <div className="flex items-center justify-center">
+      <div
+        className="flex items-center justify-center"
+        onClick={() => onClick(value)}
+      >
         <input
           type="radio"
           name={name}
@@ -36,6 +42,7 @@ function RadioButton(props: Partial<RadioButtonProps>) {
             className
           )}
           value={value}
+          checked={checked}
           {...registerAttr}
         />
         <InputLabel htmlFor={id} error={error} className="ml-2 mb-0">
