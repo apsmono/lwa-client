@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import clsx from "clsx";
 import { TextAreaField, TextField } from "components/common";
 import { Dropzone } from "components/common/forms";
 import {
@@ -19,6 +20,7 @@ import { BASE_BLANK_FORM, schema } from "./constants";
 interface CompanyFormProps {
   defaultValue: Partial<Company>;
   onLogoDrop: (file: File) => void;
+  className: string;
 }
 
 export interface CompanyFormRef {
@@ -28,7 +30,7 @@ export interface CompanyFormRef {
 
 const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
   (props, ref) => {
-    const { defaultValue = {}, onLogoDrop } = props;
+    const { defaultValue = {}, onLogoDrop, className } = props;
 
     const [initialValue] = useState(() => {
       return purgeInitialFormData(defaultValue, BASE_BLANK_FORM);
@@ -74,7 +76,12 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
       [getValues, handleSubmit]
     );
     return (
-      <div className="border border-black with-shadow rounded-2xl p-8">
+      <div
+        className={clsx(
+          "border border-black with-shadow rounded-2xl",
+          className
+        )}
+      >
         <TextField
           labelDescription="Enter your company or oranization's name"
           {...getFieldAttribute(
@@ -100,7 +107,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
           ref={dropZoneRef}
           defaultImage={defaultValue.company_logo}
           onDropFiles={onLogoDrop}
-          className="h-32"
+          className="min-h-[128px]"
         />
 
         <TextField

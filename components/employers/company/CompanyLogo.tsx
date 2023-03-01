@@ -32,6 +32,7 @@ function CompanyLogo({ src, className }: CompanyLogoProps) {
         fill
         src={imgSrc}
         alt="Company logo"
+        className="rounded-full"
         style={{ objectFit: "cover", backgroundPosition: "center" }}
       />
     </div>

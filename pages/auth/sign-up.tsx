@@ -14,6 +14,7 @@ import { getFormAttribute } from "utils/form";
 import useAlert from "utils/hooks/useAlert";
 import { parseErrorMessage } from "utils/api";
 import { AuthService } from "service/auth_service";
+import { Eye, EyeOff } from "react-feather";
 
 interface SignUpPageProps {
   categories: Category[];
@@ -30,6 +31,8 @@ function SignUpPage(props: SignUpPageProps) {
   const { categories, sourceRef } = props;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const { showErrorAlert, showSuccessAlert } = useAlert();
 
   const {
@@ -91,9 +94,17 @@ function SignUpPage(props: SignUpPageProps) {
                 {...formAttribute("Company Name*", "name", "name")}
               />
               <TextField
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="*********"
                 {...formAttribute("Password*", "password", "password")}
+                inputSuffix={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff /> : <Eye />}
+                  </button>
+                }
               />
             </div>
             <div className="flex flex-col items-center mt-4 gap-2">

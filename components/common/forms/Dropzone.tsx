@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import useAlert from "utils/hooks/useAlert";
+import Button from "../Button";
 import Typography from "../Typography";
 import InputLabel from "./InputLabel";
 
@@ -63,6 +64,10 @@ const Dropzone = forwardRef<DropzoneRefType, Partial<DropzoneProps>>(
       maxSize,
     });
 
+    const handleRemoveImage = () => {
+      setPreview("");
+    };
+
     useImperativeHandle(ref, () => ({
       getValue: () => {
         return {
@@ -81,12 +86,22 @@ const Dropzone = forwardRef<DropzoneRefType, Partial<DropzoneProps>>(
             className
           )}
         >
-          <div className="flex justify-center" {...getRootProps()}>
+          <div
+            className="flex flex-col p-2 justify-center gap-2"
+            {...getRootProps()}
+          >
             <input {...getInputProps()} />
             {preview ? (
-              <DropzoneImage preview={preview} />
+              <>
+                <DropzoneImage preview={preview} />
+                <Button variant="link" onClick={handleRemoveImage}>
+                  Remove Image
+                </Button>
+              </>
             ) : (
-              <Typography>Click or drag your photo here to upload</Typography>
+              <Typography className="text-center">
+                Click or drag your photo here to upload
+              </Typography>
             )}
           </div>
         </div>

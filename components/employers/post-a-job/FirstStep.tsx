@@ -103,6 +103,7 @@ function FirstStep(props: FirstStepProps) {
             languages={languages}
             categories={categories}
             ref={jobFormRef}
+            className="py-6 px-12"
           />
 
           <Typography variant="h4" className="font-bold mt-8">
@@ -121,13 +122,14 @@ function FirstStep(props: FirstStepProps) {
               company_logo,
             }}
             onLogoDrop={handleCompanyLogoDrop}
+            className="py-6 px-12"
           />
         </div>
         <div className="flex flex-col gap-4">
           <Typography variant="h4" className="font-bold">
             Preview of your job post!
           </Typography>
-          <div className="border-2 border-black with-shadow p-8 rounded-xl">
+          <div className="border-2 border-black with-shadow py-6 px-12 rounded-xl">
             <JobDisplay
               job={{
                 company_offer,

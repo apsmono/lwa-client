@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { forwardRef, InputHTMLAttributes } from "react";
+import React, { forwardRef, InputHTMLAttributes, ReactNode } from "react";
 import { UseFormRegister } from "react-hook-form";
 import Typography from "../Typography";
 import InputLabel from "./InputLabel";
@@ -14,6 +14,7 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   labelClassName: string | undefined;
   rounded: boolean;
   withShadow: boolean;
+  inputSuffix: ReactNode;
 }
 
 const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
@@ -30,6 +31,7 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
       withShadow = true,
       labelAppend,
       labelDescription,
+      inputSuffix,
       ...otherProps
     } = props;
     const registerAttr = register ? register(props.name ?? "") : {};
@@ -46,21 +48,29 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
             {label}
           </InputLabel>
         )}
-        <input
-          ref={ref}
-          {...otherProps}
-          autoComplete="off"
-          id={id}
-          className={clsx(
-            "w-full py-2 px-4 focus:outline-none border-2 border-black",
-            className,
-            [error && "border border-red-500"],
-            [rounded && "rounded-full"],
-            [!rounded && "rounded-lg"],
-            [withShadow && "with-shadow"]
-          )}
-          {...registerAttr}
-        />
+        <div className="relative">
+          <input
+            ref={ref}
+            {...otherProps}
+            autoComplete="off"
+            id={id}
+            className={clsx(
+              "w-full py-2 px-4 focus:outline-none border-2 border-black",
+              className,
+              [error && "border border-red-500"],
+              [rounded && "rounded-full"],
+              [!rounded && "rounded-lg"],
+              [withShadow && "with-shadow"]
+            )}
+            {...registerAttr}
+          />
+          {inputSuffix ? (
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-4 flex justify-center">
+              {inputSuffix}
+            </div>
+          ) : null}
+        </div>
+
         {helperText && (
           <Typography className="text-red-500 text-medium mt-2" variant="small">
             {helperText}

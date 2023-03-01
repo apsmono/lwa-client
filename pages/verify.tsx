@@ -30,6 +30,11 @@ function VerifyPage({
         refreshToken,
       });
       setLoading(false);
+      const jobTemp = Cookies.get("job");
+      if (!jobTemp) {
+        router.replace("/post-a-job");
+        return;
+      }
       router.replace(redirectTo);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

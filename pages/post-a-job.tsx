@@ -50,6 +50,7 @@ function PostJobPage(props: PostJobPageProps) {
     company_about,
     company_url,
     company_offer,
+    company_logo,
   } = useJobStore();
 
   useEffect(() => {
@@ -66,6 +67,7 @@ function PostJobPage(props: PostJobPageProps) {
         ? company.company_headquarter
         : company_headquarter,
       company_id: company.id,
+      company_logo: !company_logo ? company.company_logo : company_logo,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

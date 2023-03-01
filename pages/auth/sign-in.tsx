@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import useAlert from "utils/hooks/useAlert";
 import { parseErrorMessage } from "utils/api";
 import useAuthStore from "store/useAuthStore";
+import { Eye, EyeOff } from "react-feather";
 
 interface SignInPageProps {
   categories: Category[];
@@ -29,6 +30,7 @@ function SignInPage(props: SignInPageProps) {
   const { categories } = props;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { setAuth } = useAuthStore();
   const {
     formState: { errors },
@@ -97,9 +99,17 @@ function SignInPage(props: SignInPageProps) {
                 {...formAttribute("Email Address*", "email", "email")}
               />
               <TextField
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="*********"
                 {...formAttribute("Password*", "password", "password")}
+                inputSuffix={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff /> : <Eye />}
+                  </button>
+                }
               />
             </div>
             <div className="flex flex-col items-center mt-4 gap-2">

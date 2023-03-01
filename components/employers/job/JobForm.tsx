@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import clsx from "clsx";
 import {
   InputLabel,
   Select,
@@ -25,6 +26,7 @@ interface JobFormProps {
   employmentTypes: EmploymentType[];
   locations: LocationType[];
   defaultValue: Partial<Company>;
+  className: string;
 }
 
 export interface JobFormRef {
@@ -38,6 +40,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     employmentTypes = [],
     locations = [],
     defaultValue = {},
+    className,
   } = props;
 
   const [initialValue] = useState(() =>
@@ -102,7 +105,9 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
   );
 
   return (
-    <div className="border border-black with-shadow rounded-2xl p-8">
+    <div
+      className={clsx("border border-black with-shadow rounded-2xl", className)}
+    >
       <TextField
         {...getFieldAttribute(
           "How to apply*",
@@ -131,10 +136,6 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
         onChange={(val) => setSelectedCategory(val)}
         getInputValue={(val: any) => val?.id || ""}
         setFormValue={setValue}
-      />
-
-      <TextField
-        {...getFieldAttribute("Skill", "skill", "skill", "Type here")}
       />
 
       <Select
