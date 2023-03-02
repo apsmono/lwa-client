@@ -6,4 +6,5 @@ export type User = {
   email: string;
   role: string;
   company?: Company;
+  job_token_temp?: string;
 };

@@ -15,6 +15,8 @@ import useAlert from "utils/hooks/useAlert";
 import { parseErrorMessage } from "utils/api";
 import { AuthService } from "service/auth_service";
 import { Eye, EyeOff } from "react-feather";
+import useJobStore from "components/employers/post-a-job/store/useJobStore";
+import JobService from "service/job_service";
 
 interface SignUpPageProps {
   categories: Category[];
@@ -32,6 +34,24 @@ function SignUpPage(props: SignUpPageProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const {
+    title,
+    description,
+    apply_link,
+    category_id,
+    company_about,
+    company_email,
+    company_headquarter,
+    company_logo,
+    company_url,
+    company_offer,
+    employment_type_id,
+    is_worldwide,
+    location_id,
+    salary,
+    package_id,
+    company_name,
+  } = useJobStore();
 
   const { showErrorAlert, showSuccessAlert } = useAlert();
 
@@ -53,9 +73,32 @@ function SignUpPage(props: SignUpPageProps) {
       password: val.password,
       name: val.name,
       source: sourceRef,
+      job_token: null,
     };
     try {
       setLoading(true);
+      if (title) {
+        const res = await JobService.createTemp({
+          title,
+          description,
+          apply_link,
+          category_id,
+          company_about,
+          company_email,
+          company_headquarter,
+          company_logo,
+          company_url,
+          company_offer,
+          employment_type_id,
+          is_worldwide,
+          location_id,
+          salary,
+          package_id,
+          company_name,
+        });
+        const { token } = res.data;
+        payload.job_token = token;
+      }
       const response = await AuthService.signUpEmployers(payload);
       showSuccessAlert(response.message);
       setLoading(false);

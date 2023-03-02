@@ -17,4 +17,12 @@ export default class JobService {
   static async create(formData: any) {
     return sendAndHandleRequest(`/jobs`, "post", formData);
   }
+
+  static async createTemp(payload: any) {
+    return sendAndHandleRequest("/jobs/temp", "post", payload);
+  }
+
+  static async getJobTemp(token: string) {
+    return sendAndHandleRequest(`/jobs/temp/${token}`, "get");
+  }
 }

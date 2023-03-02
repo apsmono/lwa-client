@@ -16,9 +16,11 @@ import {
   LanguageType,
   Package,
   User,
+  Job,
 } from "service/types";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { FirstStep, SecondStep } from "components/employers/post-a-job";
+import JobService from "service/job_service";
 
 interface PostJobPageProps {
   categories: Category[];
@@ -28,6 +30,7 @@ interface PostJobPageProps {
   packages: Package[];
   user?: User;
   currentStep?: string;
+  defaultValue?: Partial<Job>;
 }
 
 function PostJobPage(props: PostJobPageProps) {
@@ -39,6 +42,7 @@ function PostJobPage(props: PostJobPageProps) {
     locations,
     packages,
     user,
+    defaultValue = null,
   } = props;
   const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
 
@@ -54,6 +58,10 @@ function PostJobPage(props: PostJobPageProps) {
   } = useJobStore();
 
   useEffect(() => {
+    if (defaultValue) {
+      setJob({ ...defaultValue });
+      return;
+    }
     const { company } = user || {};
     if (!company) return;
 
@@ -130,6 +138,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const user = (await AuthService.fetchMe(context)).data?.user || null;
 
     props.user = user;
+
+    if (user?.job_token_temp) {
+      const { data } = await JobService.getJobTemp(user.job_token_temp);
+      console.log({ job: data.job });
+      props.defaultValue = data.job;
+    }
   } catch (error) {
     props.user = null;
   }
