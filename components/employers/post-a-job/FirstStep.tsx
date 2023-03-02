@@ -103,7 +103,7 @@ function FirstStep(props: FirstStepProps) {
             languages={languages}
             categories={categories}
             ref={jobFormRef}
-            className="py-6 px-12"
+            className="p-6"
           />
 
           <Typography variant="h4" className="font-bold mt-8">
@@ -122,7 +122,7 @@ function FirstStep(props: FirstStepProps) {
               company_logo,
             }}
             onLogoDrop={handleCompanyLogoDrop}
-            className="py-6 px-12"
+            className="p-6"
           />
         </div>
         <div className="flex flex-col gap-4">

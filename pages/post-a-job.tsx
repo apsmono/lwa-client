@@ -82,7 +82,7 @@ function PostJobPage(props: PostJobPageProps) {
 
   return (
     <GuestLayout title="Post a Job" categories={categories}>
-      <div className="max-w-7xl mx-auto flex flex-col gap-2 p-4">
+      <div className="max-w-6xl mx-auto flex flex-col gap-2 p-4">
         <div className="w-full rounded-full with-shadow border border-black">
           <span
             className={clsx("inline-block w-1/2 rounded-full", {

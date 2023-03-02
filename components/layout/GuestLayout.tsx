@@ -5,7 +5,6 @@ import NavBarDropdown from "components/navigation/nav-bar/NavBarDropdown";
 import { AppContext } from "context/appContext";
 import Cookies from "js-cookie";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React, {
   FormEvent,
@@ -150,12 +149,14 @@ function GuestLayout(props: GuestLayoutProps) {
         <div>
           <div className="flex flex-col mb-4 p-6 lg:px-24 gap-6">
             <div className="flex justify-between items-center">
-              <div
-                className="relative h-5 w-72 cursor-pointer object-cover"
-                onClick={() => router.push("/")}
-              >
-                <Image src="/lwa-logo.png" fill alt="logo" />
-              </div>
+              <picture>
+                <img
+                  src="/lwa-logo.png"
+                  alt="Logo"
+                  className="h-12 cursor-pointer"
+                  onClick={() => router.push("/")}
+                />
+              </picture>
               <div className="hidden lg:flex gap-8 items-center">
                 <NavBarDropdown
                   title="Categories"
