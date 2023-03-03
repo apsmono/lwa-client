@@ -112,7 +112,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
 
         <TextField
           {...getFieldAttribute(
-            "Company's Website URL*",
+            "Company Website URL*",
             "company_url",
             "company_url",
             "Type here"
