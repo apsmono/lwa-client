@@ -123,6 +123,7 @@ function SecondStep(props: SecondStepProps) {
         timezone: "",
         title: "",
       });
+      Cookies.remove("job");
       router.replace("/");
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));
