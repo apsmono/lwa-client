@@ -24,4 +24,5 @@ export type Job = {
   company_offer?: string;
   company_headquarter: string;
   company_id: number;
+  order_id?: string;
 };

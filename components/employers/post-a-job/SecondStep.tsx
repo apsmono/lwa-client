@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { Button, Typography } from "components/common";
 import { AppContext } from "context/appContext";
 import Cookies from "js-cookie";
@@ -34,7 +34,6 @@ function SecondStep(props: SecondStepProps) {
     category_id,
     skill,
     is_worldwide,
-    timezone,
     salary,
     description,
     package_id,
@@ -55,10 +54,11 @@ function SecondStep(props: SecondStepProps) {
       setJob({ package_id: selectedPackage.id });
     }
   }, [selectedPackage, setJob]);
-  const handlePaymentClick = async () => {
+  const handlePaymentClick = async (order_id: string = "") => {
     try {
       const job: any = {
         title,
+        order_id,
         apply_link,
         category_id,
         skill,
@@ -81,13 +81,6 @@ function SecondStep(props: SecondStepProps) {
         company_offer,
         company_logo,
       };
-
-      if (!accessToken) {
-        Cookies.set("job", JSON.stringify({ ...job, ...company }));
-        showErrorAlert("Please sign in first");
-        router.push("/auth/sign-in");
-        return;
-      }
       setLoading(true);
       const response = await wrappedCreateItem({ ...job, ...company });
       showSuccessAlert(response.message);
@@ -132,7 +125,6 @@ function SecondStep(props: SecondStepProps) {
   };
   return (
     <>
-      `
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-4">
         <div className="flex flex-col gap-4">
           <div>
@@ -183,15 +175,44 @@ function SecondStep(props: SecondStepProps) {
               Total: ${selectedPackage?.price || 0}
             </Typography>
           </div>
-          <div className="flex justify-end">
-            <Button
-              onClick={handlePaymentClick}
-              disabled={!selectedPackage || Boolean(paymentUrl)}
-              variant="secondary"
+          {selectedPackage?.id && selectedPackage.id !== 3 ? (
+            <PayPalScriptProvider
+              options={{
+                "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+              }}
             >
-              Confirm & Pay
-            </Button>
-          </div>
+              <PayPalButtons
+                createOrder={(data, actions) => {
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        amount: {
+                          value: parseFloat(
+                            selectedPackage.price.toString()
+                          ).toString(),
+                        },
+                      },
+                    ],
+                  });
+                }}
+                onApprove={(data) => {
+                  return new Promise(() => {
+                    handlePaymentClick(data.orderID);
+                  });
+                }}
+              />
+            </PayPalScriptProvider>
+          ) : (
+            <div className="flex justify-end">
+              <Button
+                onClick={() => handlePaymentClick()}
+                disabled={!selectedPackage || Boolean(paymentUrl)}
+                variant="secondary"
+              >
+                Confirm & Pay
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </>

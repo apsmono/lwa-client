@@ -40,6 +40,7 @@ const useJobStore = create<JobState>((set) => {
     company_offer: defaultValue.company_offer,
     location_id: defaultValue.location_id,
     language_id: defaultValue.language_id || [],
+    order_id: "",
     setJob: (val: Partial<Job>) => {
       set((state) => ({
         ...state,
