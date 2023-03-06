@@ -30,7 +30,7 @@ const TextAreaField = forwardRef<
     helperText,
     rounded,
     labelClassName,
-    withShadow = true,
+    withShadow = false,
     labelAppend,
     labelDescription,
     ...otherProps

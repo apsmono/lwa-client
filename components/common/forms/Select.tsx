@@ -118,7 +118,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
     return (
       <div className={clsx("min-w-[8rem] mb-3", className)}>
         {!multiple ? (
-          <input id={id} hidden {...registerAttr} name={name} />
+          <input id={id} hidden {...registerAttr} name={name} readOnly />
         ) : (
           <>
             {(value || []).map((val: any, index: number) => (
@@ -128,6 +128,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
                 {...registerAttr}
                 name={name}
                 value={getInputValue(val)}
+                readOnly
               />
             ))}
           </>
@@ -146,7 +147,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
             <div className="relative">
               <Listbox.Button
                 className={clsx(
-                  "relative w-full cursor-default overflow-hidden rounded-full bg-white text-left focus:outline-none border-black border-2 with-shadow pl-4 py-2",
+                  "relative w-full cursor-default overflow-hidden rounded-full bg-white text-left focus:outline-none border-black border-2 pl-4 py-2",
                   { "border-red-500": error }
                 )}
               >

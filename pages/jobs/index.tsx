@@ -183,7 +183,7 @@ function JobListPage(props: JobListPageProps) {
             ref={categoriesListRef}
             onChange={(val) => setCategoriesList(val)}
           />
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap w-full">
             {employmentType.map((et, i) => (
               <Chip
                 key={et.id}

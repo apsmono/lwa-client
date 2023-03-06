@@ -132,7 +132,7 @@ function SignUpPage(props: SignUpPageProps) {
 
         <div className="relative">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="max-w-xl w-full mx-auto p-4 bg-gray-100 rounded-lg border-2 border-black with-shadow">
+            <div className="max-w-xl w-full mx-auto p-4 bg-gray-100 rounded-lg border-2 border-black">
               <Typography className="text-right">*Required field</Typography>
               <TextField
                 type="email"

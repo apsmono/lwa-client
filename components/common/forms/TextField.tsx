@@ -34,7 +34,7 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
       helperText,
       rounded = true,
       labelClassName,
-      withShadow = true,
+      withShadow = false,
       labelAppend,
       labelDescription,
       inputSuffix,
