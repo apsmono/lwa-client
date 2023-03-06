@@ -57,7 +57,9 @@ function PopularCategory({ categories, totalItems }: PopularCategoryProps) {
       </div>
       {totalItems > items.length && (
         <div className="flex justify-center mb-4">
-          <Button onClick={handleShowMoreCategories}>View More</Button>
+          <Button variant="black" onClick={handleShowMoreCategories}>
+            View More
+          </Button>
         </div>
       )}
       {items.length > 8 && (

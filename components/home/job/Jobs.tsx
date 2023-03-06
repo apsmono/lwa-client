@@ -46,7 +46,7 @@ function Jobs(props: JobsProps) {
       ))}
       {totalItems > items.length && (
         <div className="flex justify-center">
-          <Button onClick={handleShowMoreJobs} variant="secondary">
+          <Button onClick={handleShowMoreJobs} variant="black">
             View More
           </Button>
         </div>

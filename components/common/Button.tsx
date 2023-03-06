@@ -21,7 +21,7 @@ function Button(props: Partial<ButtonProps>) {
     block = false,
     disabled,
     isLoading = false,
-    withShadow = true,
+    withShadow = false,
     ...otherProps
   } = props;
   const arrClassNames = [];

@@ -1,4 +1,5 @@
 import { Typography } from "components/common";
+import { Subscribe } from "components/home";
 import JobCard from "components/home/job/JobCard";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
@@ -75,25 +76,30 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
             </div>
           );
         })}
-
-        <Typography variant="h6" className="font-bold">
-          Similar Jobs
-        </Typography>
-        {similarJobs.length === 0 && (
-          <div className="flex justify-center">
-            <Typography>No similar jobs available</Typography>
-          </div>
-        )}
-        {similarJobs.map((job) => {
-          const item = { ...job };
-          item.company_logo = company.company_logo;
-          return (
-            <div key={job.id} className="mb-2">
-              <JobCard job={item} showStatus={false} />
-            </div>
-          );
-        })}
       </div>
+
+      <div className="bg-gray-100">
+        <div className="mx-auto p-6 max-w-5xl">
+          <Typography variant="h6" className="font-bold">
+            Similar Jobs
+          </Typography>
+          {similarJobs.length === 0 && (
+            <div className="flex justify-center">
+              <Typography>No similar jobs available</Typography>
+            </div>
+          )}
+          {similarJobs.map((job) => {
+            const item = { ...job };
+            item.company_logo = company.company_logo;
+            return (
+              <div key={job.id} className="mb-2">
+                <JobCard job={item} showStatus={false} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <Subscribe categories={categories} />
     </GuestLayout>
   );
 }

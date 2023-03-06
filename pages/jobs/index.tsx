@@ -1,5 +1,6 @@
 import { Chip, Select, TextField, Typography } from "components/common";
 import { SelectRefType } from "components/common/forms/Select";
+import { Subscribe } from "components/home";
 import JobCard from "components/home/job/JobCard";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
@@ -117,9 +118,9 @@ function JobListPage(props: JobListPageProps) {
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
         {category ? (
           <>
-            <Typography variant="h1" className="font-bold text-center">
-              {category.name} Job
-            </Typography>
+            <h1 className="font-black text-center font-palo uppercase text-7xl mb-3">
+              {category.name} Jobs
+            </h1>
             <Typography className="text-center">
               {category.description}
             </Typography>
@@ -225,6 +226,7 @@ function JobListPage(props: JobListPageProps) {
           </div>
         ))}
       </div>
+      <Subscribe categories={categories} />
     </GuestLayout>
   );
 }

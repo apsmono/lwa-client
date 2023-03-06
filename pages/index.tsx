@@ -1,10 +1,10 @@
-import { Button, TextField, Typography } from "components/common";
+import { Button, Select, TextField, Typography } from "components/common";
 import { GetServerSideProps } from "next";
 import CategoryService from "service/category_service";
 import { GuestLayout } from "components/layout";
 import JobService from "service/job_service";
 import { Category, Job } from "service/types";
-import { FeaturedJob, Jobs, PopularCategory } from "components/home";
+import { FeaturedJob, Jobs, PopularCategory, Subscribe } from "components/home";
 import { useRouter } from "next/router";
 
 interface HomePropsInterface {
@@ -29,9 +29,13 @@ function Home(props: HomePropsInterface) {
   const router = useRouter();
 
   return (
-    <GuestLayout title="Home" categories={categories}>
-      <div className="md:px-6 p-6 max-w-5xl mx-auto">
-        <div className="flex mb-8 justify-between items-center">
+    <GuestLayout
+      navBarProps={{ className: "bg-primary-500" }}
+      title="Home"
+      categories={categories}
+    >
+      <div className="bg-primary-500">
+        <div className="flex mb-8 justify-between p-6 items-center max-w-5xl mx-auto">
           <div className="flex flex-col">
             <p className="font-black mb-4 text-left uppercase font-palo text-7xl">
               Find top talent anywhere <br className="hidden md:block" /> in the
@@ -60,6 +64,8 @@ function Home(props: HomePropsInterface) {
             </picture>
           </div>
         </div>
+      </div>
+      <div className="md:px-6 p-6 max-w-5xl mx-auto">
         <div className="mb-12">
           <FeaturedJob jobs={featuredJobs} />
         </div>
@@ -73,19 +79,7 @@ function Home(props: HomePropsInterface) {
           <Jobs jobs={jobs} totalItems={totalJobs} />
         </div>
       </div>
-      <div className="bg-primary-500 p-6">
-        <div className="max-w-5xl flex justify-center mx-auto py-12">
-          <div className="flex flex-col justify-center gap-2">
-            <Typography variant="h3" className="font-bold">
-              Subscribe now to receive daily job updates!
-            </Typography>
-            <TextField placeholder="Type your email here" />
-            <div className="flex justify-center">
-              <Button variant="black">Subscribe</Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Subscribe categories={categories} />
     </GuestLayout>
   );
 }

@@ -1,5 +1,10 @@
 import clsx from "clsx";
-import React, { forwardRef, InputHTMLAttributes, ReactNode } from "react";
+import React, {
+  forwardRef,
+  HTMLAttributes,
+  InputHTMLAttributes,
+  ReactNode,
+} from "react";
 import { UseFormRegister } from "react-hook-form";
 import Typography from "../Typography";
 import InputLabel from "./InputLabel";
@@ -15,6 +20,7 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   rounded: boolean;
   withShadow: boolean;
   inputSuffix: ReactNode;
+  containerProps?: HTMLAttributes<HTMLDivElement>;
 }
 
 const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
@@ -32,11 +38,12 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
       labelAppend,
       labelDescription,
       inputSuffix,
+      containerProps,
       ...otherProps
     } = props;
     const registerAttr = register ? register(props.name ?? "") : {};
     return (
-      <div className="mb-3">
+      <div className={clsx("mb-3", containerProps?.className)}>
         {label && (
           <InputLabel
             append={labelAppend}

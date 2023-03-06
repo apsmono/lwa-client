@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Typography } from "components/common";
 import Image from "next/image";
 import React from "react";
@@ -14,7 +15,9 @@ function FeaturedJobCard(props: FeaturedJobCard) {
   const { job, onClick } = props;
   return (
     <div
-      className="w-60 py-4 bg-secondary-500 rounded-xl border-2 border-black flex items-center flex-col cursor-pointer mb-2 with-shadow"
+      className={clsx(
+        "w-60 py-4 bg-secondary-500 rounded-xl border-2 border-black flex items-center flex-col cursor-pointer mb-2 hover:with-shadow transition-all"
+      )}
       onClick={onClick}
     >
       <div className="w-14 h-14 relative rounded-full object-cover mb-3">

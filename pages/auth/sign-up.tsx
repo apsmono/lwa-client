@@ -28,6 +28,10 @@ const schema = yup.object().shape({
   email: yup.string().email().required("This field is required"),
   name: yup.string().required("This field is required"),
   password: yup.string().min(6).required("This field is required"),
+  confirm_password: yup
+    .string()
+    .min(6, "Must be at leaset 6 character")
+    .oneOf([yup.ref("password"), null], "Password not match"),
 });
 
 function SignUpPage(props: SignUpPageProps) {
@@ -35,6 +39,7 @@ function SignUpPage(props: SignUpPageProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const {
     title,
     description,
@@ -151,11 +156,28 @@ function SignUpPage(props: SignUpPageProps) {
                   </button>
                 }
               />
+              <TextField
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="*********"
+                {...formAttribute(
+                  "Confirm Password*",
+                  "confirm_password",
+                  "confirm_password"
+                )}
+                inputSuffix={
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? <EyeOff /> : <Eye />}
+                  </button>
+                }
+              />
             </div>
             <div className="flex flex-col items-center mt-4 gap-2">
               <div>
                 <Button isLoading={loading} type="submit" variant="secondary">
-                  Sign Up
+                  Create an Employer Account
                 </Button>
               </div>
               <Typography>

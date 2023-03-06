@@ -16,7 +16,7 @@ function JobCard(props: JobCardProps) {
   return (
     <div
       className={clsx(
-        "flex gap-2 justify-between p-4 rounded-lg border border-black flex-wrap cursor-pointer with-shadow",
+        "flex gap-2 justify-between p-4 rounded-lg border-2 border-black flex-wrap cursor-pointer hover:with-shadow transition-all",
         {
           "bg-secondary-500": job.is_featured,
         }

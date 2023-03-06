@@ -12,7 +12,7 @@ function CategoryCard(props: Partial<CategoryCard>) {
   return (
     <div
       onClick={onClick}
-      className="bg-primary-500 rounded-lg border-2 border-black py-4 cursor-pointer flex flex-col items-center gap-4 max-w-60 with-shadow"
+      className="bg-primary-500 rounded-lg border-2 border-black py-4 cursor-pointer flex flex-col items-center gap-4 max-w-60 hover:with-shadow transition-all"
     >
       <Typography className="text-center font-bold">
         {category!.name}

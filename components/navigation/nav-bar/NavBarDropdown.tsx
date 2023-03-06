@@ -27,7 +27,7 @@ function NavBarDropdown(props: NavBarDropdownPropsInterface) {
         )}
       >
         {list.map((item, index) => (
-          <li className="mb-2" key={index}>
+          <li className="mb-2 text-center hover:underline" key={index}>
             {item.onClick ? (
               <button onClick={item.onClick}>{item.title}</button>
             ) : (

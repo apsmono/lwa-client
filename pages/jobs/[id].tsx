@@ -1,3 +1,4 @@
+import { Subscribe } from "components/home";
 import JobDisplay from "components/jobs/JobDisplay";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
@@ -16,11 +17,9 @@ function JobDetailPage(props: JobDetailPageProps) {
   return (
     <GuestLayout categories={categories} title={`Job Detail | ${job.title}`}>
       <div className="p-6 mb-12">
-        <JobDisplay
-          job={job}
-          className="p-6 max-w-5xl mx-auto border-2 border-black shadow-md rounded-lg with-shadow"
-        />
+        <JobDisplay job={job} className="px-6 max-w-5xl mx-auto" />
       </div>
+      <Subscribe categories={categories} />
     </GuestLayout>
   );
 }

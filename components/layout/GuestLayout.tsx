@@ -30,10 +30,11 @@ interface GuestLayoutProps {
   children: ReactNode;
   categories: Category[];
   employers?: User;
+  navBarProps?: { className: string };
 }
 
 function GuestLayout(props: GuestLayoutProps) {
-  const { title, children, categories } = props;
+  const { title, children, categories, navBarProps } = props;
   const router = useRouter();
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const { showErrorAlert, showSuccessAlert } = useAlert();
@@ -147,7 +148,12 @@ function GuestLayout(props: GuestLayoutProps) {
           employersMenu={employersList}
         />
         <div>
-          <div className="flex flex-col mb-4 p-6 lg:px-24 gap-6">
+          <div
+            className={clsx(
+              "flex flex-col p-6 lg:px-24 gap-6",
+              navBarProps?.className
+            )}
+          >
             <div className="flex justify-between items-center">
               <picture>
                 <img

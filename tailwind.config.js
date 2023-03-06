@@ -1,3 +1,4 @@
+const plugin = require("tailwindcss/plugin");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -41,6 +42,13 @@ module.exports = {
   plugins: [
     require("@tailwindcss/forms")({
       strategy: "class",
+    }),
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        ".with-shadow": {
+          "box-shadow": "3px 3px 0 #000",
+        },
+      });
     }),
   ],
 };
