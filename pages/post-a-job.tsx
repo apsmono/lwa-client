@@ -21,6 +21,7 @@ import {
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { FirstStep, SecondStep } from "components/employers/post-a-job";
 import JobService from "service/job_service";
+import JobPreview from "components/employers/post-a-job/JobPreview";
 
 interface PostJobPageProps {
   categories: Category[];
@@ -82,26 +83,40 @@ function PostJobPage(props: PostJobPageProps) {
 
   return (
     <GuestLayout title="Post a Job" categories={categories}>
-      <div className="max-w-6xl mx-auto flex flex-col gap-2 p-4">
+      <div className="max-w-4xl mx-auto flex flex-col gap-2 p-4">
         <div className="w-full rounded-full with-shadow border border-black">
           <span
-            className={clsx("inline-block w-1/2 rounded-full", {
+            className={clsx("inline-block w-1/3 rounded-full", {
               "bg-secondary-500": step === 1,
             })}
           >
             &nbsp;
           </span>
           <span
-            className={clsx("inline-block w-1/2 rounded-full", {
+            className={clsx("inline-block w-1/3 rounded-full", {
               "bg-secondary-500": step === 2,
             })}
           >
             &nbsp;
           </span>
+          <span
+            className={clsx("inline-block w-1/3 rounded-full", {
+              "bg-secondary-500": step === 3,
+            })}
+          >
+            &nbsp;
+          </span>
         </div>
-        <div className="flex justify-between">
-          <Typography>1. Create your listing</Typography>
-          <Typography>2. Confirm & pay</Typography>
+        <div className="flex justify-between mb-4">
+          <Typography variant="h5" className="font-palo font-bold uppercase">
+            1. Create your listing
+          </Typography>
+          <Typography variant="h5" className="font-palo font-bold uppercase">
+            2. Preview your post
+          </Typography>
+          <Typography variant="h5" className="font-palo font-bold uppercase">
+            3. Confirm & pay
+          </Typography>
         </div>
         {step === 1 && (
           <FirstStep
@@ -112,7 +127,8 @@ function PostJobPage(props: PostJobPageProps) {
             onSubmit={() => setStep(2)}
           />
         )}
-        {step === 2 && <SecondStep packages={packages} />}
+        {step === 2 && <JobPreview onSubmit={() => setStep(3)} />}
+        {step === 3 && <SecondStep packages={packages} />}
       </div>
     </GuestLayout>
   );

@@ -1,5 +1,4 @@
 import { Button, Typography } from "components/common";
-import JobDisplay from "components/jobs/JobDisplay";
 import { AppContext } from "context/appContext";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
@@ -40,13 +39,10 @@ function FirstStep(props: FirstStepProps) {
     company_id,
     company_headquarter,
     company_logo,
-    category_name,
     title,
     salary,
     apply_link,
-    employment_type,
     is_worldwide,
-    location,
     description,
     setJob,
     order_id,
@@ -132,7 +128,7 @@ function FirstStep(props: FirstStepProps) {
   };
   return (
     <>
-      <div className="grid lg:grid-cols-2 grid-cols-1 gap:6 lg:gap-12 mt-4">
+      <div className="grid grid-cols-1 gap:6 lg:gap-12 mt-4">
         <div className="flex flex-col gap-4">
           <Typography variant="h4" className="font-bold">
             Tell us about your Job
@@ -164,37 +160,10 @@ function FirstStep(props: FirstStepProps) {
             onLogoDrop={handleCompanyLogoDrop}
             className="p-6"
           />
-        </div>
-        <div className="flex flex-col gap-4">
-          <Typography variant="h4" className="font-bold">
-            Preview of your job post!
-          </Typography>
-          <div className="border-2 border-black with-shadow py-6 px-12 rounded-xl">
-            <JobDisplay
-              job={{
-                company_offer,
-                company_about,
-                company_email,
-                company_name,
-                category_name,
-                title,
-                salary,
-                apply_link,
-                description,
-                employment_type,
-                location,
-                is_worldwide,
-                company_logo,
-              }}
-              showLearnMore={false}
-            />
-          </div>
-          <div className="flex justify-between">
-            <Button variant="black" onClick={handlePreviewClick}>
-              Preview
-            </Button>
-            <Button variant="secondary" onClick={handleContinueToPayment}>
-              Confirm & Pay
+
+          <div className="flex justify-end">
+            <Button variant="black" onClick={handleContinueToPayment}>
+              Next to preview
             </Button>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import { Button, TextField, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import CategoryService from "service/category_service";
@@ -109,7 +108,7 @@ function SignUpPage(props: SignUpPageProps) {
       const response = await AuthService.signUpEmployers(payload);
       showSuccessAlert(response.message);
       setLoading(false);
-      router.push("/auth/sign-in");
+      router.push("/auth/sign-up-success");
     } catch (error) {
       setLoading(false);
       showErrorAlert(parseErrorMessage(error));
@@ -122,7 +121,10 @@ function SignUpPage(props: SignUpPageProps) {
   return (
     <GuestLayout title="Sign Up" categories={categories}>
       <div className="max-w-5xl mx-auto p-6">
-        <Typography className="text-center font-bold mb-4" variant="h3">
+        <Typography
+          className="text-center font-bold mb-4 font-palo uppercase lg:text-7xl"
+          variant="h1"
+        >
           Create an Employer Account
         </Typography>
         <Typography className="text-center mb-4">
@@ -189,15 +191,6 @@ function SignUpPage(props: SignUpPageProps) {
                   Sign in here
                 </span>
               </Typography>
-            </div>
-            <div className="absolute bottom-0 right-0 hidden md:block">
-              <div className="relative w-56 h-80">
-                <Image
-                  src="/sign-in-ilustration.svg"
-                  fill
-                  alt="Sign in ilustration"
-                />
-              </div>
             </div>
           </form>
         </div>
