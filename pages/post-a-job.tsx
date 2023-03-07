@@ -45,8 +45,7 @@ function PostJobPage(props: PostJobPageProps) {
     user,
     defaultValue = null,
   } = props;
-  // const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
 
   const {
     setJob,
