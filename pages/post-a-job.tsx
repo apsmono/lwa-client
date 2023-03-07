@@ -19,7 +19,7 @@ import {
   Job,
 } from "service/types";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
-import { FirstStep, SecondStep } from "components/employers/post-a-job";
+import { FirstStep, PaymentPage } from "components/employers/post-a-job";
 import JobService from "service/job_service";
 import JobPreview from "components/employers/post-a-job/JobPreview";
 
@@ -45,7 +45,8 @@ function PostJobPage(props: PostJobPageProps) {
     user,
     defaultValue = null,
   } = props;
-  const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
+  // const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
+  const [step, setStep] = useState(3);
 
   const {
     setJob,
@@ -83,7 +84,7 @@ function PostJobPage(props: PostJobPageProps) {
 
   return (
     <GuestLayout title="Post a Job" categories={categories}>
-      <div className="max-w-4xl mx-auto flex flex-col gap-2 p-4">
+      <div className="max-w-6xl mx-auto flex flex-col gap-2 p-4">
         <div className="w-full rounded-full with-shadow border border-black">
           <span
             className={clsx("inline-block w-1/3 rounded-full", {
@@ -128,7 +129,7 @@ function PostJobPage(props: PostJobPageProps) {
           />
         )}
         {step === 2 && <JobPreview onSubmit={() => setStep(3)} />}
-        {step === 3 && <SecondStep packages={packages} />}
+        {step === 3 && <PaymentPage packages={packages} />}
       </div>
     </GuestLayout>
   );

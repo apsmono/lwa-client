@@ -18,9 +18,17 @@ export type JobIndustry = {
   name: string;
 };
 
+export type TPackagePerks = {
+  id: number;
+  perks: string;
+  package_id: number;
+  is_active: boolean;
+};
+
 export type Package = {
   id: number;
   name: string;
   price: number;
-  perks: string;
+  description?: string;
+  perks: TPackagePerks[];
 };

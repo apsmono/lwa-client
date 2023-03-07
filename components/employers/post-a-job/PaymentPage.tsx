@@ -13,11 +13,11 @@ import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import PackageCard from "./PackageCard";
 import useJobStore from "./store/useJobStore";
 
-interface SecondStepProps {
+interface PaymentPageProps {
   packages: Package[];
 }
 
-function SecondStep(props: SecondStepProps) {
+function PaymentPage(props: PaymentPageProps) {
   const { accessToken } = useAuthStore();
   const { packages } = props;
   const { showErrorAlert, showSuccessAlert } = useAlert();
@@ -125,32 +125,56 @@ function SecondStep(props: SecondStepProps) {
   };
   return (
     <>
-      <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-4">
+      <div className="grid grid-cols-1 gap-6 mt-4">
         <div className="flex flex-col gap-4">
           <div>
-            <Typography variant="h4" className="font-bold">
+            <Typography variant="h3" className="font-bold font-palo uppercase">
               Gain more visibility!
             </Typography>
-            <Typography className="italic">
-              Increase traffic to your listing by adding a logo, pinning it to
-              the top or adding a highlight.
-            </Typography>
           </div>
-          {packages.map((item, i) => (
-            <PackageCard
-              key={item.id}
-              lastItem={i === packages.length - 1}
-              item={item}
-              onClick={(val) => setSelectedPackage(val)}
-              isSelected={selectedPackage?.id === item.id}
-            />
-          ))}
+          <div className="grid grid-cols-3 gap-4">
+            {packages.map((item, i) => (
+              <PackageCard
+                key={item.id}
+                lastItem={i === packages.length - 1}
+                item={item}
+                onClick={(val) => setSelectedPackage(val)}
+                isSelected={selectedPackage?.id === item.id}
+              />
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <Typography variant="h4" className="font-bold lg:mb-[3.25rem]">
-            Confirmation & Pay
-          </Typography>
-
+        <Typography className="text-center font-bold">
+          Want to post more than 10+ jobs? Contact us for customised packages!
+        </Typography>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <PayPalScriptProvider
+            options={{
+              "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+            }}
+          >
+            <PayPalButtons
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [
+                    {
+                      amount: {
+                        value: parseFloat(
+                          (selectedPackage?.price || 1).toString()
+                        ).toString(),
+                      },
+                    },
+                  ],
+                });
+              }}
+              disabled={![1, 2].includes(selectedPackage?.id || 3)}
+              onApprove={(data) => {
+                return new Promise(() => {
+                  handlePaymentClick(data.orderID);
+                });
+              }}
+            />
+          </PayPalScriptProvider>
           <div className="border-2 border-black with-shadow bg-secondary-300 p-6 flex flex-col gap-3 rounded-xl">
             <Typography variant="h5" className="font-bold">
               Payment Summary
@@ -174,49 +198,21 @@ function SecondStep(props: SecondStepProps) {
             <Typography className="text-right font-bold">
               Total: ${selectedPackage?.price || 0}
             </Typography>
-          </div>
-          {selectedPackage?.id && selectedPackage.id !== 3 ? (
-            <PayPalScriptProvider
-              options={{
-                "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
-              }}
-            >
-              <PayPalButtons
-                createOrder={(data, actions) => {
-                  return actions.order.create({
-                    purchase_units: [
-                      {
-                        amount: {
-                          value: parseFloat(
-                            selectedPackage.price.toString()
-                          ).toString(),
-                        },
-                      },
-                    ],
-                  });
-                }}
-                onApprove={(data) => {
-                  return new Promise(() => {
-                    handlePaymentClick(data.orderID);
-                  });
-                }}
-              />
-            </PayPalScriptProvider>
-          ) : (
+
             <div className="flex justify-end">
               <Button
                 onClick={() => handlePaymentClick()}
-                disabled={!selectedPackage || Boolean(paymentUrl)}
+                disabled={!selectedPackage || selectedPackage.id !== 3}
                 variant="secondary"
               >
-                Confirm & Pay
+                Place your order
               </Button>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </>
   );
 }
 
-export default SecondStep;
+export default PaymentPage;
