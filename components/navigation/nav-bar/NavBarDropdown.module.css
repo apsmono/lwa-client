@@ -17,6 +17,8 @@
   visibility: visible;
   transform: scale(1);
   transition: all 0.2s ease-in-out;
+  max-height: 250px;
+  overflow-y: auto;
 }
 
 ul.dropdown-content > li:hover {

@@ -3,6 +3,7 @@ import { Button } from "components/common";
 import React from "react";
 import { X } from "react-feather";
 import { Category } from "service/types/category_type";
+import MySidebar from "../MySidebar";
 import GuestSidebarItem from "./GuestSidebarItem";
 
 interface GuestSidebarProps {
@@ -16,11 +17,10 @@ function GuestSidebar(props: Partial<GuestSidebarProps>) {
   const { open, onClose, categories = [], employersMenu = [] } = props;
 
   return (
-    <div
-      className={clsx(
-        "bg-white h-full w-72 visible fixed z-10 transition-all duration-300 overflow-y-auto lg:-translate-x-80 p-6",
-        [!open && "-translate-x-80"]
-      )}
+    <MySidebar
+      open={open}
+      backdropProps={{ onClick: onClose, className: "lg:invisible" }}
+      className="bg-white lg:-translate-x-80"
     >
       <div className="flex justify-end mb-4">
         <button onClick={onClose}>
@@ -47,7 +47,7 @@ function GuestSidebar(props: Partial<GuestSidebarProps>) {
       <Button variant="black" withShadow={false}>
         Post a Job
       </Button>
-    </div>
+    </MySidebar>
   );
 }
 

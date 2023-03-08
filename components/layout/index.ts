@@ -1,3 +1,4 @@
 import GuestLayout from "./GuestLayout";
+import EmployersLayout from "./EmployersLayout";
 
-export { GuestLayout };
+export { GuestLayout, EmployersLayout };

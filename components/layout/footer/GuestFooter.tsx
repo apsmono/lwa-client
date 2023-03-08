@@ -19,7 +19,7 @@ function GuestFooter(props: GuestFooterProps) {
     return [firstCol, secondCol];
   }, [categories]);
   return (
-    <div className="flex flex-col md:flex-row justify-between bg-black p-6 gap-8">
+    <div className="flex flex-col md:flex-row justify-between bg-black p-6 gap-8 relative z-10">
       <div>
         <Typography className="text-white font-bold mb-3" variant="h5">
           let&apos;s work anywhere

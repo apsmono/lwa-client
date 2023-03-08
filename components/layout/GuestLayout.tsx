@@ -31,10 +31,21 @@ interface GuestLayoutProps {
   categories: Category[];
   employers?: User;
   navBarProps?: { className: string };
+  sidebar?: ReactNode;
+  showLogo?: boolean;
+  className?: string;
 }
 
 function GuestLayout(props: GuestLayoutProps) {
-  const { title, children, categories, navBarProps } = props;
+  const {
+    title,
+    children,
+    showLogo = true,
+    categories,
+    navBarProps,
+    sidebar,
+    className,
+  } = props;
   const router = useRouter();
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const { showErrorAlert, showSuccessAlert } = useAlert();
@@ -141,6 +152,7 @@ function GuestLayout(props: GuestLayoutProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="relative">
+        {sidebar}
         <GuestSidebar
           categories={categories}
           onClose={() => setOpenSidebar(false)}
@@ -150,19 +162,23 @@ function GuestLayout(props: GuestLayoutProps) {
         <div>
           <div
             className={clsx(
-              "flex flex-col p-6 lg:px-24 gap-6",
+              "flex flex-col p-6 lg:px-24 gap-6 relative",
               navBarProps?.className
             )}
           >
             <div className="flex justify-between items-center">
-              <picture>
-                <img
-                  src="/lwa-logo.png"
-                  alt="Logo"
-                  className="h-12 cursor-pointer"
-                  onClick={() => router.push("/")}
-                />
-              </picture>
+              {showLogo ? (
+                <picture>
+                  <img
+                    src="/lwa-logo.png"
+                    alt="Logo"
+                    className="h-12 cursor-pointer"
+                    onClick={() => router.push("/")}
+                  />
+                </picture>
+              ) : (
+                <div />
+              )}
               <div className="hidden lg:flex gap-8 items-center">
                 <NavBarDropdown
                   title="Categories"
@@ -200,9 +216,9 @@ function GuestLayout(props: GuestLayoutProps) {
               </button>
             </div>
 
-            <div className="lg:block hidden">
+            <div className="lg:block absolute w-full inset-0 top-16 hidden z-10">
               <div
-                className={clsx("transition-all visible", {
+                className={clsx("transition-all visible w-[65%] mx-auto", {
                   "opacity-0 invisible": !openSearchBar,
                 })}
               >
@@ -218,7 +234,7 @@ function GuestLayout(props: GuestLayoutProps) {
             </div>
           </div>
 
-          {children}
+          <div className={className}>{children}</div>
         </div>
       </div>
       <GuestFooter categories={categories} employersList={employersList} />
