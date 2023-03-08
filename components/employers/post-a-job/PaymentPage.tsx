@@ -145,7 +145,9 @@ function PaymentPage(props: PaymentPageProps) {
           </div>
         </div>
         <Typography className="text-center font-bold">
-          Want to post more than 10+ jobs? Contact us for customised packages!
+          Want to post more than 10+ jobs?{" "}
+          <a href="mailto:youremail@test.com">Contact us</a> for customised
+          packages!
         </Typography>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <PayPalScriptProvider
