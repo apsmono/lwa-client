@@ -37,6 +37,7 @@ interface SelectPropsInterface {
   placeholder: string;
   showChip: boolean;
   getInputValue?: (val: any) => any;
+  buttonProps: { className: string };
 }
 
 const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
@@ -61,6 +62,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
       labelDescription,
       getInputValue = (val: any) => val,
       setFormValue,
+      buttonProps,
     } = props;
     const [value, setValue] = useState(() => {
       if (defaultValue) return defaultValue;
@@ -134,7 +136,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
           </>
         )}
         <Listbox value={value || ""} onChange={setValue} multiple={multiple}>
-          <div className="relative mt-1">
+          <div className="relative">
             {label && (
               <InputLabel
                 append={labelAppend}
@@ -148,7 +150,8 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
               <Listbox.Button
                 className={clsx(
                   "relative w-full cursor-default overflow-hidden rounded-full bg-white text-left focus:outline-none border-black border-2 pl-4 py-2",
-                  { "border-red-500": error }
+                  { "border-red-500": error },
+                  buttonProps?.className
                 )}
               >
                 <span

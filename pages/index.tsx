@@ -6,6 +6,7 @@ import JobService from "service/job_service";
 import { Category, Job } from "service/types";
 import { FeaturedJob, Jobs, PopularCategory, Subscribe } from "components/home";
 import { useRouter } from "next/router";
+import { Search } from "react-feather";
 
 interface HomePropsInterface {
   categories: Category[];
@@ -35,18 +36,36 @@ function Home(props: HomePropsInterface) {
       categories={categories}
     >
       <div className="bg-primary-500">
-        <div className="flex mb-8 justify-between p-6 items-center max-w-5xl mx-auto">
-          <div className="flex flex-col">
+        <div className="flex mb-8 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
+          <div className="flex flex-col gap-4 w-full md:w-2/3">
             <p className="font-black mb-4 text-left uppercase font-palo text-7xl">
-              Find top talent anywhere <br className="hidden md:block" /> in the
-              world
+              Find REMOTE WORK TODAY
             </p>
             <Typography className="mb-4">
-              Making your job search easier by connecting you with companies{" "}
-              <br />
-              that offer you the freedom to work at home or abroad
+              Your gateway to the best remote jobs from trusted companies and
+              employers. Explore our wide range of categories including
+              programming, design, customer service, and more. Find your dream
+              job and work remotely!
             </Typography>
-            <div className="flex gap-4">
+            <div className="flex">
+              <TextField
+                className="rounded-r-none"
+                containerProps={{ className: "flex-1" }}
+                inputPrefix={
+                  <button>
+                    <Search size={18} />
+                  </button>
+                }
+              />
+              <Select
+                options={categories}
+                renderOption={(opt) => opt.name}
+                buttonProps={{ className: "rounded-l-none border-l-0" }}
+                placeholder="Categories"
+                className="w-36"
+              />
+            </div>
+            {/* <div className="flex gap-4">
               <Button
                 variant="secondary"
                 onClick={() => router.push("/post-a-job")}
@@ -56,11 +75,11 @@ function Home(props: HomePropsInterface) {
               <Button variant="black" onClick={() => router.push("/jobs")}>
                 Search Job
               </Button>
-            </div>
+            </div> */}
           </div>
-          <div className="hidden md:block relative w-80 h-[400px]">
+          <div className="hidden md:block w-1/3">
             <picture>
-              <img src="/home-illustration.png" alt="" />
+              <img src="/home-ilustration.png" alt="" className="w-full" />
             </picture>
           </div>
         </div>

@@ -20,6 +20,7 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   rounded: boolean;
   withShadow: boolean;
   inputSuffix: ReactNode;
+  inputPrefix: ReactNode;
   containerProps?: HTMLAttributes<HTMLDivElement>;
 }
 
@@ -38,6 +39,7 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
       labelAppend,
       labelDescription,
       inputSuffix,
+      inputPrefix,
       containerProps,
       ...otherProps
     } = props;
@@ -67,10 +69,16 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
               [error && "border border-red-500"],
               [rounded && "rounded-full"],
               [!rounded && "rounded-lg"],
-              [withShadow && "with-shadow"]
+              [withShadow && "with-shadow"],
+              [inputPrefix && "pl-9"]
             )}
             {...registerAttr}
           />
+          {inputPrefix ? (
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 pl-4 flex justify-center">
+              {inputPrefix}
+            </div>
+          ) : null}
           {inputSuffix ? (
             <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-4 flex justify-center">
               {inputSuffix}
