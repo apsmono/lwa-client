@@ -32,7 +32,7 @@ interface GuestLayoutProps {
   employers?: User;
   navBarProps?: { className: string };
   sidebar?: ReactNode;
-  showLogo?: boolean;
+  customLogo?: ReactNode;
   className?: string;
 }
 
@@ -40,7 +40,7 @@ function GuestLayout(props: GuestLayoutProps) {
   const {
     title,
     children,
-    showLogo = true,
+    customLogo,
     categories,
     navBarProps,
     sidebar,
@@ -167,7 +167,7 @@ function GuestLayout(props: GuestLayoutProps) {
             )}
           >
             <div className="flex justify-between items-center">
-              {showLogo ? (
+              {!customLogo ? (
                 <picture>
                   <img
                     src="/lwa-logo.png"
@@ -177,7 +177,7 @@ function GuestLayout(props: GuestLayoutProps) {
                   />
                 </picture>
               ) : (
-                <div />
+                customLogo
               )}
               <div className="hidden lg:flex gap-8 items-center">
                 <NavBarDropdown

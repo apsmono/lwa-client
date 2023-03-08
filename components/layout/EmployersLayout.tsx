@@ -1,5 +1,6 @@
 import { EmployersSidebar } from "components/navigation";
 import React, { ReactNode, useState } from "react";
+import { Menu } from "react-feather";
 import { Category, User } from "service/types";
 import GuestLayout from "./GuestLayout";
 
@@ -18,12 +19,16 @@ function EmployersLayout(props: IEmployersLayoutProps) {
   };
   return (
     <GuestLayout
-      showLogo={false}
       categories={categories}
       employers={employers}
       title={title}
       className="lg:ml-72 p-6"
       sidebar={<EmployersSidebar onClose={onSidebarClose} open={open} />}
+      customLogo={
+        <button onClick={() => setOpen(true)}>
+          <Menu />
+        </button>
+      }
     >
       {children}
     </GuestLayout>

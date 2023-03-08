@@ -19,7 +19,7 @@ function MySidebar(props: IMySidebarProps) {
     <>
       <div
         className={clsx(
-          "h-full w-72 visible fixed inset-0 z-10 transition-all duration-300 overflow-y-auto p-6",
+          "h-full w-72 visible absolute inset-0 z-10 transition-all duration-300 overflow-y-auto p-6",
           [!open && "-translate-x-80"],
           className
         )}

@@ -79,6 +79,7 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
       open={open}
       backdropProps={{ onClick: onClose, className: "lg:invisible" }}
       className="bg-secondary-100 lg:translate-x-0"
+      withBackdrop
     >
       <div className="flex flex-col p-4 gap-6">
         <picture>
