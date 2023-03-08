@@ -9,6 +9,7 @@ export type Job = {
   employment_type_id: number;
   is_worldwide: boolean;
   location: string;
+  location_id: number;
   salary: string;
   description: string;
   status: string;

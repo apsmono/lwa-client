@@ -19,7 +19,7 @@ import {
   Job,
 } from "service/types";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
-import { FirstStep, PaymentPage } from "components/employers/post-a-job";
+import { JobFormPage, PaymentPage } from "components/employers/post-a-job";
 import JobService from "service/job_service";
 import JobPreview from "components/employers/post-a-job/JobPreview";
 
@@ -119,7 +119,7 @@ function PostJobPage(props: PostJobPageProps) {
           </Typography>
         </div>
         {step === 1 && (
-          <FirstStep
+          <JobFormPage
             categories={categories}
             employmentTypes={employmentTypes}
             languages={languages}
@@ -127,7 +127,9 @@ function PostJobPage(props: PostJobPageProps) {
             onSubmit={() => setStep(2)}
           />
         )}
-        {step === 2 && <JobPreview onSubmit={() => setStep(3)} />}
+        {step === 2 && (
+          <JobPreview onSubmit={() => setStep(3)} onBack={() => setStep(1)} />
+        )}
         {step === 3 && <PaymentPage packages={packages} />}
       </div>
     </GuestLayout>

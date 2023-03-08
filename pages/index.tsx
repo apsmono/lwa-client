@@ -77,7 +77,7 @@ function Home(props: HomePropsInterface) {
               </Button>
             </div> */}
           </div>
-          <div className="hidden md:block w-1/3">
+          <div className="hidden md:block w-1/3 pl-8">
             <picture>
               <img src="/home-ilustration.png" alt="" className="w-full" />
             </picture>

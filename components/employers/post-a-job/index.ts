@@ -1,4 +1,4 @@
-import FirstStep from "./FirstStep";
+import JobFormPage from "./JobFormPage";
 import PaymentPage from "./PaymentPage";
 
-export { FirstStep, PaymentPage };
+export { JobFormPage, PaymentPage };

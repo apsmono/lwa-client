@@ -5,10 +5,11 @@ import useJobStore from "./store/useJobStore";
 
 interface IJobPreviewProps {
   onSubmit?: () => void;
+  onBack?: () => void;
 }
 
 function JobPreview(props: IJobPreviewProps) {
-  const { onSubmit } = props;
+  const { onSubmit, onBack } = props;
   const {
     company_name,
     company_about,
@@ -26,7 +27,7 @@ function JobPreview(props: IJobPreviewProps) {
   } = useJobStore();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mb-48">
       <div className="border-2 border-black with-shadow py-6 px-12 rounded-xl">
         <JobDisplay
           job={{
@@ -47,7 +48,10 @@ function JobPreview(props: IJobPreviewProps) {
           showLearnMore={false}
         />
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <Button onClick={onBack} variant="black">
+          Back
+        </Button>
         <Button onClick={onSubmit} variant="black">
           Confirm & Pay
         </Button>

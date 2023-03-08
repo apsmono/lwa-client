@@ -25,7 +25,7 @@ interface JobFormProps {
   languages: LanguageType[];
   employmentTypes: EmploymentType[];
   locations: LocationType[];
-  defaultValue: Partial<Company>;
+  defaultValue: Partial<Job>;
   className: string;
 }
 
@@ -51,9 +51,24 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     initialValue?.is_worldwide || undefined
   );
 
-  const [selectedCategory, setSelectedCategory] = useState<Category>();
-  const [selectedEmploymentType, setSelectedEmploymentType] =
-    useState<EmploymentType>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    Category | undefined
+  >(() => {
+    if (defaultValue.category_id)
+      return categories.filter(
+        (item) => item.id === defaultValue.category_id
+      )[0];
+    return undefined;
+  });
+  const [selectedEmploymentType, setSelectedEmploymentType] = useState<
+    EmploymentType | undefined
+  >(() => {
+    if (defaultValue.employment_type_id)
+      return employmentTypes.filter(
+        (item) => item.id === defaultValue.employment_type_id
+      )[0];
+    return undefined;
+  });
   const [selectedLocation, setSelectedLocation] = useState<LocationType>();
 
   const {
@@ -87,7 +102,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           ...getValues(),
           is_worldwide: isWorldwide,
           category_name: selectedCategory?.name || "",
-          location: selectedLocation?.name || "",
+          location: isWorldwide ? "Worldwide" : selectedLocation?.name || "",
           employment_type: selectedEmploymentType?.name || "",
         };
         return job;

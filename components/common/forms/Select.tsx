@@ -71,6 +71,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
 
       return null;
     });
+    useEffect(() => {}, [getOptionSelected]);
     const [query, setQuery] = useState("");
     const registerAttr = register ? register(name ?? "") : {};
 

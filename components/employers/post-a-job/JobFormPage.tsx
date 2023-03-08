@@ -19,7 +19,7 @@ import { JobForm } from "../job";
 import { JobFormRef } from "../job/JobForm";
 import useJobStore from "./store/useJobStore";
 
-interface FirstStepProps {
+interface JobFormPageProps {
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   languages: LanguageType[];
@@ -27,7 +27,7 @@ interface FirstStepProps {
   onSubmit: () => void;
 }
 
-function FirstStep(props: FirstStepProps) {
+function JobFormPage(props: JobFormPageProps) {
   const { categories, employmentTypes, languages, locations, onSubmit } = props;
 
   const {
@@ -128,7 +128,7 @@ function FirstStep(props: FirstStepProps) {
   };
   return (
     <>
-      <div className="grid grid-cols-1 gap:6 lg:gap-12 mt-4">
+      <div className="grid grid-cols-1 gap:6 lg:gap-12 mt-4 mb-48">
         <div className="flex flex-col gap-4">
           <Typography variant="h4" className="font-bold">
             Tell us about your Job
@@ -140,6 +140,17 @@ function FirstStep(props: FirstStepProps) {
             categories={categories}
             ref={jobFormRef}
             className="p-6"
+            defaultValue={{
+              apply_link,
+              category_id,
+              is_worldwide,
+              location_id,
+              skill,
+              salary,
+              title,
+              employment_type_id,
+              description,
+            }}
           />
 
           <Typography variant="h4" className="font-bold mt-8">
@@ -172,4 +183,4 @@ function FirstStep(props: FirstStepProps) {
   );
 }
 
-export default FirstStep;
+export default JobFormPage;
