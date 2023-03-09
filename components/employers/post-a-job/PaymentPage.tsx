@@ -132,7 +132,7 @@ function PaymentPage(props: PaymentPageProps) {
               Gain more visibility!
             </Typography>
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {packages.map((item, i) => (
               <PackageCard
                 key={item.id}
