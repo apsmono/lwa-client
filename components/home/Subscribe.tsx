@@ -9,7 +9,7 @@ interface ISubscribeProps {
 function Subscribe(props: ISubscribeProps) {
   const { categories } = props;
   return (
-    <div className="bg-primary-500 px-6">
+    <div className="bg-primary-500 px-6 border-t-2 border-black">
       <div className="max-w-5xl flex justify-center mx-auto py-12">
         <div className="flex flex-col justify-center gap-2">
           <Typography variant="h3" className="font-bold">

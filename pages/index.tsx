@@ -35,7 +35,7 @@ function Home(props: HomePropsInterface) {
       title="Home"
       categories={categories}
     >
-      <div className="bg-primary-500">
+      <div className="bg-primary-500 border-b-2 border-black">
         <div className="flex mb-8 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
           <div className="flex flex-col gap-4 w-full md:w-2/3">
             <p className="font-black mb-4 text-left uppercase font-palo text-7xl">
@@ -65,22 +65,25 @@ function Home(props: HomePropsInterface) {
                 className="w-36"
               />
             </div>
-            {/* <div className="flex gap-4">
-              <Button
-                variant="secondary"
-                onClick={() => router.push("/post-a-job")}
-              >
-                Post Job
-              </Button>
-              <Button variant="black" onClick={() => router.push("/jobs")}>
-                Search Job
-              </Button>
-            </div> */}
           </div>
           <div className="hidden md:block w-1/3 pl-8">
             <picture>
               <img src="/home-ilustration.png" alt="" className="w-full" />
             </picture>
+          </div>
+        </div>
+        <div className="relative container mx-auto">
+          <div className="absolute right-2 bottom-4 hidden md:block">
+            <a href="mailto:mock@email.com" className="flex gap-2 items-center">
+              <div>
+                <div className="bg-white rounded-lg py-1 px-4 border border-black">
+                  Ask Us!
+                </div>
+              </div>
+              <picture>
+                <img src="/square-msg.svg" alt="Square msg" className="w-16" />
+              </picture>
+            </a>
           </div>
         </div>
       </div>
