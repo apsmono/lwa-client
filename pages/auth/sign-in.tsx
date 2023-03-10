@@ -62,6 +62,7 @@ function SignInPage(props: SignInPageProps) {
         response.data;
       Cookies.set("accessToken", accessToken);
       Cookies.set("refreshToken", refreshToken);
+
       setAuth({
         accessToken,
         refreshToken,
@@ -80,7 +81,7 @@ function SignInPage(props: SignInPageProps) {
   };
   return (
     <GuestLayout title="Sign In" categories={categories}>
-      <div className="max-w-5xl mx-auto p-6">
+      <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
         <Typography className="text-center font-bold mb-4" variant="h3">
           Sign in to your Employers Account
         </Typography>

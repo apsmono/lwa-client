@@ -1,1 +1,1 @@
-export const ROUTE_EMPLOYERS_DASHBOARD = "/employers/dashboars";
+export const ROUTE_EMPLOYERS_DASHBOARD = "/employers/dashboard";

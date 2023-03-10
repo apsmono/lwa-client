@@ -8,7 +8,7 @@ interface IEmployersLayoutProps {
   title: string;
   children: ReactNode;
   categories: Category[];
-  employers?: User;
+  employers: User;
   navBarProps?: { className: string };
 }
 function EmployersLayout(props: IEmployersLayoutProps) {
@@ -22,8 +22,14 @@ function EmployersLayout(props: IEmployersLayoutProps) {
       categories={categories}
       employers={employers}
       title={title}
-      className="lg:ml-72 p-6"
-      sidebar={<EmployersSidebar onClose={onSidebarClose} open={open} />}
+      className="lg:ml-72 p-6 min-h-[70vh]"
+      sidebar={
+        <EmployersSidebar
+          employers={employers}
+          onClose={onSidebarClose}
+          open={open}
+        />
+      }
       customLogo={
         <button onClick={() => setOpen(true)}>
           <Menu />

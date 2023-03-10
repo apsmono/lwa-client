@@ -13,4 +13,10 @@ export default class CompanyService {
   static async get(id: number) {
     return sendAndHandleRequest(`/companies/${id}`, "get");
   }
+
+  static async getCompanyJobs(id: number, payload = {}) {
+    const params = new URLSearchParams(payload).toString();
+
+    return sendAndHandleRequest(`/companies/${id}/jobs?${params}`, "get");
+  }
 }

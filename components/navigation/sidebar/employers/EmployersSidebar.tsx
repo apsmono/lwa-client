@@ -7,20 +7,22 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useMemo } from "react";
 import { AuthService } from "service/auth_service";
-import { Category } from "service/types";
+import { Category, User } from "service/types";
 import useAuthStore from "store/useAuthStore";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
+import { CompanyLogo } from "components/employers/company";
 import MySidebar from "../MySidebar";
 
 interface IEmployersSidebarProps {
   open: boolean;
   onClose: () => void;
+  employers: User;
 }
 
 function EmployersSidebar(props: IEmployersSidebarProps) {
-  const { open, onClose } = props;
+  const { open, onClose, employers } = props;
   const router = useRouter();
   const { setLoading } = useContext(AppContext);
   const { setAuth } = useAuthStore();
@@ -87,8 +89,8 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
         </picture>
 
         <div className="flex gap-2 items-center">
-          <div className="rounded-full w-12 h-12 bg-white" />
-          <Typography className="font-bold">Lee</Typography>
+          <CompanyLogo src={employers.company?.company_logo} />
+          <Typography className="font-bold">{employers.name}</Typography>
         </div>
 
         <ul className="flex flex-col gap-4">

@@ -40,6 +40,7 @@ const useJobStore = create<JobState>((set) => {
     location_id: defaultValue.location_id,
     language_id: defaultValue.language_id || [],
     order_id: "",
+    click_counts: 0,
     setJob: (val: Partial<Job>) => {
       set((state) => ({
         ...state,

@@ -15,6 +15,7 @@ import {
   Select,
   Autocomplete,
 } from "./forms";
+import MyPopOver from "./MyPopOver";
 
 export {
   Loader,
@@ -32,4 +33,5 @@ export {
   Autocomplete,
   UnauthorizedModal,
   Chip,
+  MyPopOver,
 };
