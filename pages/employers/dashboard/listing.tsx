@@ -3,23 +3,29 @@ import { PageTitle } from "components/common/dashboard";
 import { ListingItem } from "components/employers/listing";
 import { EmployersLayout } from "components/layout";
 import { GetServerSideProps } from "next";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { ChevronRight } from "react-feather";
 import { AuthService } from "service/auth_service";
 import CategoryService from "service/category_service";
 import CompanyService from "service/company_service";
 import { Category, Job, User } from "service/types";
+import { parseErrorMessage } from "utils/api";
+import useAlert from "utils/hooks/useAlert";
 
 interface IManageListingPageProps {
   categories: Category[];
   user: User;
   jobs: Job[];
-  pagination: { totalItems: number; page: number };
+  pagination: { totalItems: number; page: string };
 }
 
 function ManageListingPage(props: IManageListingPageProps) {
   const { categories, user, jobs: defaultJobs, pagination } = props;
   const [status, setStatus] = useState("open");
   const [jobs, setJobs] = useState(defaultJobs);
+  const [title, setTitle] = useState("");
+  const [sorting, setSorting] = useState<any>(null);
+  const { showErrorAlert } = useAlert();
 
   const [pageData, setPageData] = useState({
     totalItems: pagination.totalItems,
@@ -30,6 +36,51 @@ function ManageListingPage(props: IManageListingPageProps) {
     () => Math.ceil((pageData?.totalItems || 1) / 5),
     [pageData?.totalItems]
   );
+
+  const fetchData = useCallback(async () => {
+    try {
+      const params: any = {
+        limit: 5,
+        offset: pageData.page,
+      };
+      if (title) params.title = title;
+      if (sorting?.val) {
+        params.sort_by = sorting.val;
+        params.sort_direction = "DESC";
+      }
+      if ((+pageData.page || 0) <= 0 || +pageData.page > totalPages)
+        throw new Error("Page is invalid");
+      const response = await CompanyService.getCompanyJobs(
+        user.company!.id,
+        params
+      );
+      return response;
+    } catch (error) {
+      if (error instanceof Error) {
+        showErrorAlert(error.message);
+      } else {
+        showErrorAlert(parseErrorMessage(error));
+      }
+      return { data: [], page: { page: 1, totalItems: 1 } };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, pageData.page, totalPages, sorting]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      (async () => {
+        const response = await fetchData();
+        setJobs(response.data as Job[]);
+        setPageData({
+          ...pageData,
+          totalItems: response.page.totalItems as number,
+        });
+      })();
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, pageData.page, sorting]);
   return (
     <EmployersLayout
       categories={categories}
@@ -60,18 +111,32 @@ function ManageListingPage(props: IManageListingPageProps) {
         </div>
 
         <div className="flex gap-2 items-end">
-          <TextField rounded={false} placeholder="Search job" />
+          <TextField
+            rounded={false}
+            placeholder="Search job"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <Select
             label="Sort by"
             rounded={false}
-            options={[{ val: "created_at", label: "Date Posted" }]}
+            options={[
+              { val: "created_at", label: "Most Recent" },
+              { val: "click_counts", label: "Most Relevant" },
+            ]}
+            onChange={(val) => setSorting(val)}
             renderOption={(opt) => opt.label}
-            className="w-36"
+            className="w-40"
           />
         </div>
       </div>
 
       <div className="border-2 p-4 rounded-lg border-black flex flex-col gap-4">
+        {!jobs.length ? (
+          <Typography className="text-center font-bold">
+            No data available
+          </Typography>
+        ) : null}
         {jobs.map((job) => (
           <ListingItem key={job.id} job={job as Job} />
         ))}
@@ -86,12 +151,23 @@ function ManageListingPage(props: IManageListingPageProps) {
           onChange={(e) =>
             setPageData({
               ...pageData,
-              page: +e.target.value,
+              page: e.target.value,
             })
           }
           type="number"
         />{" "}
         <Typography>/ {totalPages}</Typography>
+        <button
+          disabled={+pageData.page >= totalPages}
+          onClick={() =>
+            setPageData({
+              ...pageData,
+              page: (+pageData.page + 1).toString(),
+            })
+          }
+        >
+          <ChevronRight />
+        </button>
       </div>
     </EmployersLayout>
   );
