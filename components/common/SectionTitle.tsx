@@ -7,7 +7,10 @@ interface SectionTitleProps {
 
 function SectionTitle({ children }: SectionTitleProps) {
   return (
-    <Typography variant="h4" className="font-bold text-center mb-4">
+    <Typography
+      variant="h2"
+      className="font-bold text-center mb-4 font-palo uppercase"
+    >
       {children}
     </Typography>
   );

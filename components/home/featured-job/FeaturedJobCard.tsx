@@ -43,6 +43,9 @@ function FeaturedJobCard(props: FeaturedJobCard) {
         />
         <Feature icon={<Clock size={14} />} title={job.employment_type} />
       </div>
+      <div className="px-4 rounded-full border border-black mt-4 bg-white">
+        {job.category_name}
+      </div>
     </div>
   );
 }

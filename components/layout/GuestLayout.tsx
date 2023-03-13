@@ -114,6 +114,16 @@ function GuestLayout(props: GuestLayoutProps) {
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [employers]);
+  const usefulLinks = useMemo(() => {
+    return [
+      { title: "Blog", route: "/blog" },
+      { title: "FAQ", route: "/faq" },
+      { title: "Terms and Conditions", route: "/terms-and-conditions" },
+      { title: "Community Guidelines", route: "/community-guidelines" },
+      { title: "Privacy", route: "/privacy" },
+      { title: "Why Let's Work Anywhere?", route: "/why-lets-work-anywhere" },
+    ];
+  }, []);
   const [jobTitle, setJobTitle] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -237,7 +247,11 @@ function GuestLayout(props: GuestLayoutProps) {
           <div className={className}>{children}</div>
         </div>
       </div>
-      <GuestFooter categories={categories} employersList={employersList} />
+      <GuestFooter
+        categories={categories}
+        usefulLinks={usefulLinks}
+        employersList={employersList}
+      />
       <Backdrop
         show={openSidebar}
         onClick={() => setOpenSidebar(false)}

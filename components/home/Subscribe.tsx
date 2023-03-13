@@ -1,15 +1,19 @@
+import clsx from "clsx";
 import { Button, Select, TextField, Typography } from "components/common";
 import React from "react";
 import { Category } from "service/types";
 
 interface ISubscribeProps {
   categories: Category[];
+  className?: string;
 }
 
 function Subscribe(props: ISubscribeProps) {
-  const { categories } = props;
+  const { categories, className } = props;
   return (
-    <div className="bg-primary-500 px-6 border-t-2 border-black">
+    <div
+      className={clsx("bg-primary-500 px-6 border-t-2 border-black", className)}
+    >
       <div className="max-w-5xl flex justify-center mx-auto py-12">
         <div className="flex flex-col justify-center gap-2">
           <Typography variant="h3" className="font-bold">

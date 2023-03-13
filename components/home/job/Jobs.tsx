@@ -4,16 +4,18 @@ import { AppContext } from "context/appContext";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import JobService from "service/job_service";
-import { Job } from "service/types";
+import { Category, Job } from "service/types";
+import Subscribe from "../Subscribe";
 import JobCard from "./JobCard";
 
 interface JobsProps {
   jobs: Job[];
   totalItems: number;
+  categories: Category[];
 }
 
 function Jobs(props: JobsProps) {
-  const { jobs, totalItems } = props;
+  const { jobs, totalItems, categories } = props;
   const router = useRouter();
   const [items, setItems] = useState(jobs);
   const [offset, setOffset] = useState(2);
@@ -39,10 +41,18 @@ function Jobs(props: JobsProps) {
   return (
     <div className="flex flex-col">
       <SectionTitle>Jobs</SectionTitle>
-      {items.map((job) => (
-        <div className="mb-4" key={job.id}>
-          <JobCard onClick={() => handleClick(job)} job={job} />
-        </div>
+      {items.map((job, i) => (
+        <React.Fragment key={job.id}>
+          <div className="mb-4">
+            <JobCard onClick={() => handleClick(job)} job={job} />
+          </div>
+          {(i + 1) % 10 === 0 ? (
+            <Subscribe
+              className="mb-4 rounded-lg border-2 border-black"
+              categories={categories}
+            />
+          ) : null}
+        </React.Fragment>
       ))}
       {totalItems > items.length && (
         <div className="flex justify-center">

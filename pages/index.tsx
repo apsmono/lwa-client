@@ -11,21 +11,12 @@ import { Search } from "react-feather";
 interface HomePropsInterface {
   categories: Category[];
   featuredJobs: Job[];
-  popularCategories: Category[];
   jobs: Job[];
   totalJobs: number;
-  totalPopularCategories: number;
 }
 
 function Home(props: HomePropsInterface) {
-  const {
-    categories,
-    featuredJobs,
-    popularCategories,
-    jobs,
-    totalJobs,
-    totalPopularCategories,
-  } = props;
+  const { categories, featuredJobs, jobs, totalJobs } = props;
 
   const router = useRouter();
 
@@ -91,14 +82,9 @@ function Home(props: HomePropsInterface) {
         <div className="mb-12">
           <FeaturedJob jobs={featuredJobs} />
         </div>
+
         <div className="mb-6">
-          <PopularCategory
-            totalItems={totalPopularCategories}
-            categories={popularCategories}
-          />
-        </div>
-        <div className="mb-6">
-          <Jobs jobs={jobs} totalItems={totalJobs} />
+          <Jobs categories={categories} jobs={jobs} totalItems={totalJobs} />
         </div>
       </div>
       <Subscribe categories={categories} />
