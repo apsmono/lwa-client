@@ -64,7 +64,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
       getInputValue = (val: any) => val,
       setFormValue,
       buttonProps,
-      rounded = true,
+      rounded = false,
     } = props;
     const [value, setValue] = useState(() => {
       if (defaultValue) return defaultValue;

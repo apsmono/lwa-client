@@ -1,10 +1,18 @@
 import clsx from "clsx";
 import React, { ButtonHTMLAttributes } from "react";
 
+export type TButtonVariant =
+  | "primary"
+  | "secondary"
+  | "danger"
+  | "link"
+  | "black"
+  | "white";
+
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size: "sm" | "md" | "lg";
   rounded: boolean;
-  variant: "primary" | "secondary" | "danger" | "link" | "black" | "white";
+  variant: TButtonVariant;
   block: boolean;
   isLoading: boolean;
   withShadow: boolean;
@@ -55,7 +63,7 @@ function Button(props: Partial<ButtonProps>) {
       arrClassNames.push("bg-secondary-500 hover:bg-secondary-600");
       break;
     case "danger":
-      arrClassNames.push("bg-red-500 hover:bg-red-600");
+      arrClassNames.push("bg-red-500 hover:bg-red-600 text-white");
       break;
     case "link":
       arrClassNames.push(

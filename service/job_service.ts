@@ -25,4 +25,8 @@ export default class JobService {
   static async getJobTemp(token: string) {
     return sendAndHandleRequest(`/jobs/temp/${token}`, "get");
   }
+
+  static async deleteJob(jobId: number) {
+    return sendAndHandleRequest(`/jobs/${jobId}`, "delete");
+  }
 }

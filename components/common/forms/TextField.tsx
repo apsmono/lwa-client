@@ -33,7 +33,7 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
       register,
       error = false,
       helperText,
-      rounded = true,
+      rounded = false,
       labelClassName,
       withShadow = false,
       labelAppend,
