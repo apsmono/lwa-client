@@ -197,10 +197,10 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
                         key={index}
                         className={({ active, selected }) =>
                           clsx(
-                            "relative cursor-pointer select-none py-2 px-4",
-                            {
-                              "bg-secondary-600 text-white": active || selected,
-                            },
+                            "relative cursor-pointer select-none py-2 px-4 text-center",
+                            // {
+                            //   "bg-secondary-600 text-white": active || selected,
+                            // },
                             { "text-gray-900": !active && !selected }
                           )
                         }
@@ -212,7 +212,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
                               className={clsx(
                                 "block truncate",
                                 {
-                                  "font-medium": active || selected,
+                                  "font-medium underline": active || selected,
                                 },
                                 { "font-normal": !active && !selected }
                               )}

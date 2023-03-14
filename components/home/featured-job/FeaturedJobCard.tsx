@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { Typography } from "components/common";
 import Image from "next/image";
 import React from "react";
-import { Clock, MapPin } from "react-feather";
 import { Job } from "service/types";
 import Feature from "./Feature";
 
@@ -32,18 +31,20 @@ function FeaturedJobCard(props: FeaturedJobCard) {
       </Typography>
       <Typography>{job.company_name}</Typography>
       <div className="flex mt-1 gap-2">
-        {job.is_worldwide && (
-          <Feature icon={<MapPin size={14} />} title="Worldwide" />
-        )}
         <Feature
-          icon={
-            <Image src="/dollar-circle.svg" alt="$" width={14} height={14} />
-          }
+          icon={<Typography variant="small">🌏</Typography>}
+          title={job.is_worldwide ? "Worldwide" : job.location}
+        />
+        <Feature
+          icon={<Typography variant="small">💰</Typography>}
           title={job.salary}
         />
-        <Feature icon={<Clock size={14} />} title={job.employment_type} />
+        <Feature
+          icon={<Typography variant="small">🕛</Typography>}
+          title={job.employment_type}
+        />
       </div>
-      <div className="px-4 rounded-full border border-black mt-4 bg-white">
+      <div className="px-4 rounded-full border border-black mt-4 bg-w">
         {job.category_name}
       </div>
     </div>

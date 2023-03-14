@@ -2,9 +2,7 @@ import clsx from "clsx";
 import { Typography } from "components/common";
 import { CompanyLogo } from "components/employers/company";
 import Feature from "components/home/featured-job/Feature";
-import Image from "next/image";
 import React from "react";
-import { Clock, MapPin } from "react-feather";
 import { Job } from "service/types";
 
 interface JobSnippetProps {
@@ -29,19 +27,20 @@ function JobSnippet(props: Partial<JobSnippetProps>) {
           {job?.company_name || "-"}
         </p>
         <div className="flex mt-1 gap-2 flex-wrap">
-          <Feature icon={<MapPin size={14} />} title={job?.location || "-"} />
           <Feature
-            icon={
-              <Image src="/dollar-circle.svg" alt="$" width={14} height={14} />
-            }
+            icon={<Typography variant="small">🌏</Typography>}
+            title={job?.is_worldwide ? "Worldwide" : job?.location || "-"}
+          />
+          <Feature
+            icon={<Typography variant="small">💰</Typography>}
             title={job?.salary || "-"}
           />
           <Feature
-            icon={<Clock size={14} />}
+            icon={<Typography variant="small">🕛</Typography>}
             title={job?.employment_type || "-"}
           />
-          <div className="px-4 py-1 border border-black rounded-full">
-            <Typography className="text-xs">
+          <div className="px-4 py-1 bg-white border border-black rounded-full flex items-center">
+            <Typography variant="small" className="text-xs">
               {job?.category_name || "-"}
             </Typography>
           </div>

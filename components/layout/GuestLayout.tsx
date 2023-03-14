@@ -5,6 +5,7 @@ import NavBarDropdown from "components/navigation/nav-bar/NavBarDropdown";
 import { AppContext } from "context/appContext";
 import Cookies from "js-cookie";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, {
   FormEvent,
@@ -191,7 +192,7 @@ function GuestLayout(props: GuestLayoutProps) {
               )}
               <div className="hidden lg:flex gap-8 items-center">
                 <NavBarDropdown
-                  title="Categories"
+                  title="✨ Categories"
                   list={categories.map((item) => ({
                     title: item.name,
                     route: `/jobs?category_id=${item.id}`,
@@ -207,11 +208,14 @@ function GuestLayout(props: GuestLayoutProps) {
                     setOpenSearchBar(!openSearchBar);
                   }}
                 >
-                  <Typography>Search Job</Typography>
+                  <Typography>🔍 Advanced Search Job</Typography>
                 </button>
-                <NavBarDropdown title="Employers" list={employersList} />
+                <Link href="/blog">
+                  <Typography>✍️ Blog</Typography>
+                </Link>
+                <NavBarDropdown title="💼 Employers" list={employersList} />
                 <Button
-                  variant="black"
+                  variant="secondary"
                   withShadow={false}
                   onClick={() => router.push("/post-a-job")}
                 >

@@ -32,8 +32,8 @@ function JobCard(props: JobCardProps) {
         </Typography>
         {showStatus && (
           <div className="flex justify-end">
-            <div className="py-1 px-2 border border-black rounded-full">
-              <Typography className="text-xs">
+            <div className="py-1 px-4 border border-black rounded-full bg-white">
+              <Typography className="text-xs font-medium">
                 {job.is_featured ? "FEATURED" : "NEW"}
               </Typography>
             </div>
