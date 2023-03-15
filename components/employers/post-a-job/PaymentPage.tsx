@@ -1,33 +1,28 @@
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { Button, Typography } from "components/common";
-import { AppContext } from "context/appContext";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
-import JobService from "service/job_service";
+
+import React, { useEffect, useState } from "react";
+import { Job } from "service/types";
 import { Package } from "service/types/master_data_type";
-import useAuthStore from "store/useAuthStore";
-import { parseErrorMessage } from "utils/api";
-import useAlert from "utils/hooks/useAlert";
-import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import PackageCard from "./PackageCard";
 import useJobStore from "./store/useJobStore";
 
 interface PaymentPageProps {
   packages: Package[];
+  onSubmit: (val: Partial<Job>) => void;
 }
 
 function PaymentPage(props: PaymentPageProps) {
-  const { accessToken } = useAuthStore();
-  const { packages } = props;
-  const { showErrorAlert, showSuccessAlert } = useAlert();
-  const [paymentUrl, setPaymentUrl] = useState("");
+  const { packages, onSubmit } = props;
   const [selectedPackage, setSelectedPackage] = useState<Package>();
-  const { setLoading } = useContext(AppContext);
-  const wrappedCreateItem = useWrapHandleInvalidToken((params: any) =>
-    JobService.create(params)
-  );
-  const router = useRouter();
+
+  useEffect(() => {
+    if (selectedPackage) {
+      Cookies.set("package_id", selectedPackage.id.toString());
+    }
+  }, [selectedPackage]);
+
   const {
     title,
     apply_link,
@@ -36,7 +31,6 @@ function PaymentPage(props: PaymentPageProps) {
     is_worldwide,
     salary,
     description,
-    package_id,
     company_name,
     company_headquarter,
     company_url,
@@ -45,83 +39,38 @@ function PaymentPage(props: PaymentPageProps) {
     company_about,
     employment_type_id,
     location_id,
-    setJob,
     company_logo,
   } = useJobStore();
 
-  useEffect(() => {
-    if (selectedPackage) {
-      setJob({ package_id: selectedPackage.id });
+  const handlePaymentClick = async (
+    order_id: string = "",
+    packageId: number
+  ) => {
+    const job: any = {
+      title,
+      order_id,
+      apply_link,
+      category_id,
+      skill,
+      employment_type_id,
+      is_worldwide,
+      salary,
+      description,
+      package_id: packageId,
+    };
+    if (!is_worldwide) {
+      job.location_id = location_id;
     }
-  }, [selectedPackage, setJob]);
-  const handlePaymentClick = async (order_id: string = "") => {
-    try {
-      const job: any = {
-        title,
-        order_id,
-        apply_link,
-        category_id,
-        skill,
-        employment_type_id,
-        is_worldwide,
-        salary,
-        description,
-        package_id,
-      };
-      if (!is_worldwide) {
-        job.location_id = location_id;
-      }
-
-      const company = {
-        company_name,
-        company_headquarter,
-        company_url,
-        company_about,
-        company_email,
-        company_offer,
-        company_logo,
-      };
-      setLoading(true);
-      const response = await wrappedCreateItem({ ...job, ...company });
-      showSuccessAlert(response.message);
-      const { payment_url } = response.data;
-      setPaymentUrl(payment_url);
-      setLoading(false);
-      if (payment_url) {
-        window.location = payment_url;
-        return;
-      }
-      setJob({
-        apply_link: "",
-        category_id: 0,
-        category_name: "",
-        company_about: "",
-        company_email: "",
-        company_headquarter: "",
-        company_id: 0,
-        company_logo: "",
-        company_name: "",
-        company_offer: "",
-        company_url: "",
-        description: "",
-        employment_type: "",
-        employment_type_id: 0,
-        is_featured: false,
-        is_worldwide: false,
-        location: "",
-        package_id: 0,
-        salary: "",
-        skill: "",
-        status: "",
-        timezone: "",
-        title: "",
-      });
-      Cookies.remove("job");
-      router.replace("/");
-    } catch (error) {
-      showErrorAlert(parseErrorMessage(error));
-      setLoading(false);
-    }
+    const company = {
+      company_name,
+      company_headquarter,
+      company_url,
+      company_about,
+      company_email,
+      company_offer,
+      company_logo,
+    };
+    onSubmit({ ...job, ...company, order_id });
   };
   return (
     <>
@@ -165,14 +114,20 @@ function PaymentPage(props: PaymentPageProps) {
                           (selectedPackage?.price || 1).toString()
                         ).toString(),
                       },
+                      custom_id: Cookies.get("package_id"),
                     },
                   ],
                 });
               }}
               disabled={![1, 2].includes(selectedPackage?.id || 3)}
-              onApprove={(data) => {
+              onApprove={async (data, action) => {
+                const captured = await action.order?.capture();
+                console.log({ captured });
                 return new Promise(() => {
-                  handlePaymentClick(data.orderID);
+                  handlePaymentClick(
+                    data.orderID,
+                    +captured!.purchase_units[0]!.custom_id!
+                  );
                 });
               }}
             />
@@ -203,7 +158,7 @@ function PaymentPage(props: PaymentPageProps) {
 
             <div className="flex justify-end">
               <Button
-                onClick={() => handlePaymentClick()}
+                onClick={() => handlePaymentClick("", selectedPackage!.id)}
                 disabled={!selectedPackage || selectedPackage.id !== 3}
                 variant="secondary"
               >

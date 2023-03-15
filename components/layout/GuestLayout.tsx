@@ -198,18 +198,9 @@ function GuestLayout(props: GuestLayoutProps) {
                     route: `/jobs?category_id=${item.id}`,
                   }))}
                 />
-                <button
-                  onClick={() => {
-                    if (!openSearchBar) {
-                      setTimeout(() => {
-                        inputRef.current?.focus();
-                      }, 100);
-                    }
-                    setOpenSearchBar(!openSearchBar);
-                  }}
-                >
-                  <Typography>🔍 Advanced Search Job</Typography>
-                </button>
+                <Link href="/jobs">
+                  <Typography>🔍 Advanced Search</Typography>
+                </Link>
                 <Link href="/blog">
                   <Typography>✍️ Blog</Typography>
                 </Link>

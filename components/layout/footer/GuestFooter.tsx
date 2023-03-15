@@ -23,25 +23,28 @@ function GuestFooter(props: GuestFooterProps) {
   return (
     <div className="flex flex-col md:flex-row justify-between bg-black p-6 gap-8 relative z-10">
       <div>
-        <Typography className="text-white font-bold mb-3" variant="h5">
+        <Typography
+          className="text-white font-bold mb-3 font-palo uppercase"
+          variant="h2"
+        >
           let&apos;s work anywhere
         </Typography>
         <div className="flex gap-2">
           <IconButton contained color="secondary">
-            <Instagram color="black" size={18} />
+            <Instagram color="black" size={24} />
           </IconButton>
           <IconButton contained color="primary">
-            <div className="relative w-[18px] h-[18px]">
+            <div className="relative w-[24px] h-[24px]">
               <Image src="/linkedin.png" fill alt="Linkedin" />
             </div>
           </IconButton>
           <IconButton contained color="secondary">
-            <div className="relative w-[18px] h-[18px]">
+            <div className="relative w-[24px] h-[24px]">
               <Image src="/twitter.png" fill alt="Linkedin" />
             </div>
           </IconButton>
           <IconButton contained color="primary">
-            <div className="relative w-[18px] h-[18px]">
+            <div className="relative w-[24px] h-[24px]">
               <Image src="/facebook.png" fill alt="Linkedin" />
             </div>
           </IconButton>

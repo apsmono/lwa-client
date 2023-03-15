@@ -28,15 +28,15 @@ function JobSnippet(props: Partial<JobSnippetProps>) {
         </p>
         <div className="flex mt-1 gap-2 flex-wrap">
           <Feature
-            icon={<Typography variant="small">🌏</Typography>}
+            icon={<Typography>🌏</Typography>}
             title={job?.is_worldwide ? "Worldwide" : job?.location || "-"}
           />
           <Feature
-            icon={<Typography variant="small">💰</Typography>}
+            icon={<Typography>💰</Typography>}
             title={job?.salary || "-"}
           />
           <Feature
-            icon={<Typography variant="small">🕛</Typography>}
+            icon={<Typography>🕛</Typography>}
             title={job?.employment_type || "-"}
           />
           <div className="px-4 py-1 bg-white border border-black rounded-full flex items-center">

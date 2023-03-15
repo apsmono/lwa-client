@@ -16,7 +16,6 @@ import React, {
 import CategoryService from "service/category_service";
 import EmploymentTypeService from "service/employment_type_service";
 import JobService from "service/job_service";
-import LanguageService from "service/languages_service";
 import LocationService from "service/location_service";
 import { Category, EmploymentType, Job, LocationType } from "service/types";
 
@@ -110,7 +109,6 @@ function JobListPage(props: JobListPageProps) {
 
   const employmentTypeRef = useRef<SelectRefType>(null);
   const locationRef = useRef<SelectRefType>(null);
-  const languageRef = useRef<SelectRefType>(null);
   const categoriesListRef = useRef<SelectRefType>(null);
 
   return (
@@ -125,7 +123,11 @@ function JobListPage(props: JobListPageProps) {
               {category.description}
             </Typography>
           </>
-        ) : null}
+        ) : (
+          <h1 className="font-black text-center font-palo uppercase text-7xl mb-3">
+            Jobs
+          </h1>
+        )}
         <form onSubmit={handleSubmit}>
           <TextField
             placeholder="Search Job"
@@ -143,6 +145,7 @@ function JobListPage(props: JobListPageProps) {
             renderOption={(val) => val?.label}
             onChange={(val) => setSorting(val)}
             className="sm:w-36 w-full"
+            alignment="center"
           />
           <Select
             placeholder="Date posted"
@@ -155,6 +158,7 @@ function JobListPage(props: JobListPageProps) {
             renderOption={(val) => val.label}
             className="sm:w-36 w-full"
             onChange={(val) => setDatePosted(val)}
+            alignment="center"
           />
           <Select
             multiple
@@ -164,6 +168,7 @@ function JobListPage(props: JobListPageProps) {
             onChange={(val) => setEmploymentType(val)}
             className="sm:w-36 w-full"
             ref={employmentTypeRef}
+            alignment="center"
           />
           <Select
             multiple
@@ -173,6 +178,7 @@ function JobListPage(props: JobListPageProps) {
             onChange={(val) => setLocation(val)}
             className="sm:w-36 w-full"
             ref={locationRef}
+            alignment="center"
           />
           <Select
             multiple
@@ -182,6 +188,7 @@ function JobListPage(props: JobListPageProps) {
             className="sm:w-36 w-full"
             ref={categoriesListRef}
             onChange={(val) => setCategoriesList(val)}
+            alignment="center"
           />
           <div className="flex gap-2 flex-wrap w-full">
             {employmentType.map((et, i) => (

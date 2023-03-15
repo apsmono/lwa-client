@@ -1,16 +1,14 @@
 import { Button, Typography } from "components/common";
 import { AppContext } from "context/appContext";
-import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import React, { useContext, useRef } from "react";
 import CompanyService from "service/company_service";
 import {
   Category,
   EmploymentType,
+  Job,
   LanguageType,
   LocationType,
 } from "service/types";
-import useAuthStore from "store/useAuthStore";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import { CompanyForm } from "../company";
@@ -24,11 +22,17 @@ interface JobFormPageProps {
   employmentTypes: EmploymentType[];
   languages: LanguageType[];
   categories: Category[];
-  onSubmit: () => void;
+  onSubmit?: (val: Partial<Job>) => void;
 }
 
 function JobFormPage(props: JobFormPageProps) {
-  const { categories, employmentTypes, languages, locations, onSubmit } = props;
+  const {
+    categories,
+    employmentTypes,
+    languages,
+    locations,
+    onSubmit = (val) => {},
+  } = props;
 
   const {
     company_name,
@@ -54,8 +58,6 @@ function JobFormPage(props: JobFormPageProps) {
 
   const jobFormRef = useRef<JobFormRef>(null);
   const companyFormRef = useRef<CompanyFormRef>(null);
-  const { accessToken } = useAuthStore();
-  const router = useRouter();
 
   const { showErrorAlert } = useAlert();
   const { setLoading } = useContext(AppContext);
@@ -76,37 +78,31 @@ function JobFormPage(props: JobFormPageProps) {
       companyFormRef.current?.submitForm(),
     ]);
     handlePreviewClick();
-    if (!accessToken) {
-      const job: any = {
-        title,
-        order_id,
-        apply_link,
-        category_id,
-        skill,
-        employment_type_id,
-        is_worldwide,
-        salary,
-        description,
-      };
-      if (!is_worldwide) {
-        job.location_id = location_id;
-      }
-
-      const company = {
-        company_name,
-        company_headquarter,
-        company_url,
-        company_about,
-        company_email,
-        company_offer,
-        company_logo,
-      };
-      Cookies.set("job", JSON.stringify({ ...job, ...company }));
-      showErrorAlert("Please sign in first");
-      router.push("/auth/sign-in");
-      return;
+    const job: any = {
+      title,
+      order_id,
+      apply_link,
+      category_id,
+      skill,
+      employment_type_id,
+      is_worldwide,
+      salary,
+      description,
+    };
+    if (!is_worldwide) {
+      job.location_id = location_id;
     }
-    onSubmit();
+
+    const company = {
+      company_name,
+      company_headquarter,
+      company_url,
+      company_about,
+      company_email,
+      company_offer,
+      company_logo,
+    };
+    onSubmit({ ...job, ...company });
   };
 
   const handleCompanyLogoDrop = async (file: File) => {
@@ -121,7 +117,6 @@ function JobFormPage(props: JobFormPageProps) {
       setJob({ company_logo: filePath });
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));
-      console.log(error);
     } finally {
       setLoading(false);
     }

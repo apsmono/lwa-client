@@ -15,7 +15,7 @@ function FeaturedJobCard(props: FeaturedJobCard) {
   return (
     <div
       className={clsx(
-        "w-60 py-4 bg-secondary-500 rounded-xl border-2 border-black flex items-center flex-col cursor-pointer mb-2 hover:with-shadow transition-all"
+        "w-72 py-4 bg-secondary-500 rounded-xl border-2 border-black flex items-center flex-col cursor-pointer mb-2 hover:with-shadow transition-all"
       )}
       onClick={onClick}
     >
@@ -30,21 +30,21 @@ function FeaturedJobCard(props: FeaturedJobCard) {
         {job.title}
       </Typography>
       <Typography>{job.company_name}</Typography>
-      <div className="flex mt-1 gap-2">
+      <div className="flex mt-1 gap-2 px-4 flex-wrap justify-center">
         <Feature
-          icon={<Typography variant="small">🌏</Typography>}
+          icon={<Typography variant="body">🌏</Typography>}
           title={job.is_worldwide ? "Worldwide" : job.location}
         />
         <Feature
-          icon={<Typography variant="small">💰</Typography>}
+          icon={<Typography variant="body">💰</Typography>}
           title={job.salary}
         />
         <Feature
-          icon={<Typography variant="small">🕛</Typography>}
+          icon={<Typography variant="body">🕛</Typography>}
           title={job.employment_type}
         />
       </div>
-      <div className="px-4 rounded-full border border-black mt-4 bg-w">
+      <div className="px-4 rounded-full border border-black mt-4 bg-w bg-white">
         {job.category_name}
       </div>
     </div>

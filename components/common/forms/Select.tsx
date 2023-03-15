@@ -39,6 +39,7 @@ interface SelectPropsInterface {
   getInputValue?: (val: any) => any;
   buttonProps: { className: string };
   rounded?: boolean;
+  alignment?: "left" | "right" | "center";
 }
 
 const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
@@ -65,6 +66,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
       setFormValue,
       buttonProps,
       rounded = false,
+      alignment = "left",
     } = props;
     const [value, setValue] = useState(() => {
       if (defaultValue) return defaultValue;
@@ -76,6 +78,12 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
     useEffect(() => {}, [getOptionSelected]);
     const [query, setQuery] = useState("");
     const registerAttr = register ? register(name ?? "") : {};
+
+    const alignmentStyles = {
+      left: "text-left",
+      right: "text-right",
+      center: "text-center",
+    };
 
     useImperativeHandle(
       ref,
@@ -197,10 +205,11 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
                         key={index}
                         className={({ active, selected }) =>
                           clsx(
-                            "relative cursor-pointer select-none py-2 px-4 text-center",
+                            "relative cursor-pointer select-none py-2 px-4",
                             // {
                             //   "bg-secondary-600 text-white": active || selected,
                             // },
+                            alignmentStyles[alignment],
                             { "text-gray-900": !active && !selected }
                           )
                         }

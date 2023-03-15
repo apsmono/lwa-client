@@ -1,6 +1,9 @@
 import clsx from "clsx";
 import { Typography } from "components/common";
-import { ROUTE_EMPLOYERS_DASHBOARD } from "config/routes";
+import {
+  ROUTE_EMPLOYERS_DASHBOARD,
+  ROUTE_EMPLOYERS_LISTING,
+} from "config/routes";
 import { AppContext } from "context/appContext";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -32,9 +35,8 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
     () => [
       {
         title: "Manage Listings",
-        href: `${ROUTE_EMPLOYERS_DASHBOARD}/listing`,
+        href: ROUTE_EMPLOYERS_LISTING,
       },
-      { title: "Candidates", href: `${ROUTE_EMPLOYERS_DASHBOARD}/candidates` },
       { title: "Post a Job", href: `${ROUTE_EMPLOYERS_DASHBOARD}/post-a-job` },
       { title: "Analytics", href: `${ROUTE_EMPLOYERS_DASHBOARD}/analytics` },
       {
