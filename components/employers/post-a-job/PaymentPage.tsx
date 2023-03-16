@@ -122,7 +122,7 @@ function PaymentPage(props: PaymentPageProps) {
               disabled={![1, 2].includes(selectedPackage?.id || 3)}
               onApprove={async (data, action) => {
                 const captured = await action.order?.capture();
-                console.log({ captured });
+
                 return new Promise(() => {
                   handlePaymentClick(
                     data.orderID,

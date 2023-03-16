@@ -63,20 +63,6 @@ function Home(props: HomePropsInterface) {
             </picture>
           </div>
         </div>
-        <div className="relative container mx-auto">
-          <div className="absolute right-2 bottom-4 hidden md:block">
-            <a href="mailto:mock@email.com" className="flex gap-2 items-center">
-              <div>
-                <div className="bg-white rounded-lg py-1 px-4 border border-black">
-                  Ask Us!
-                </div>
-              </div>
-              <picture>
-                <img src="/square-msg.svg" alt="Square msg" className="w-16" />
-              </picture>
-            </a>
-          </div>
-        </div>
       </div>
       <div className="md:px-6 p-6 max-w-5xl mx-auto">
         <div className="mb-12">

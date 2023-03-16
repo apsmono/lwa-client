@@ -7,12 +7,12 @@ import { Package } from "service/types";
 interface PackageCardProps {
   item: Package;
   lastItem?: boolean;
-  onClick: (item: Package) => void;
+  onClick?: (item: Package) => void;
   isSelected?: boolean;
 }
 
 function PackageCard(props: PackageCardProps) {
-  const { item, onClick, lastItem, isSelected } = props;
+  const { item, onClick = (item) => {}, lastItem, isSelected } = props;
   return (
     <div
       className={clsx(
@@ -37,7 +37,7 @@ function PackageCard(props: PackageCardProps) {
         {item.perks.map((perk) => {
           return (
             <li key={perk.id} className="flex gap-2 items-center">
-              <picture>
+              <picture className="w-4">
                 <img
                   alt="Check"
                   src={

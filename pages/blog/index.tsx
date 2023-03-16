@@ -2,7 +2,7 @@ import { Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
-import { AuthService } from "service/auth_service";
+
 import CategoryService from "service/category_service";
 import { Category } from "service/types";
 import { dateFormat } from "utils/date";
@@ -25,7 +25,7 @@ function BlogPage(props: IBlogPageProps) {
           BLOG
         </Typography>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {arr.map((item) => (
             <div key={item}>
               <picture>
@@ -66,13 +66,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
   const res = await Promise.all([CategoryService.gets()]);
   props.categories = res[0].data;
-  try {
-    const user = (await AuthService.fetchMe(context)).data?.user || null;
-
-    props.user = user;
-  } catch (error) {
-    props.user = null;
-  }
 
   return {
     props,
