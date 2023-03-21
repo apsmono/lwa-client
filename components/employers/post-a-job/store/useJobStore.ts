@@ -26,7 +26,7 @@ const initialState = {
   is_worldwide: true,
   location: "",
   package_id: 0,
-  salary: "",
+  salary: 0,
   skill: "",
   status: "",
   timezone: "",
