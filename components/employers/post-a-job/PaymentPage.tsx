@@ -1,175 +1,239 @@
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { Button, Typography } from "components/common";
+import {
+  PayPalScriptProvider,
+  PayPalHostedFieldsProvider,
+  PayPalHostedField,
+} from "@paypal/react-paypal-js";
+import { InputLabel, TextField, Typography } from "components/common";
 import Cookies from "js-cookie";
 
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import PaymentService from "service/payment_service";
 import { Job } from "service/types";
 import { Package } from "service/types/master_data_type";
-import PackageCard from "./PackageCard";
+import PackageList from "./PackageList";
+import PaypalPaymentButton from "./payment/PaypalPaymentButton";
+import SubmitPayment, { TSubmitPaymentRef } from "./payment/SubmitPayment";
 import useJobStore from "./store/useJobStore";
 
 interface PaymentPageProps {
   packages: Package[];
+  clientToken: string;
   onSubmit: (val: Partial<Job>) => void;
 }
 
-function PaymentPage(props: PaymentPageProps) {
-  const { packages, onSubmit } = props;
-  const [selectedPackage, setSelectedPackage] = useState<Package>();
+const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
+  (props, ref) => {
+    const { packages, onSubmit, clientToken } = props;
 
-  useEffect(() => {
-    if (selectedPackage) {
-      Cookies.set("package_id", selectedPackage.id.toString());
-    }
-  }, [selectedPackage]);
+    const submitPaymentRef = useRef<TSubmitPaymentRef>(null);
 
-  const {
-    title,
-    apply_link,
-    category_id,
-    skill,
-    is_worldwide,
-    salary,
-    description,
-    company_name,
-    company_headquarter,
-    company_url,
-    company_email,
-    company_offer,
-    company_about,
-    employment_type_id,
-    location_id,
-    company_logo,
-  } = useJobStore();
+    useImperativeHandle(
+      ref,
+      () => ({
+        setLoading: (val) => {
+          submitPaymentRef.current?.setLoading(val);
+        },
+        showErrorAlert: (msg) => {
+          submitPaymentRef.current?.showErrorAlert(msg);
+        },
+        showSuccessAlert: (msg) => {
+          submitPaymentRef.current?.showSuccessAlert(msg);
+        },
+      }),
+      [submitPaymentRef]
+    );
 
-  const handlePaymentClick = async (
-    order_id: string = "",
-    packageId: number
-  ) => {
-    const job: any = {
+    const {
       title,
-      order_id,
       apply_link,
       category_id,
       skill,
-      employment_type_id,
       is_worldwide,
       salary,
       description,
-      package_id: packageId,
-    };
-    if (!is_worldwide) {
-      job.location_id = location_id;
-    }
-    const company = {
       company_name,
       company_headquarter,
       company_url,
-      company_about,
       company_email,
       company_offer,
+      company_about,
+      employment_type_id,
+      location_id,
       company_logo,
+    } = useJobStore();
+
+    const handlePaymentClick = async (
+      order_id: string = "",
+      packageId: number
+    ) => {
+      const job: any = {
+        title,
+        order_id,
+        apply_link,
+        category_id,
+        skill,
+        employment_type_id,
+        is_worldwide,
+        salary,
+        description,
+        package_id: packageId,
+      };
+      if (!is_worldwide) {
+        job.location_id = location_id;
+      }
+      const company = {
+        company_name,
+        company_headquarter,
+        company_url,
+        company_about,
+        company_email,
+        company_offer,
+        company_logo,
+      };
+      onSubmit({ ...job, ...company, order_id });
     };
-    onSubmit({ ...job, ...company, order_id });
-  };
-  return (
-    <>
-      <div className="grid grid-cols-1 gap-6 mt-4">
-        <div className="flex flex-col gap-4">
-          <div>
-            <Typography variant="h3" className="font-bold font-palo uppercase">
-              Gain more visibility!
-            </Typography>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {packages.map((item, i) => (
-              <PackageCard
-                key={item.id}
-                lastItem={i === packages.length - 1}
-                item={item}
-                onClick={(val) => setSelectedPackage(val)}
-                isSelected={selectedPackage?.id === item.id}
-              />
-            ))}
-          </div>
-        </div>
-        <Typography className="text-center font-bold">
-          Want to post more than 10+ jobs?{" "}
-          <a href="mailto:youremail@test.com">Contact us</a> for customised
-          packages!
-        </Typography>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <PayPalScriptProvider
-            options={{
-              "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+    return (
+      <>
+        <PayPalScriptProvider
+          options={{
+            "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+            "data-client-token": clientToken,
+            components: "hosted-fields,buttons",
+            intent: "capture",
+          }}
+        >
+          <PayPalHostedFieldsProvider
+            createOrder={async () => {
+              const { data } = await PaymentService.createOrder(
+                +(Cookies.get("package_id") || 0)
+              );
+
+              return data.id;
+            }}
+            styles={{
+              input: {
+                "font-family": "Poppins, sans-serif",
+                "font-size": "16px",
+              },
             }}
           >
-            <PayPalButtons
-              createOrder={(data, actions) => {
-                return actions.order.create({
-                  purchase_units: [
-                    {
-                      amount: {
-                        value: parseFloat(
-                          (selectedPackage?.price || 1).toString()
-                        ).toString(),
-                      },
-                      custom_id: Cookies.get("package_id"),
-                    },
-                  ],
-                });
-              }}
-              disabled={![1, 2].includes(selectedPackage?.id || 3)}
-              onApprove={async (data, action) => {
-                const captured = await action.order?.capture();
-
-                return new Promise(() => {
-                  handlePaymentClick(
-                    data.orderID,
-                    +captured!.purchase_units[0]!.custom_id!
-                  );
-                });
-              }}
-            />
-          </PayPalScriptProvider>
-          <div className="border-2 border-black with-shadow bg-secondary-300 p-6 flex flex-col gap-3 rounded-xl">
-            <Typography variant="h5" className="font-bold">
-              Payment Summary
-            </Typography>
-            <div className="flex justify-between border-b border-black">
-              <Typography>1x Job Post</Typography>
-              <Typography className="font-bold">
-                ${selectedPackage?.price || 0}
+            <div className="grid grid-cols-1 gap-6 mt-4">
+              <div className="flex flex-col gap-4">
+                <div>
+                  <Typography
+                    variant="h3"
+                    className="font-bold font-palo uppercase"
+                  >
+                    Gain more visibility!
+                  </Typography>
+                </div>
+                <PackageList packages={packages} />
+              </div>
+              <Typography className="text-center font-bold">
+                Want to post more than 10+ jobs?{" "}
+                <a href="mailto:youremail@test.com">Contact us</a> for
+                customised packages!
               </Typography>
-            </div>
-            <div className="flex justify-between">
-              <Typography>Subtotal:</Typography>
-              <Typography className="font-bold">
-                ${selectedPackage?.price || 0}
-              </Typography>
-            </div>
-            <div className="flex justify-between border-b border-black">
-              <Typography>Discount:</Typography>
-              <Typography className="font-bold">$0</Typography>
-            </div>
-            <Typography className="text-right font-bold">
-              Total: ${selectedPackage?.price || 0}
-            </Typography>
 
-            <div className="flex justify-end">
-              <Button
-                onClick={() => handlePaymentClick("", selectedPackage!.id)}
-                disabled={!selectedPackage || selectedPackage.id !== 3}
-                variant="secondary"
-              >
-                Place your order
-              </Button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="border-2 p-4 rounded-lg border-black">
+                  <PaypalPaymentButton onApprove={handlePaymentClick} />
+
+                  <Typography
+                    className="font-medium text-center my-2"
+                    variant="h4"
+                  >
+                    OR
+                  </Typography>
+                  <Typography variant="small">
+                    Safe money transfer using your bank account Visa, Maestro,
+                    Discover American Express, etc.
+                  </Typography>
+
+                  <TextField label="Name on Card" placeholder="Type Here" />
+
+                  <div className="mb-3">
+                    <InputLabel htmlFor="card-number">Card Number</InputLabel>
+                    <div className="relative">
+                      <PayPalHostedField
+                        id="card-number"
+                        className="border-2 rounded-lg border-black px-4 h-11"
+                        hostedFieldType="number"
+                        options={{
+                          selector: "#card-number",
+                          placeholder: "4111 1111 1111 1111",
+                        }}
+                      />
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                        <picture>
+                          <img src="/cc-logo.png" alt="CC" />
+                        </picture>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
+                    <div className="mb-3">
+                      <InputLabel htmlFor="expiration-date">
+                        Expiry Date
+                      </InputLabel>
+                      <PayPalHostedField
+                        id="expiration-date"
+                        className="border-2 rounded-lg border-black px-4 h-11"
+                        hostedFieldType="expirationDate"
+                        options={{
+                          selector: "#expiration-date",
+                          placeholder: "MM/YYYY",
+                        }}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <InputLabel htmlFor="cvv">CVV</InputLabel>
+                      <PayPalHostedField
+                        id="cvv"
+                        className="border-2 rounded-lg border-black px-4 h-11"
+                        hostedFieldType="cvv"
+                        options={{
+                          selector: "#cvv",
+                          placeholder: "123",
+                          maskInput: true,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
+                    <div className="mb-3">
+                      <TextField label="Country" />
+                    </div>
+                    <div className="mb-3">
+                      <InputLabel htmlFor="expiration-date">
+                        Postcode
+                      </InputLabel>
+                      <PayPalHostedField
+                        id="postal-code"
+                        className="border-2 rounded-lg border-black px-4 h-11"
+                        hostedFieldType="postalCode"
+                        options={{
+                          selector: "#postal-code",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <SubmitPayment
+                    ref={submitPaymentRef}
+                    onClick={handlePaymentClick}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
+          </PayPalHostedFieldsProvider>
+        </PayPalScriptProvider>
+      </>
+    );
+  }
+);
+
+PaymentPage.displayName = "PaymentPage";
 
 export default PaymentPage;

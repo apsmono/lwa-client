@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useRef,
   useState,
 } from "react";
 import {
@@ -13,14 +14,16 @@ import {
 } from "service/types";
 import JobFormPage from "./JobFormPage";
 import JobPreview from "./JobPreview";
+import { TSubmitPaymentRef } from "./payment/SubmitPayment";
 import PaymentPage from "./PaymentPage";
 import useJobStore from "./store/useJobStore";
 
 export type TCreateJobWizardRef = {
   setWizardStep: (step: number) => void;
-};
+} & TSubmitPaymentRef;
 
 interface ICreateJobWizardProps {
+  clientToken: string;
   initialStep?: number;
   onStepChange?: (step: number) => void;
   categories: Category[];
@@ -44,9 +47,11 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
       onSubmit,
       defaultValue,
       onContinueToPayment,
+      clientToken,
     } = props;
 
     const [step, setStep] = useState(initialStep);
+    const paymentPageRef = useRef<TSubmitPaymentRef>(null);
 
     const { setJob, company_name } = useJobStore();
 
@@ -55,6 +60,15 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
       () => ({
         setWizardStep: (num) => {
           setStep(num);
+        },
+        setLoading: (val) => {
+          paymentPageRef.current?.setLoading(val);
+        },
+        showErrorAlert: (msg) => {
+          paymentPageRef.current?.showErrorAlert(msg);
+        },
+        showSuccessAlert: (msg) => {
+          paymentPageRef.current?.showSuccessAlert(msg);
         },
       }),
       []
@@ -94,7 +108,14 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
         {step === 2 && (
           <JobPreview onSubmit={() => setStep(3)} onBack={() => setStep(1)} />
         )}
-        {step === 3 && <PaymentPage onSubmit={onSubmit} packages={packages} />}
+        {step === 3 && (
+          <PaymentPage
+            clientToken={clientToken}
+            onSubmit={onSubmit}
+            packages={packages}
+            ref={paymentPageRef}
+          />
+        )}
       </>
     );
   }

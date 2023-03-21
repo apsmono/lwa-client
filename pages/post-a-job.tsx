@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { AuthService } from "service/auth_service";
 import CategoryService from "service/category_service";
 import EmploymentTypeService from "service/employment_type_service";
@@ -19,14 +19,14 @@ import {
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { CreateJobWizard } from "components/employers/post-a-job";
 import JobService from "service/job_service";
-import { AppContext } from "context/appContext";
 import useAlert from "utils/hooks/useAlert";
-import { parseErrorMessage } from "utils/api";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import useAuthStore from "store/useAuthStore";
 import { TCreateJobWizardRef } from "components/employers/post-a-job/CreateJobWizard";
+import PaymentService from "service/payment_service";
+import { parseErrorMessage } from "utils/api";
 
 interface PostJobPageProps {
   categories: Category[];
@@ -36,6 +36,7 @@ interface PostJobPageProps {
   user?: User;
   currentStep?: string;
   defaultValue?: Partial<Job>;
+  clientToken: string;
 }
 
 function PostJobPage(props: PostJobPageProps) {
@@ -47,10 +48,11 @@ function PostJobPage(props: PostJobPageProps) {
     locations,
     packages,
     employmentTypes,
+    clientToken,
   } = props;
   const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
-  const { setLoading } = useContext(AppContext);
-  const { showErrorAlert, showSuccessAlert } = useAlert();
+
+  const { showErrorAlert } = useAlert();
   const router = useRouter();
 
   const {
@@ -69,8 +71,9 @@ function PostJobPage(props: PostJobPageProps) {
 
     const jobCookies = Cookies.get("job")
       ? JSON.parse(Cookies.get("job")!)
-      : {};
+      : null;
 
+    console.log({ jobCookies });
     if (jobCookies) {
       return {
         apply_link: jobCookies.apply_link,
@@ -128,15 +131,18 @@ function PostJobPage(props: PostJobPageProps) {
 
   const handleSubmit = async (val: Partial<Job>) => {
     try {
-      setLoading(true);
+      formWizardRef.current?.setLoading(true);
       const response = await wrappedCreateItem({ ...val });
-      showSuccessAlert(response.message);
+      formWizardRef.current?.showSuccessAlert(response.message);
       reset();
       Cookies.remove("job");
-      router.replace("/");
+
+      setTimeout(() => {
+        router.replace("/");
+      }, 1000);
     } catch (error) {
-      showErrorAlert(parseErrorMessage(error));
-      setLoading(false);
+      formWizardRef.current?.showErrorAlert(parseErrorMessage(error));
+      formWizardRef.current?.setLoading(false);
     }
   };
 
@@ -198,6 +204,7 @@ function PostJobPage(props: PostJobPageProps) {
           defaultValue={defaultValue}
           employmentTypes={employmentTypes}
           onContinueToPayment={onContinueToPayment}
+          clientToken={clientToken}
         />
       </div>
     </GuestLayout>
@@ -213,11 +220,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     LocationService.gets(),
     EmploymentTypeService.gets(),
     PackageService.gets(),
+    PaymentService.getClientToken(),
   ]);
   props.categories = res[0].data;
   props.locations = res[1].data;
   props.employmentTypes = res[2].data;
   props.packages = res[3].data;
+  props.clientToken = res[4].data.client_token;
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;
 

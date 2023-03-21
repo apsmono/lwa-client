@@ -10,7 +10,7 @@ export type Job = {
   is_worldwide: boolean;
   location: string;
   location_id: number;
-  salary: string;
+  salary: number;
   description: string;
   status: string;
   is_featured: boolean;

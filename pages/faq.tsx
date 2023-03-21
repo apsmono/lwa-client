@@ -80,7 +80,7 @@ function FaqPage(props: IFaqPageProps) {
           "Our job board take measures to protect the privacy and security of their users. Read the job board's privacy policy to learn more about our data protection practices.",
       },
     ];
-  }, []);
+  }, [packages]);
   return (
     <GuestLayout title="Faq" categories={categories}>
       <Typography

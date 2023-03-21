@@ -4,6 +4,7 @@ import { CompanyLogo } from "components/employers/company";
 import Feature from "components/home/featured-job/Feature";
 import React from "react";
 import { Job } from "service/types";
+import { currencyFormat, CURRENCY_FORMAT_DEFAULT_CONFIG } from "utils/number";
 
 interface JobSnippetProps {
   job: Partial<Job>;
@@ -33,7 +34,10 @@ function JobSnippet(props: Partial<JobSnippetProps>) {
           />
           <Feature
             icon={<Typography>💰</Typography>}
-            title={job?.salary || "-"}
+            title={currencyFormat(job?.salary || 0, {
+              ...CURRENCY_FORMAT_DEFAULT_CONFIG,
+              notation: "compact",
+            })}
           />
           <Feature
             icon={<Typography>🕛</Typography>}

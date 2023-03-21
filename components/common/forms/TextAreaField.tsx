@@ -37,7 +37,7 @@ const TextAreaField = forwardRef<
   } = props;
   const registerAttr = register ? register(props.name ?? "") : {};
   return (
-    <div className="mb-4">
+    <div className="mb-3">
       {label && (
         <InputLabel
           description={labelDescription}

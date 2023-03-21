@@ -1,24 +1,23 @@
 import { PageTitle } from "components/common/dashboard";
 import { CreateJobWizard } from "components/employers/post-a-job";
+import { TCreateJobWizardRef } from "components/employers/post-a-job/CreateJobWizard";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { EmployersLayout } from "components/layout";
 import { ROUTE_EMPLOYERS_LISTING } from "config/routes";
-import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import React, { useRef, useState } from "react";
 import { AuthService } from "service/auth_service";
 import CategoryService from "service/category_service";
 import EmploymentTypeService from "service/employment_type_service";
 import JobService from "service/job_service";
-import LanguageService from "service/languages_service";
 import LocationService from "service/location_service";
 import PackageService from "service/package_service";
+import PaymentService from "service/payment_service";
 import {
   Category,
   EmploymentType,
   Job,
-  LanguageType,
   LocationType,
   Package,
   User,
@@ -33,10 +32,18 @@ interface IPostJobPageProps {
   employmentTypes: EmploymentType[];
   packages: Package[];
   user: User;
+  clientToken: string;
 }
 
 function PostJobPage(props: IPostJobPageProps) {
-  const { categories, employmentTypes, locations, packages, user } = props;
+  const {
+    categories,
+    employmentTypes,
+    locations,
+    clientToken,
+    packages,
+    user,
+  } = props;
   const [defaultValue] = useState((): Partial<Job> => {
     const { company } = user;
     return { ...company };
@@ -49,21 +56,21 @@ function PostJobPage(props: IPostJobPageProps) {
   const wrappedCreateItem = useWrapHandleInvalidToken((params: any) =>
     JobService.create(params)
   );
+  const formWizardRef = useRef<TCreateJobWizardRef>(null);
 
-  const { setLoading } = useContext(AppContext);
-  const { showErrorAlert, showSuccessAlert } = useAlert();
+  const { showErrorAlert } = useAlert();
 
   const handleSubmit = async (val: Partial<Job>) => {
     try {
-      setLoading(true);
+      formWizardRef.current?.setLoading(true);
       const response = await wrappedCreateItem(val);
-      showSuccessAlert(response.message);
-      setLoading(false);
+      formWizardRef.current?.showSuccessAlert(response.message);
+
       reset();
       router.replace(ROUTE_EMPLOYERS_LISTING);
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));
-      setLoading(false);
+      formWizardRef.current?.setLoading(false);
     }
   };
   return (
@@ -74,6 +81,8 @@ function PostJobPage(props: IPostJobPageProps) {
     >
       <PageTitle>Post a Job</PageTitle>
       <CreateJobWizard
+        clientToken={clientToken}
+        ref={formWizardRef}
         onSubmit={handleSubmit}
         locations={locations}
         packages={packages}
@@ -94,11 +103,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     LocationService.gets(),
     EmploymentTypeService.gets(),
     PackageService.gets(),
+    PaymentService.getClientToken(),
   ]);
   props.categories = res[0].data;
   props.locations = res[1].data;
   props.employmentTypes = res[2].data;
   props.packages = res[3].data;
+  props.clientToken = res[4].data.client_token;
+
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;
 

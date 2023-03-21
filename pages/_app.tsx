@@ -6,7 +6,6 @@ import { AlertContext } from "context/alertContext";
 import { Alert, Loader, UnauthorizedModal } from "components/common";
 import { AppContext } from "context/appContext";
 import { AuthContext } from "context/authContext";
-
 export default function App({ Component, pageProps }: AppProps) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");

@@ -6,7 +6,7 @@ import {
   TextAreaField,
   TextField,
 } from "components/common";
-import { Radio } from "components/common/forms";
+import { CurrencyField, Radio } from "components/common/forms";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -105,6 +105,9 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           location: isWorldwide ? "Worldwide" : selectedLocation?.name || "",
           employment_type: selectedEmploymentType?.name || "",
         };
+        if (!job.salary) {
+          job.salary = 0;
+        }
         return job;
       },
       submitForm: () => new Promise((res, rej) => handleSubmit(res, rej)()),
@@ -197,7 +200,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
         />
       ) : null}
 
-      <TextField
+      <CurrencyField
         labelDescription="Highly recommended! Providing salary will five your job more visibility"
         {...getFieldAttribute(
           "Salary",
@@ -205,6 +208,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           "salary",
           "Best format is $USD per year, such as: '$50k-60k'"
         )}
+        onValueChange={(val) => setValue("salary", val)}
       />
 
       <TextAreaField

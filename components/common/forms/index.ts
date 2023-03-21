@@ -7,6 +7,7 @@ import Select from "./Select";
 import RadioButton from "./RadioButton";
 import Dropzone from "./Dropzone";
 import Radio from "./Radio";
+import CurrencyField from "./CurrencyField";
 
 export {
   InputLabel,
@@ -18,4 +19,5 @@ export {
   Dropzone,
   RadioButton,
   Radio,
+  CurrencyField,
 };
