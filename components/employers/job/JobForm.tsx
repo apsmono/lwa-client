@@ -108,6 +108,9 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
         if (!job.salary) {
           job.salary = 0;
         }
+        if (job.is_worldwide) {
+          job.location_id = 1;
+        }
         return job;
       },
       submitForm: () => new Promise((res, rej) => handleSubmit(res, rej)()),
