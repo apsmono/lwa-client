@@ -73,7 +73,6 @@ function PostJobPage(props: PostJobPageProps) {
       ? JSON.parse(Cookies.get("job")!)
       : null;
 
-    console.log({ jobCookies });
     if (jobCookies) {
       return {
         apply_link: jobCookies.apply_link,

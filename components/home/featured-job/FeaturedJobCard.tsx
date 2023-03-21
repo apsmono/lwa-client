@@ -3,6 +3,7 @@ import { Typography } from "components/common";
 import Image from "next/image";
 import React from "react";
 import { Job } from "service/types";
+import { currencyFormat, CURRENCY_FORMAT_DEFAULT_CONFIG } from "utils/number";
 import Feature from "./Feature";
 
 interface FeaturedJobCard {
@@ -37,7 +38,10 @@ function FeaturedJobCard(props: FeaturedJobCard) {
         />
         <Feature
           icon={<Typography variant="body">💰</Typography>}
-          title={job.salary}
+          title={currencyFormat(job?.salary || 0, {
+            ...CURRENCY_FORMAT_DEFAULT_CONFIG,
+            notation: "compact",
+          })}
         />
         <Feature
           icon={<Typography variant="body">🕛</Typography>}
