@@ -1,6 +1,7 @@
 import { usePayPalHostedFields } from "@paypal/react-paypal-js";
 import clsx from "clsx";
 import { Alert, Button, Loader, Typography } from "components/common";
+import Cookies from "js-cookie";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { parseErrorMessage } from "utils/api";
 import usePaymentStore from "./store/usePaymentStore";
@@ -70,7 +71,9 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
           throw new Error("Something went wrong");
         }
 
-        if (packageItem?.id !== 3) {
+        const packageId = +(Cookies.get("package_id") || "0");
+
+        if (packageId !== 3) {
           setLoading(true);
           const { fields } = cardFields?.getState() || {};
 
@@ -85,7 +88,6 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
         }
         onClick(orderId, packageItem!.id);
       } catch (error) {
-        console.log({ error });
         setAlert({
           msg: parseErrorMessage(error),
           show: true,
