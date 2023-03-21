@@ -5,7 +5,6 @@ interface JobState extends Job {
   setJob: (val: Partial<Job>) => void;
   reset: () => void;
 }
-
 const initialState = {
   apply_link: "",
   category_id: 0,
