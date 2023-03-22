@@ -1,11 +1,13 @@
 import {
   Button,
   ConfirmationModal,
+  Modal,
   Select,
   TextField,
   Typography,
 } from "components/common";
 import { PageTitle } from "components/common/dashboard";
+import { JobForm } from "components/employers/job";
 import { ListingItem } from "components/employers/listing";
 import { EmployersLayout } from "components/layout";
 import { AppContext } from "context/appContext";
@@ -21,8 +23,16 @@ import { ChevronRight } from "react-feather";
 import { AuthService } from "service/auth_service";
 import CategoryService from "service/category_service";
 import CompanyService from "service/company_service";
+import EmploymentTypeService from "service/employment_type_service";
 import JobService from "service/job_service";
-import { Category, Job, User } from "service/types";
+import LocationService from "service/location_service";
+import {
+  Category,
+  EmploymentType,
+  Job,
+  LocationType,
+  User,
+} from "service/types";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 
@@ -31,10 +41,19 @@ interface IManageListingPageProps {
   user: User;
   jobs: Job[];
   pagination: { totalItems: number; page: string };
+  locations: LocationType[];
+  employmentTypes: EmploymentType[];
 }
 
 function ManageListingPage(props: IManageListingPageProps) {
-  const { categories, user, jobs: defaultJobs, pagination } = props;
+  const {
+    categories,
+    user,
+    jobs: defaultJobs,
+    pagination,
+    employmentTypes,
+    locations,
+  } = props;
   const [refetch, setRefetch] = useState(false);
   const [status, setStatus] = useState("open");
   const [jobs, setJobs] = useState(defaultJobs);
@@ -43,6 +62,7 @@ function ManageListingPage(props: IManageListingPageProps) {
   const { showErrorAlert, showSuccessAlert } = useAlert();
   const [currentJob, setCurrentJob] = useState<Job | undefined>();
   const [open, setOpen] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const { setLoading } = useContext(AppContext);
 
   const [pageData, setPageData] = useState({
@@ -178,6 +198,10 @@ function ManageListingPage(props: IManageListingPageProps) {
                 setCurrentJob(job);
                 setOpen(true);
               }}
+              onEditClick={() => {
+                setCurrentJob(job);
+                setOpenEditModal(true);
+              }}
               key={job.id}
               job={job as Job}
             />
@@ -213,6 +237,18 @@ function ManageListingPage(props: IManageListingPageProps) {
         </div>
       </EmployersLayout>
       <ConfirmationModal onClose={handleDialogClose} open={open} />
+      <Modal
+        open={openEditModal}
+        size="2xl"
+        onClose={() => setOpenEditModal(false)}
+      >
+        <JobForm
+          employmentTypes={employmentTypes}
+          locations={locations}
+          categories={categories}
+          defaultValue={currentJob}
+        />
+      </Modal>
     </>
   );
 }
@@ -221,8 +257,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {
     currentStep: context.query.step || "",
   };
-  const res = await Promise.all([CategoryService.gets()]);
+  const res = await Promise.all([
+    CategoryService.gets(),
+    EmploymentTypeService.gets(),
+    LocationService.gets(),
+  ]);
   props.categories = res[0].data;
+  props.employmentTypes = res[1].data;
+  props.locations = res[2].data;
 
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;

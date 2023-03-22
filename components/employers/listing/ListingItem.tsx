@@ -7,10 +7,11 @@ import { dateFormat } from "utils/date";
 interface IListingItemProps {
   job: Job;
   onDeleteClick?: () => void;
+  onEditClick?: () => void;
 }
 
 function ListingItem(props: IListingItemProps) {
-  const { job, onDeleteClick } = props;
+  const { job, onDeleteClick, onEditClick } = props;
   return (
     <div className="rounded-lg flex items-center justify-between border-2 border-black p-4 w-full">
       <div className="flex gap-6">
@@ -43,7 +44,11 @@ function ListingItem(props: IListingItemProps) {
         className="border-2 border-black"
       >
         <div className="flex flex-col items-center">
-          <Button variant="link" className="text-center text-black">
+          <Button
+            onClick={onEditClick}
+            variant="link"
+            className="text-center text-black"
+          >
             Edit
           </Button>
           <Button variant="link" className="text-center text-black">

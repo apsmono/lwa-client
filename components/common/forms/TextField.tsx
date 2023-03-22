@@ -9,7 +9,7 @@ import { UseFormRegister } from "react-hook-form";
 import Typography from "../Typography";
 import InputLabel from "./InputLabel";
 
-interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   labelAppend: string;
   labelDescription: string;

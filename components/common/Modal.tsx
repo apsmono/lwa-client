@@ -7,6 +7,7 @@ interface ModalPropsInterface {
   children: ReactNode;
   className: string;
   onClose: () => void;
+  size: "sm" | "md" | "lg" | "xl" | "2xl";
 }
 
 function Modal({
@@ -14,7 +15,15 @@ function Modal({
   onClose = () => {},
   children,
   className = "",
+  size = "md",
 }: Partial<ModalPropsInterface>) {
+  const sizeStyle = {
+    sm: "max-w-sm",
+    md: "max-w-md",
+    lg: "max-w-lg",
+    xl: "max-w-xl",
+    "2xl": "max-w-2xl",
+  };
   return (
     <Transition appear show={open} as={Fragment}>
       <Dialog className="relative z-50" open={open} as="div" onClose={onClose}>
@@ -31,7 +40,7 @@ function Modal({
             aria-hidden="true"
           />
         </Transition.Child>
-        <div className="fixed inset-0">
+        <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4">
             <Transition.Child
               as={Fragment}
@@ -44,7 +53,8 @@ function Modal({
             >
               <Dialog.Panel
                 className={clsx(
-                  "bg-white w-full max-w-md p-4 rounded-lg transform transition-all",
+                  "bg-white w-full p-4 rounded-lg transform transition-all",
+                  sizeStyle[size],
                   className
                 )}
               >

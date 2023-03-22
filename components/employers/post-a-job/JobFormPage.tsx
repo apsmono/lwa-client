@@ -134,7 +134,8 @@ function JobFormPage(props: JobFormPageProps) {
             languages={languages}
             categories={categories}
             ref={jobFormRef}
-            className="p-6"
+            showSubmit={false}
+            className="border border-black with-shadow rounded-2xl p-6"
             defaultValue={{
               apply_link,
               category_id,

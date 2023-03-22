@@ -1,4 +1,6 @@
+import { Typography } from "components/common";
 import { PageTitle } from "components/common/dashboard";
+import { AccountForm } from "components/employers/account";
 import { EmployersLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
@@ -21,6 +23,13 @@ function AccountSettingPage(props: IAccountSettingPage) {
       employers={user}
     >
       <PageTitle>Account Settings</PageTitle>
+
+      <Typography className="font-medium capitalize">
+        Edit your account information
+      </Typography>
+      <div className="border-2 border-black rounded-lg p-4">
+        <AccountForm user={user} />
+      </div>
     </EmployersLayout>
   );
 }

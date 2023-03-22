@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
 import {
+  Button,
   InputLabel,
   Select,
   TextAreaField,
@@ -27,6 +28,8 @@ interface JobFormProps {
   locations: LocationType[];
   defaultValue: Partial<Job>;
   className: string;
+  onSubmit?: (val: any) => void;
+  showSubmit: boolean;
 }
 
 export interface JobFormRef {
@@ -41,6 +44,8 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     locations = [],
     defaultValue = {},
     className,
+    onSubmit = (val) => {},
+    showSubmit = true,
   } = props;
 
   const [initialValue] = useState(() =>
@@ -126,104 +131,106 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
   );
 
   return (
-    <div
-      className={clsx("border border-black with-shadow rounded-2xl", className)}
-    >
-      <TextField
-        {...getFieldAttribute(
-          "How to apply*",
-          "apply_link",
-          "apply_link",
-          "https://your-link.com"
-        )}
-        labelAppend="Required fields*"
-        labelDescription="Link to application page"
-      />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className={clsx(className)}>
+        <TextField
+          {...getFieldAttribute(
+            "How to apply*",
+            "apply_link",
+            "apply_link",
+            "https://your-link.com"
+          )}
+          labelAppend="Required fields*"
+          labelDescription="Link to application page"
+        />
 
-      <TextField
-        {...getFieldAttribute(
-          "Job Title*",
-          "title",
-          "title",
-          "eg. Project Manager, Senior Analyst"
-        )}
-      />
+        <TextField
+          {...getFieldAttribute(
+            "Job Title*",
+            "title",
+            "title",
+            "eg. Project Manager, Senior Analyst"
+          )}
+        />
 
-      <Select
-        options={categories}
-        renderOption={(opt) => opt.name}
-        {...getFieldAttribute("Category*", "category_id", "category_id")}
-        defaultValue={selectedCategory}
-        onChange={(val) => setSelectedCategory(val)}
-        getInputValue={(val: any) => val?.id || ""}
-        setFormValue={setValue}
-      />
-
-      <Select
-        options={employmentTypes}
-        renderOption={(opt) => opt.name}
-        {...getFieldAttribute(
-          "Employment Type*",
-          "employment_type_id",
-          "employment_type_id"
-        )}
-        getInputValue={(val: any) => val?.id || ""}
-        setFormValue={setValue}
-        defaultValue={selectedEmploymentType}
-        onChange={(val) => setSelectedEmploymentType(val)}
-      />
-
-      <InputLabel description="Selecting ‘Yes’ means your future hire can work anywhere in the world without any location or time zone restrictions.">
-        Is this role open worldwide *
-      </InputLabel>
-
-      <Radio
-        error={!!errors.is_worldwide}
-        helperText={errors.is_worldwide?.message}
-        register={register}
-        name="is_worldwide"
-        id="is_worldwide"
-        options={[
-          { label: "Yes", value: true },
-          { label: "No", value: false },
-        ]}
-        value={isWorldwide}
-        onChange={(val) => setIsWordwide(val)}
-      />
-
-      {isWorldwide === false ? (
         <Select
-          options={locations}
+          options={categories}
           renderOption={(opt) => opt.name}
-          {...getFieldAttribute("Region*", "location_id", "location_id")}
+          {...getFieldAttribute("Category*", "category_id", "category_id")}
+          defaultValue={selectedCategory}
+          onChange={(val) => setSelectedCategory(val)}
           getInputValue={(val: any) => val?.id || ""}
           setFormValue={setValue}
-          defaultValue={selectedLocation}
-          onChange={(val) => setSelectedLocation(val)}
         />
-      ) : null}
 
-      <CurrencyField
-        labelDescription="Highly recommended! Providing salary will five your job more visibility"
-        {...getFieldAttribute(
-          "Salary",
-          "salary",
-          "salary",
-          "Best format is $USD per year, such as: '$50k-60k'"
-        )}
-        onValueChange={(val) => setValue("salary", val)}
-      />
+        <Select
+          options={employmentTypes}
+          renderOption={(opt) => opt.name}
+          {...getFieldAttribute(
+            "Employment Type*",
+            "employment_type_id",
+            "employment_type_id"
+          )}
+          getInputValue={(val: any) => val?.id || ""}
+          setFormValue={setValue}
+          defaultValue={selectedEmploymentType}
+          onChange={(val) => setSelectedEmploymentType(val)}
+        />
 
-      <TextAreaField
-        {...getFieldAttribute(
-          "Job Description*",
-          "description",
-          "description",
-          "Type here"
-        )}
-        labelDescription="You can always edit after posting your job"
-      />
-    </div>
+        <InputLabel description="Selecting ‘Yes’ means your future hire can work anywhere in the world without any location or time zone restrictions.">
+          Is this role open worldwide *
+        </InputLabel>
+
+        <Radio
+          error={!!errors.is_worldwide}
+          helperText={errors.is_worldwide?.message}
+          register={register}
+          name="is_worldwide"
+          id="is_worldwide"
+          options={[
+            { label: "Yes", value: true },
+            { label: "No", value: false },
+          ]}
+          value={isWorldwide}
+          onChange={(val) => setIsWordwide(val)}
+        />
+
+        {isWorldwide === false ? (
+          <Select
+            options={locations}
+            renderOption={(opt) => opt.name}
+            {...getFieldAttribute("Region*", "location_id", "location_id")}
+            getInputValue={(val: any) => val?.id || ""}
+            setFormValue={setValue}
+            defaultValue={selectedLocation}
+            onChange={(val) => setSelectedLocation(val)}
+          />
+        ) : null}
+
+        <CurrencyField
+          labelDescription="Highly recommended! Providing salary will five your job more visibility"
+          {...getFieldAttribute(
+            "Salary",
+            "salary",
+            "salary",
+            "Best format is $USD per year, such as: '$50k-60k'"
+          )}
+          onValueChange={(val) => setValue("salary", val)}
+        />
+
+        <TextAreaField
+          {...getFieldAttribute(
+            "Job Description*",
+            "description",
+            "description",
+            "Type here"
+          )}
+          rows={8}
+          labelDescription="You can always edit after posting your job"
+        />
+      </div>
+      {showSubmit && <Button variant="secondary">Submit</Button>}
+    </form>
   );
 });
 
