@@ -44,7 +44,35 @@ function JobListPage(props: JobListPageProps) {
   const [sorting, setSorting] = useState<any>(null);
   const [datePosted, setDatePosted] = useState<any>(null);
   const [jobList, setJobList] = useState(jobs);
+  const [salary, setSalary] = useState<any>(null);
   const [jobTitle, setJobTitle] = useState(userJobTitle);
+  const salaries = useMemo(() => {
+    return [
+      {
+        label: "<$50k",
+        start: 0,
+        end: 50000,
+      },
+      { label: "$50k - $80k", start: 50000, end: 80000 },
+      {
+        label: "$80k - $100k",
+        start: 80000,
+        end: 100000,
+      },
+      {
+        label: "$100k - $150k",
+        start: 100000,
+        end: 150000,
+      },
+      {
+        label: "$150k - $180k",
+        start: 150000,
+        end: 180000,
+      },
+      { label: "$180k - $200k", start: 180000, end: 200000 },
+      { label: ">$200k", start: 200000 },
+    ];
+  }, []);
   const handleClick = (job: Job) => {
     router.push(`/jobs/${job.id}`);
   };
@@ -78,6 +106,10 @@ function JobListPage(props: JobListPageProps) {
       params.start_date = startDate.toLocaleDateString();
       params.end_date = endDate.toLocaleDateString();
     }
+    if (salary) {
+      if (salary.start) params.start_salary = salary.start;
+      if (salary.end) params.end_salary = salary.end;
+    }
     if (categoryIds.length) params.category_id = categoryIds.map((c) => c);
 
     const response = await JobService.gets(params);
@@ -91,6 +123,7 @@ function JobListPage(props: JobListPageProps) {
     sorting,
     datePosted,
     categoriesList,
+    salary,
   ]);
 
   useEffect(() => {
@@ -99,7 +132,7 @@ function JobListPage(props: JobListPageProps) {
       setJobList(res);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [employmentType, location, sorting, datePosted, categoriesList]);
+  }, [employmentType, location, sorting, datePosted, categoriesList, salary]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -110,6 +143,7 @@ function JobListPage(props: JobListPageProps) {
   const employmentTypeRef = useRef<SelectRefType>(null);
   const locationRef = useRef<SelectRefType>(null);
   const categoriesListRef = useRef<SelectRefType>(null);
+  const salaryListRef = useRef<SelectRefType>(null);
 
   return (
     <GuestLayout title={title} categories={categories}>
@@ -135,7 +169,7 @@ function JobListPage(props: JobListPageProps) {
             onChange={(e) => setJobTitle(e.target.value)}
           />
         </form>
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex gap-x-4 flex-wrap">
           <Select
             placeholder="Sort by"
             options={[
@@ -156,7 +190,7 @@ function JobListPage(props: JobListPageProps) {
               { val: 30, label: "Past month" },
             ]}
             renderOption={(val) => val.label}
-            className="sm:w-36 w-full"
+            className="sm:w-40 w-full"
             onChange={(val) => setDatePosted(val)}
             alignment="center"
           />
@@ -169,6 +203,7 @@ function JobListPage(props: JobListPageProps) {
             className="sm:w-36 w-full"
             ref={employmentTypeRef}
             alignment="center"
+            hideValue
           />
           <Select
             multiple
@@ -179,6 +214,7 @@ function JobListPage(props: JobListPageProps) {
             className="sm:w-36 w-full"
             ref={locationRef}
             alignment="center"
+            hideValue
           />
           <Select
             multiple
@@ -188,6 +224,16 @@ function JobListPage(props: JobListPageProps) {
             className="sm:w-36 w-full"
             ref={categoriesListRef}
             onChange={(val) => setCategoriesList(val)}
+            alignment="center"
+            hideValue
+          />
+          <Select
+            placeholder="Salary"
+            options={salaries}
+            renderOption={(opt) => opt.label}
+            ref={salaryListRef}
+            className="sm:w-36 w-full"
+            onChange={(val) => setSalary(val)}
             alignment="center"
           />
           <div className="flex gap-2 flex-wrap w-full">

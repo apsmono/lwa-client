@@ -40,6 +40,7 @@ interface SelectPropsInterface {
   buttonProps: { className: string };
   rounded?: boolean;
   alignment?: "left" | "right" | "center";
+  hideValue: boolean;
 }
 
 const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
@@ -67,6 +68,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
       buttonProps,
       rounded = false,
       alignment = "left",
+      hideValue,
     } = props;
     const [value, setValue] = useState(() => {
       if (defaultValue) return defaultValue;
@@ -119,6 +121,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
     }, [value, onChange]);
 
     const renderValue = () => {
+      if (hideValue) return placeholder;
       if (multiple) {
         if (showChip) return placeholder;
         if (!value.length) return placeholder;
