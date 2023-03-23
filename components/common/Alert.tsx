@@ -17,7 +17,7 @@ function Alert(props: Partial<AlertProps>) {
   return (
     <div
       className={clsx(
-        "w-full text-white py-2 text-center fixed z-50 transition-all duration-500",
+        "w-full text-white py-2 text-center fixed z-[60] transition-all duration-500",
         { "-translate-y-20": !show },
         styles[type] ?? styles["success"],
         className

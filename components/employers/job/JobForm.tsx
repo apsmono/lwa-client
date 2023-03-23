@@ -12,7 +12,6 @@ import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Category,
-  Company,
   EmploymentType,
   Job,
   LanguageType,
@@ -44,7 +43,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     locations = [],
     defaultValue = {},
     className,
-    onSubmit = (val) => {},
+    onSubmit = (val) => console.log(val),
     showSubmit = true,
   } = props;
 
@@ -130,8 +129,14 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     ]
   );
 
+  const submitForm = (val: any) => {
+    delete val.language_id;
+    delete val.timezone;
+    onSubmit(val);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(submitForm)}>
       <div className={clsx(className)}>
         <TextField
           {...getFieldAttribute(
@@ -229,7 +234,11 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           labelDescription="You can always edit after posting your job"
         />
       </div>
-      {showSubmit && <Button variant="secondary">Submit</Button>}
+      {showSubmit && (
+        <Button type="submit" variant="secondary">
+          Submit
+        </Button>
+      )}
     </form>
   );
 });

@@ -7,7 +7,6 @@ export const schema = yup.object({
     .number()
     .typeError("This field is required")
     .required("This field is required"),
-  skill: yup.string(),
   employment_type_id: yup
     .number()
     .typeError("This field is required")

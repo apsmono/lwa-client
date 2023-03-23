@@ -42,7 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
     >
       <Alert msg={alertMsg} type={alertType} show={showAlert} />
       {loading ? (
-        <div className="fixed inset-0 w-full h-full flex justify-center items-center z-50 bg-black/30">
+        <div className="fixed inset-0 w-full h-full flex justify-center items-center z-[60] bg-black/30">
           <Loader color="black" />
         </div>
       ) : null}

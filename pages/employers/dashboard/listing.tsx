@@ -35,6 +35,7 @@ import {
 } from "service/types";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
+import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 
 interface IManageListingPageProps {
   categories: Category[];
@@ -64,6 +65,10 @@ function ManageListingPage(props: IManageListingPageProps) {
   const [open, setOpen] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const { setLoading } = useContext(AppContext);
+
+  const wrappedUpdateJobs = useWrapHandleInvalidToken(
+    (id: number, payload: any) => JobService.update(id, payload)
+  );
 
   const [pageData, setPageData] = useState({
     totalItems: pagination.totalItems,
@@ -135,6 +140,20 @@ function ManageListingPage(props: IManageListingPageProps) {
       }
     }
   };
+
+  const onJobsUpdate = async (payload: any) => {
+    try {
+      setLoading(true);
+      const response = await wrappedUpdateJobs(currentJob!.id, payload);
+      setOpenEditModal(false);
+      showSuccessAlert(response.message);
+      setRefetch(!refetch);
+    } catch (error) {
+      showErrorAlert(parseErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <EmployersLayout
@@ -143,7 +162,7 @@ function ManageListingPage(props: IManageListingPageProps) {
         employers={user}
       >
         <PageTitle>Posted Jobs</PageTitle>
-        <div className="flex justify-between items-center mb-3">
+        <div className="flex flex-col md:flex-row gap-y-2 justify-between items-center mb-3">
           <div className="flex gap-4">
             <div>
               <Button
@@ -165,7 +184,7 @@ function ManageListingPage(props: IManageListingPageProps) {
             </div>
           </div>
 
-          <div className="flex gap-2 items-end">
+          <div className="flex flex-col md:flex-row gap-x-2 items-end">
             <TextField
               rounded={false}
               placeholder="Search job"
@@ -181,7 +200,7 @@ function ManageListingPage(props: IManageListingPageProps) {
               ]}
               onChange={(val) => setSorting(val)}
               renderOption={(opt) => opt.label}
-              className="w-40"
+              className="md:w-40 w-full"
             />
           </div>
         </div>
@@ -246,6 +265,7 @@ function ManageListingPage(props: IManageListingPageProps) {
           employmentTypes={employmentTypes}
           locations={locations}
           categories={categories}
+          onSubmit={onJobsUpdate}
           defaultValue={currentJob}
         />
       </Modal>

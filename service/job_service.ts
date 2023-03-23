@@ -18,6 +18,10 @@ export default class JobService {
     return sendAndHandleRequest(`/jobs`, "post", formData);
   }
 
+  static async update(id: number, payload: any) {
+    return sendAndHandleRequest(`/jobs/${id}`, "put", payload);
+  }
+
   static async createTemp(payload: any) {
     return sendAndHandleRequest("/jobs/temp", "post", payload);
   }
