@@ -86,7 +86,7 @@ function PostJobPage(props: PostJobPageProps) {
         company_name: jobCookies.company_name,
         company_url: jobCookies.company_url,
         description: jobCookies.description,
-        employment_type: jobCookies.employment,
+        employment_type: jobCookies.employment_type,
         company_headquarter: jobCookies.company_headquarter,
         employment_type_id: jobCookies.employment_type_id,
         id: 0,

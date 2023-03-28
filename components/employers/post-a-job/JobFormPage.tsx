@@ -49,7 +49,6 @@ function JobFormPage(props: JobFormPageProps) {
     is_worldwide,
     description,
     setJob,
-    order_id,
     category_id,
     skill,
     employment_type_id,
@@ -62,7 +61,11 @@ function JobFormPage(props: JobFormPageProps) {
   const { showErrorAlert } = useAlert();
   const { setLoading } = useContext(AppContext);
 
-  const handlePreviewClick = () => {
+  const handleContinueToPayment = async () => {
+    await Promise.all([
+      jobFormRef.current?.submitForm(),
+      companyFormRef.current?.submitForm(),
+    ]);
     const { company } = companyFormRef.current!.getValues();
     const { company_logo, ...otherItems } = company;
     const val = {
@@ -70,39 +73,7 @@ function JobFormPage(props: JobFormPageProps) {
       ...otherItems,
     };
     setJob(val);
-  };
-
-  const handleContinueToPayment = async () => {
-    await Promise.all([
-      jobFormRef.current?.submitForm(),
-      companyFormRef.current?.submitForm(),
-    ]);
-    handlePreviewClick();
-    const job: any = {
-      title,
-      order_id,
-      apply_link,
-      category_id,
-      skill,
-      employment_type_id,
-      is_worldwide,
-      salary,
-      description,
-    };
-    if (!is_worldwide) {
-      job.location_id = location_id;
-    }
-
-    const company = {
-      company_name,
-      company_headquarter,
-      company_url,
-      company_about,
-      company_email,
-      company_offer,
-      company_logo,
-    };
-    onSubmit({ ...job, ...company });
+    onSubmit(val);
   };
 
   const handleCompanyLogoDrop = async (file: File) => {
