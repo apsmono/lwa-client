@@ -17,7 +17,7 @@ function BlogPage(props: IBlogPageProps) {
 
   return (
     <GuestLayout categories={categories} title="Blog">
-      <div className="w-full max-w-5xl mx-auto p-6">
+      <div className="w-full max-w-5xl mx-auto p-6 pb-48">
         <Typography
           variant="h1"
           className="font-palo font-bold tracking-wide text-center mb-4"

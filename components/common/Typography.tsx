@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React, { HTMLAttributes } from "react";
 
 interface TypographyProps extends HTMLAttributes<HTMLParagraphElement> {
-  variant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body" | "small";
+  variant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body" | "small" | "xs";
 }
 
 function Typography(props: Partial<TypographyProps>) {
@@ -16,6 +16,7 @@ function Typography(props: Partial<TypographyProps>) {
     h6: "text-base md:text-lg",
     body: "text-sm md:text-base",
     small: "text-sm",
+    xs: "text-xs",
   };
   return (
     <p style={style} className={clsx(styles[variant], className)}>

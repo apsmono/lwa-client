@@ -18,7 +18,7 @@ function FooterList(props: FooterListProps) {
         {list.map((item) => (
           <li key={item.title} className="text-white">
             <Link href={item.route}>
-              <Typography variant="small">{item.title}</Typography>
+              <Typography variant="xs">{item.title}</Typography>
             </Link>
           </li>
         ))}

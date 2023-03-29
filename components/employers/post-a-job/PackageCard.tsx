@@ -16,7 +16,7 @@ function PackageCard(props: PackageCardProps) {
   return (
     <div
       className={clsx(
-        "border-2 border-black with-shadow p-6 rounded-2xl flex flex-col gap-3",
+        "border-2 border-black with-shadow p-6 rounded-2xl flex flex-col gap-3 justify-between",
         { "bg-secondary-300": isSelected }
       )}
     >
