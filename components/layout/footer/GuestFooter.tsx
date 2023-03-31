@@ -30,20 +30,54 @@ function GuestFooter(props: GuestFooterProps) {
           let&apos;s work anywhere
         </Typography>
         <div className="flex gap-2">
-          <IconButton contained color="secondary">
+          <IconButton
+            contained
+            color="secondary"
+            onClick={() => {
+              if (window) {
+                window.open("https://www.instagram.com/letsworkanywherecom/");
+              }
+            }}
+          >
             <Instagram color="black" size={24} />
           </IconButton>
-          <IconButton contained color="primary">
+          <IconButton
+            contained
+            color="primary"
+            onClick={() => {
+              if (window) {
+                window.open(
+                  "https://www.linkedin.com/company/let-s-work-anywhere/"
+                );
+              }
+            }}
+          >
             <div className="relative w-[24px] h-[24px]">
               <Image src="/linkedin.png" fill alt="Linkedin" />
             </div>
           </IconButton>
-          <IconButton contained color="secondary">
+          <IconButton
+            contained
+            color="secondary"
+            onClick={() => {
+              if (window) {
+                window.open("https://www.facebook.com/LWAcom");
+              }
+            }}
+          >
             <div className="relative w-[24px] h-[24px]">
               <Image src="/twitter.png" fill alt="Linkedin" />
             </div>
           </IconButton>
-          <IconButton contained color="primary">
+          <IconButton
+            contained
+            color="primary"
+            onClick={() => {
+              if (window) {
+                window.open("https://facebook.com/LWA_com");
+              }
+            }}
+          >
             <div className="relative w-[24px] h-[24px]">
               <Image src="/facebook.png" fill alt="Linkedin" />
             </div>

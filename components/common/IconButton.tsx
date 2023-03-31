@@ -5,7 +5,7 @@ interface IconButtonProps {
   color: "primary" | "secondary" | "danger";
   contained: boolean;
   className: string;
-  onClick: () => {};
+  onClick: () => void;
   children: ReactNode;
 }
 
