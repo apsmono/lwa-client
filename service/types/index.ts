@@ -9,6 +9,7 @@ import {
   Package,
 } from "./master_data_type";
 import { User } from "./user_types";
+import { Blog } from "./blog_type";
 
 export type {
   Category,
@@ -20,4 +21,5 @@ export type {
   User,
   JobIndustry,
   Package,
+  Blog,
 };

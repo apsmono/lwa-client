@@ -1,19 +1,21 @@
 import { Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
+import Link from "next/link";
 import React from "react";
+import BlogService from "service/blog_service";
 
 import CategoryService from "service/category_service";
-import { Category } from "service/types";
+import { Blog, Category } from "service/types";
 import { dateFormat } from "utils/date";
 
 interface IBlogPageProps {
   categories: Category[];
+  blogs: Blog[];
 }
 
 function BlogPage(props: IBlogPageProps) {
-  const { categories } = props;
-  const arr = Array.from(Array(12).keys());
+  const { categories, blogs = [] } = props;
 
   return (
     <GuestLayout categories={categories} title="Blog">
@@ -26,24 +28,26 @@ function BlogPage(props: IBlogPageProps) {
         </Typography>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {arr.map((item) => (
-            <div key={item}>
+          {blogs.map((item) => (
+            <div key={item.id}>
               <picture>
                 <img
-                  src="https://dummyimage.com/400x220/fefefe/000"
+                  src={`${process.env.NEXT_PUBLIC_API_URL}${item.thumbnail}`}
                   alt=""
-                  className="border-2 border-black rounded-lg"
+                  className="rounded-lg"
                 />
               </picture>
-              <Typography
-                variant="h4"
-                className="font-palo tracking-wide font-medium"
-              >
-                Lorem ipsum dolor sit amet.
-              </Typography>
+              <Link href={`/blog/${item.slug}`}>
+                <Typography
+                  variant="h4"
+                  className="font-palo tracking-wide font-bold uppercase"
+                >
+                  {item.title}
+                </Typography>
+              </Link>
               <Typography variant="small">
                 {dateFormat(
-                  new Date().toLocaleDateString(),
+                  item.created_at,
                   {
                     day: "2-digit",
                     month: "short",
@@ -61,11 +65,10 @@ function BlogPage(props: IBlogPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {
-    currentStep: context.query.step || "",
-  };
-  const res = await Promise.all([CategoryService.gets()]);
+  const props: any = {};
+  const res = await Promise.all([CategoryService.gets(), BlogService.gets()]);
   props.categories = res[0].data;
+  props.blogs = res[1].data;
 
   return {
     props,
