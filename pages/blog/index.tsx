@@ -13,13 +13,13 @@ import { dateFormat } from "utils/date";
 interface IBlogPageProps {
   categories: Category[];
   blogs: Blog[];
-  page: { totalItems: number; page: number; limit: number };
+  totalItems: number;
 }
 
 function BlogPage(props: IBlogPageProps) {
-  const { categories, blogs: blogList = [], page } = props;
+  const { categories, blogs: blogList = [], totalItems } = props;
 
-  const [pagination, setPagination] = useState({ ...page, page: 2 });
+  const [offset, setOffset] = useState(2);
 
   const { setLoading } = useContext(AppContext);
 
@@ -28,12 +28,12 @@ function BlogPage(props: IBlogPageProps) {
     try {
       setLoading(true);
       const res = await BlogService.gets({
-        offset: pagination.page + 1,
+        offset,
         limit: 6,
       });
       const itemCopy = [...blogs, ...res.data];
       setBlogs(itemCopy);
-      setPagination((oldVal) => ({ ...oldVal, page: oldVal.page + 1 }));
+      setOffset(offset + 1);
     } catch (error) {
       console.log(error);
     } finally {
@@ -84,7 +84,7 @@ function BlogPage(props: IBlogPageProps) {
           ))}
         </div>
 
-        {pagination.totalItems > blogs.length && (
+        {totalItems > blogs.length && (
           <div className="flex justify-center">
             <Button onClick={handleShowMoreJobs} variant="black">
               View More
@@ -104,7 +104,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   ]);
   props.categories = res[0].data;
   props.blogs = res[1].data;
-  props.page = res[1].page;
+  props.totalItems = res[1].page.totalItems;
 
   return {
     props,
