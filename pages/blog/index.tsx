@@ -1,8 +1,9 @@
-import { Typography } from "components/common";
+import { Button, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
+import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import React from "react";
+import React, { useContext, useState } from "react";
 import BlogService from "service/blog_service";
 
 import CategoryService from "service/category_service";
@@ -12,10 +13,33 @@ import { dateFormat } from "utils/date";
 interface IBlogPageProps {
   categories: Category[];
   blogs: Blog[];
+  page: { totalItems: number; page: number; limit: number };
 }
 
 function BlogPage(props: IBlogPageProps) {
-  const { categories, blogs = [] } = props;
+  const { categories, blogs: blogList = [], page } = props;
+
+  const [pagination, setPagination] = useState({ ...page, page: 2 });
+
+  const { setLoading } = useContext(AppContext);
+
+  const [blogs, setBlogs] = useState(blogList);
+  const handleShowMoreJobs = async () => {
+    try {
+      setLoading(true);
+      const res = await BlogService.gets({
+        offset: pagination.page + 1,
+        limit: 6,
+      });
+      const itemCopy = [...blogs, ...res.data];
+      setBlogs(itemCopy);
+      setPagination((oldVal) => ({ ...oldVal, page: oldVal.page + 1 }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <GuestLayout categories={categories} title="Blog">
@@ -59,6 +83,14 @@ function BlogPage(props: IBlogPageProps) {
             </div>
           ))}
         </div>
+
+        {pagination.totalItems > blogs.length && (
+          <div className="flex justify-center">
+            <Button onClick={handleShowMoreJobs} variant="black">
+              View More
+            </Button>
+          </div>
+        )}
       </div>
     </GuestLayout>
   );
@@ -66,9 +98,13 @@ function BlogPage(props: IBlogPageProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
-  const res = await Promise.all([CategoryService.gets(), BlogService.gets()]);
+  const res = await Promise.all([
+    CategoryService.gets(),
+    BlogService.gets({ limit: 6 }),
+  ]);
   props.categories = res[0].data;
   props.blogs = res[1].data;
+  props.page = res[1].page;
 
   return {
     props,
