@@ -133,7 +133,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
 
         <TextAreaField
           {...getFieldAttribute(
-            "What your company offers",
+            "What your company offers *",
             "company_offer",
             "company_offer",
             "Type here"
@@ -142,7 +142,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
 
         <TextAreaField
           {...getFieldAttribute(
-            "Tell us more about your company",
+            "Tell us more about your company *",
             "company_about",
             "company_about",
             "Type here"

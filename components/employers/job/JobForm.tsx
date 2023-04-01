@@ -202,7 +202,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
 
         {isWorldwide === false ? (
           <Select
-            options={locations}
+            options={locations.filter((l) => l.id !== 1)}
             renderOption={(opt) => opt.name}
             {...getFieldAttribute("Region*", "location_id", "location_id")}
             getInputValue={(val: any) => val?.id || ""}

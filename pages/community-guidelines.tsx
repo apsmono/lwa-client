@@ -38,9 +38,12 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
         ],
       },
       {
-        title: "COMPLIANCE",
+        title: "Posting",
         guides: [
-          "Employers and job seekers are expected to comply with all applicable laws, regulations, and industry standards. This includes, but is not limited to, laborlaws, anti-discrimination laws, and data privacy laws.",
+          "Job postings should be specifically for remote work opportunities, and should not include job descriptions for non-remote work opportunities.",
+          "Job postings must not include language or requirements that discriminate based on race, gender, age, religion, sexual orientation, or any other legally protected characteristic.",
+          "Job postings must accurately describe the job duties, qualifications, compensation, and other relevant details. Misleading or false job postings are not allowed and may result in removal from the platform.",
+          "Job postings must not include spam or scams. This includes job postings that require payment for application, job postings that are not legitimate work opportunities, and job postings that require personal information or financial information.",
         ],
       },
       {

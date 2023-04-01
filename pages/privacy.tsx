@@ -43,12 +43,6 @@ function PrivacyPage(props: IPrivacyPageProps) {
       ],
     },
     {
-      title: "Analytics",
-      policies: [
-        "We use third-party analytics services to collect information about how users interact with the Platform. This information may include your IP address, browser type, device type, and other information about your use of the Platform.",
-      ],
-    },
-    {
       title: "Third-Party Links",
       policies: [
         "The Platform may contain links to third-party websites or services that are not owned or controlled by us. We are not responsible for the privacy practices or content of these websites or services.",

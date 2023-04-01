@@ -1,7 +1,7 @@
 import { Job } from "service/types";
 import { create } from "zustand";
 
-interface JobState extends Job {
+interface JobState extends Partial<Job> {
   setJob: (val: Partial<Job>) => void;
   reset: () => void;
 }
@@ -22,7 +22,7 @@ const initialState = {
   employment_type_id: 0,
   id: 0,
   is_featured: false,
-  is_worldwide: true,
+  is_worldwide: undefined,
   location: "",
   package_id: 0,
   salary: 0,

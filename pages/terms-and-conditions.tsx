@@ -76,12 +76,6 @@ function TermsAndConditionPage(props: ITermsAndConditionProps) {
       ],
     },
     {
-      title: "General Terms",
-      terms: [
-        "a. This Service is operated and provided by Company from its offices located in [insert location]. Company makes no representations that this Service is appropriate or available for use in other locations. Those who access or use the Service from other jurisdictions do so at their own risk and are responsible for compliance with local law.",
-      ],
-    },
-    {
       title: "Company Requirements",
       terms: [
         "a. Employers posting job listings on the Service must have permission from their company to do so.",
