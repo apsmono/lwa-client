@@ -38,8 +38,8 @@ export async function sendAndHandleServerSideRequest(
     },
   });
 
-  const { data, message } = response.data;
-  return { data, message };
+  const { data, message, page } = response.data;
+  return { data, message, page };
 }
 
 export function parseErrorMessage(error: any): string {
