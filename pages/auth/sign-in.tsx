@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { getFormAttribute } from "utils/form";
 import { AuthService } from "service/auth_service";
-import Cookies from "js-cookie";
+import { getCookie, setCookie } from "cookies-next";
 import useAlert from "utils/hooks/useAlert";
 import { parseErrorMessage } from "utils/api";
 import useAuthStore from "store/useAuthStore";
@@ -44,7 +44,7 @@ function SignInPage(props: SignInPageProps) {
   };
 
   const handleSignUpClick = () => {
-    const jobString = Cookies.get("job");
+    const jobString = getCookie("job");
     if (jobString) {
       router.push("/auth/sign-up?ref=post-a-job");
       return;
@@ -54,14 +54,14 @@ function SignInPage(props: SignInPageProps) {
 
   const onSubmit = async (val: any) => {
     const payload = { email: val.email, password: val.password };
-    const jobString = Cookies.get("job");
+    const jobString = getCookie("job");
     try {
       setLoading(true);
       const response = await AuthService.signIn(payload);
       const { access_token: accessToken, refresh_token: refreshToken } =
         response.data;
-      Cookies.set("accessToken", accessToken);
-      Cookies.set("refreshToken", refreshToken);
+      setCookie("accessToken", accessToken);
+      setCookie("refreshToken", refreshToken);
 
       setAuth({
         accessToken,

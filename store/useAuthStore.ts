@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import { getCookie } from "cookies-next";
 import { create } from "zustand";
 
 interface IAuthStore {
@@ -8,8 +8,8 @@ interface IAuthStore {
 }
 
 const useAuthStore = create<IAuthStore>((set) => {
-  const accessToken = Cookies.get("accessToken") || "";
-  const refreshToken = Cookies.get("refreshToken") || "";
+  const accessToken = getCookie("accessToken")?.toString() || "";
+  const refreshToken = getCookie("refreshToken")?.toString() || "";
   return {
     accessToken: accessToken,
     refreshToken,

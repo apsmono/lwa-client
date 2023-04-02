@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import { setCookie } from "cookies-next";
 import React, { useEffect } from "react";
 import { Package } from "service/types";
 import PackageCard from "./PackageCard";
@@ -14,8 +14,8 @@ function PackageList(props: IPackageListProps) {
 
   useEffect(() => {
     if (packageItem) {
-      Cookies.set("package_id", packageItem.id.toString());
-      Cookies.set("package_price", packageItem.price.toString());
+      setCookie("package_id", packageItem.id.toString());
+      setCookie("package_price", packageItem.price.toString());
     }
   }, [packageItem]);
   return (

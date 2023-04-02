@@ -4,7 +4,6 @@ import {
   PayPalHostedField,
 } from "@paypal/react-paypal-js";
 import { InputLabel, TextField, Typography } from "components/common";
-import Cookies from "js-cookie";
 
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import PaymentService from "service/payment_service";
@@ -14,6 +13,7 @@ import PackageList from "./PackageList";
 import PaypalPaymentButton from "./payment/PaypalPaymentButton";
 import SubmitPayment, { TSubmitPaymentRef } from "./payment/SubmitPayment";
 import useJobStore from "./store/useJobStore";
+import { getCookie } from "cookies-next";
 
 interface PaymentPageProps {
   packages: Package[];
@@ -105,7 +105,7 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
           <PayPalHostedFieldsProvider
             createOrder={async () => {
               const { data } = await PaymentService.createOrder(
-                +(Cookies.get("package_id") || 0)
+                +(getCookie("package_id") || 0)
               );
 
               return data.id;

@@ -1,22 +1,40 @@
 import { Button, TextField } from "components/common";
 import { PasswordTextField } from "components/common/forms";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { User } from "service/types";
 import { getFormAttribute } from "utils/form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./utils";
 
 interface IAccountFormProps {
   user: User;
+  onSubmit: (val: any) => void;
 }
 
 function AccountForm(props: IAccountFormProps) {
-  const { user } = props;
+  const { user, onSubmit = (val) => {} } = props;
+  const [defaultValue] = useState(() => {
+    const {
+      company,
+      created_at,
+      role,
+      email_verified_at,
+      id,
+      job_token_temp,
+      status,
+      registration_token,
+      ...otherItem
+    } = user;
+    return otherItem;
+  });
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({
-    defaultValues: user,
+    defaultValues: defaultValue,
+    resolver: yupResolver(schema),
   });
 
   const getFieldAttribute = (
@@ -32,7 +50,7 @@ function AccountForm(props: IAccountFormProps) {
   };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <TextField
         {...getFieldAttribute("Email*", "email", "email")}
         labelAppend="Required fields*"
@@ -50,8 +68,8 @@ function AccountForm(props: IAccountFormProps) {
       <PasswordTextField
         {...getFieldAttribute(
           "Confirm New Password*",
-          "confirm_new_password",
-          "confirm_new_password",
+          "new_password_confirm",
+          "new_password_confirm",
           "Confirm your new password"
         )}
       />
@@ -64,7 +82,9 @@ function AccountForm(props: IAccountFormProps) {
         )}
       />
       <div className="flex justify-end">
-        <Button variant="secondary">Update</Button>
+        <Button type="submit" variant="secondary">
+          Update
+        </Button>
       </div>
     </form>
   );

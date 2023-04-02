@@ -16,7 +16,7 @@ import { AuthService } from "service/auth_service";
 import { Eye, EyeOff } from "react-feather";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import JobService from "service/job_service";
-import Cookies from "js-cookie";
+import { removeCookies } from "cookies-next";
 
 interface SignUpPageProps {
   categories: Category[];
@@ -103,7 +103,7 @@ function SignUpPage(props: SignUpPageProps) {
         });
         const { token } = res.data;
         payload.job_token = token;
-        Cookies.remove("job");
+        removeCookies("job");
       }
       const response = await AuthService.signUpEmployers(payload);
       showSuccessAlert(response.message);

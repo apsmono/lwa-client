@@ -1,12 +1,6 @@
-import {
-  PayPalButtons,
-  PayPalHostedField,
-  PayPalHostedFieldsProvider,
-} from "@paypal/react-paypal-js";
+import { PayPalHostedField } from "@paypal/react-paypal-js";
 import { InputLabel, TextField, Typography } from "components/common";
-import Cookies from "js-cookie";
 import React from "react";
-import PaymentService from "service/payment_service";
 import PaypalPaymentButton from "./PaypalPaymentButton";
 
 interface IPaypalPaymentFormProps {

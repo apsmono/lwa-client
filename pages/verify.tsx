@@ -1,5 +1,5 @@
 import { AppContext } from "context/appContext";
-import Cookies from "js-cookie";
+import { setCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
@@ -23,8 +23,8 @@ function VerifyPage({
       const response = await AuthService.signInByRegistrationToken(token);
       const { access_token: accessToken, refresh_token: refreshToken } =
         response.data;
-      Cookies.set("accessToken", accessToken);
-      Cookies.set("refreshToken", refreshToken);
+      setCookie("accessToken", accessToken);
+      setCookie("refreshToken", refreshToken);
       setAuth({
         accessToken,
         refreshToken,

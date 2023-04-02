@@ -21,12 +21,12 @@ import { CreateJobWizard } from "components/employers/post-a-job";
 import JobService from "service/job_service";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
-import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import useAuthStore from "store/useAuthStore";
 import { TCreateJobWizardRef } from "components/employers/post-a-job/CreateJobWizard";
 import PaymentService from "service/payment_service";
 import { parseErrorMessage } from "utils/api";
+import { getCookie, removeCookies, setCookie } from "cookies-next";
 
 interface PostJobPageProps {
   categories: Category[];
@@ -69,8 +69,8 @@ function PostJobPage(props: PostJobPageProps) {
   const [defaultValue] = useState((): Partial<Job> | undefined => {
     if (defaultValueProps) return defaultValueProps;
 
-    const jobCookies = Cookies.get("job")
-      ? JSON.parse(Cookies.get("job")!)
+    const jobCookies = getCookie("job")
+      ? JSON.parse(getCookie("job")!.toString())
       : null;
 
     if (jobCookies) {
@@ -134,7 +134,7 @@ function PostJobPage(props: PostJobPageProps) {
       const response = await wrappedCreateItem({ ...val });
       formWizardRef.current?.showSuccessAlert(response.message);
       reset();
-      Cookies.remove("job");
+      removeCookies("job");
 
       setTimeout(() => {
         router.replace("/");
@@ -147,7 +147,7 @@ function PostJobPage(props: PostJobPageProps) {
 
   const onContinueToPayment = (val: Partial<Job>) => {
     if (!accessToken) {
-      Cookies.set("job", JSON.stringify(val));
+      setCookie("job", JSON.stringify(val));
       showErrorAlert("Please sign in first");
       router.push("/auth/sign-in");
       return;

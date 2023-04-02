@@ -1,8 +1,8 @@
-import { axiosInstance } from "config/constants";
 import axios, { AxiosResponse } from "axios";
-import { GetServerSidePropsContext } from "next";
-import Cookies from "js-cookie";
+import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import { AuthService } from "service/auth_service";
+import { GetServerSidePropsContext } from "next";
+import { axiosInstance } from "config/constants";
 
 export async function sendAndHandleRequest(
   uri: string,
@@ -10,7 +10,8 @@ export async function sendAndHandleRequest(
   payload: any = {},
   ctx?: GetServerSidePropsContext
 ) {
-  if (ctx) return sendAndHandleServerSideRequest(uri, method, payload, ctx);
+  if (ctx)
+    return await sendAndHandleServerSideRequest(uri, method, payload, ctx);
   const response: AxiosResponse = await axiosInstance.request({
     method,
     url: uri,
@@ -19,12 +20,6 @@ export async function sendAndHandleRequest(
 
   const { data, message, page } = response.data;
   return { data, message, page };
-}
-
-export function parseErrorMessage(error: any): string {
-  return (
-    error?.response?.data?.message || error.message || "Something went wrong"
-  );
 }
 
 export async function sendAndHandleServerSideRequest(
@@ -43,12 +38,17 @@ export async function sendAndHandleServerSideRequest(
     },
   });
 
-  const { data, message, page } = response.data;
-  return { data, message, page };
+  const { data, message } = response.data;
+  return { data, message };
+}
+
+export function parseErrorMessage(error: any): string {
+  return error?.response?.data?.message || "Something went wrong";
 }
 
 export async function handleInvalidToken(
-  callback: () => Promise<{ data: any; message: string }>
+  callback: () => Promise<{ data: any; message: string }>,
+  token: any = null
 ) {
   try {
     const response = await callback();
@@ -59,13 +59,13 @@ export async function handleInvalidToken(
       throw e;
     }
 
-    const refreshToken = Cookies.get("refreshToken");
+    const refreshToken = token ?? getCookie("refreshToken");
     const response = await AuthService.refreshAccessToken(refreshToken ?? "");
     if (!response.data.access_token) {
-      Cookies.remove("token");
-      Cookies.remove("refreshToken");
+      deleteCookie("token");
+      deleteCookie("refreshToken");
     }
-    Cookies.set("accessToken", response.data.access_token);
+    setCookie("accessToken", response.data.access_token);
     return await callback();
   }
 }
@@ -78,27 +78,23 @@ export async function handleInvalidTokenServerSide(
     const response = await callback();
     return response;
   } catch (e: any) {
+    console.log(e);
     if (e.response.status !== 401) {
       throw e;
     }
 
     const refreshToken =
-      ctx.req.cookies.refreshToken ?? Cookies.get("refreshToken");
+      ctx.req.cookies.refreshToken ?? getCookie("refreshToken")?.toString();
     const response = await AuthService.refreshAccessToken(refreshToken ?? "");
     if (!response.data.access_token) {
       if (ctx) {
-        ctx.res.setHeader("set-cookie", [
-          "accessToken=1;max-age=-1",
-          "refreshToken=1;max-age=-1",
-        ]);
+        deleteCookie("accessToken", ctx);
+        deleteCookie("refreshToken", ctx);
       }
       return { data: null, message: "Unauthorized" };
     }
-    console.log(response.data.access_token);
     if (ctx) {
-      ctx.res.setHeader("set-cookie", [
-        `accessToken=${response.data.access_token};path=/`,
-      ]);
+      setCookie("accessToken", response.data.access_token, ctx);
     }
     return await callback();
   }

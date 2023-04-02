@@ -3,7 +3,6 @@ import { Backdrop, Button, TextField, Typography } from "components/common";
 import { GuestSidebar } from "components/navigation";
 import NavBarDropdown from "components/navigation/nav-bar/NavBarDropdown";
 import { AppContext } from "context/appContext";
-import Cookies from "js-cookie";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -25,6 +24,7 @@ import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import GuestFooter from "./footer/GuestFooter";
+import { getCookie, removeCookies } from "cookies-next";
 
 interface GuestLayoutProps {
   title: string;
@@ -60,7 +60,7 @@ function GuestLayout(props: GuestLayoutProps) {
   );
 
   const handleLogout = async () => {
-    const refreshToken = Cookies.get("refreshToken")!;
+    const refreshToken = getCookie("refreshToken")!;
 
     try {
       setLoading(true);
@@ -76,8 +76,8 @@ function GuestLayout(props: GuestLayoutProps) {
       setLoading(false);
     }
 
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
+    removeCookies("accessToken");
+    removeCookies("refreshToken");
     setTimeout(() => {
       showSuccessAlert("Logout success");
       router.replace("/auth/sign-in");
@@ -131,7 +131,7 @@ function GuestLayout(props: GuestLayoutProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [openSidebar, setOpenSidebar] = useState(false);
-  const accessToken = Cookies.get("accessToken");
+  const accessToken = getCookie("accessToken");
 
   useEffect(() => {
     let active = true;

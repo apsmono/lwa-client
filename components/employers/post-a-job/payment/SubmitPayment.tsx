@@ -1,10 +1,10 @@
 import { usePayPalHostedFields } from "@paypal/react-paypal-js";
 import clsx from "clsx";
 import { Alert, Button, Loader, Typography } from "components/common";
-import Cookies from "js-cookie";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { parseErrorMessage } from "utils/api";
 import usePaymentStore from "./store/usePaymentStore";
+import { getCookie } from "cookies-next";
 
 export interface TSubmitPaymentRef {
   setLoading: (val: boolean) => void;
@@ -71,7 +71,7 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
           throw new Error("Something went wrong");
         }
 
-        const packageId = +(Cookies.get("package_id") || "0");
+        const packageId = +(getCookie("package_id") || "0");
 
         if (packageId !== 3) {
           setLoading(true);

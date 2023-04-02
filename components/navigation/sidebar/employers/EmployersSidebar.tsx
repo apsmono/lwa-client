@@ -5,18 +5,18 @@ import {
   ROUTE_EMPLOYERS_LISTING,
 } from "config/routes";
 import { AppContext } from "context/appContext";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useMemo } from "react";
 import { AuthService } from "service/auth_service";
-import { Category, User } from "service/types";
+import { User } from "service/types";
 import useAuthStore from "store/useAuthStore";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import { CompanyLogo } from "components/employers/company";
 import MySidebar from "../MySidebar";
+import { getCookie, removeCookies } from "cookies-next";
 
 interface IEmployersSidebarProps {
   open: boolean;
@@ -55,7 +55,7 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
   );
 
   const handleLogout = async () => {
-    const refreshToken = Cookies.get("refreshToken")!;
+    const refreshToken = getCookie("refreshToken")!;
 
     try {
       setLoading(true);
@@ -71,8 +71,8 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
       setLoading(false);
     }
 
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
+    removeCookies("accessToken");
+    removeCookies("refreshToken");
     setTimeout(() => {
       showSuccessAlert("Logout success");
       router.replace("/auth/sign-in");
