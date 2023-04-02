@@ -27,4 +27,5 @@ export type Job = {
   company_id: number;
   order_id?: string;
   click_counts: number;
+  price: number;
 };

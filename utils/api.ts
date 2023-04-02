@@ -83,8 +83,7 @@ export async function handleInvalidTokenServerSide(
       throw e;
     }
 
-    const refreshToken =
-      ctx.req.cookies.refreshToken ?? getCookie("refreshToken")?.toString();
+    const refreshToken = getCookie("refreshToken", ctx)?.toString();
     const response = await AuthService.refreshAccessToken(refreshToken ?? "");
     if (!response.data.access_token) {
       if (ctx) {

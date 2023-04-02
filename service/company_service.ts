@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from "next";
 import { sendAndHandleRequest } from "utils/api";
 
 export default class CompanyService {
@@ -18,5 +19,17 @@ export default class CompanyService {
     const params = new URLSearchParams(payload).toString();
 
     return sendAndHandleRequest(`/companies/${id}/jobs?${params}`, "get");
+  }
+
+  static async getOrderSummary(
+    company_id: number,
+    ctx?: GetServerSidePropsContext
+  ) {
+    return sendAndHandleRequest(
+      `/companies/${company_id}/order/summary`,
+      "get",
+      null,
+      ctx
+    );
   }
 }
