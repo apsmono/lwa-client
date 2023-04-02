@@ -32,4 +32,16 @@ export default class CompanyService {
       ctx
     );
   }
+
+  static async getJobActivities(
+    companyId: number,
+    ctx?: GetServerSidePropsContext
+  ) {
+    return sendAndHandleRequest(
+      `/companies/${companyId}/jobs/activity`,
+      "get",
+      null,
+      ctx
+    );
+  }
 }

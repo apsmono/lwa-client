@@ -17,9 +17,12 @@ import {
 } from "./forms";
 import MyPopOver from "./MyPopOver";
 import ConfirmationModal from "./ConfirmationModal";
+import Card from "./Card";
+import CardTitle from "./CardTitle";
 
 export {
   Loader,
+  Card,
   Backdrop,
   Modal,
   Typography,
@@ -36,4 +39,5 @@ export {
   Chip,
   MyPopOver,
   ConfirmationModal,
+  CardTitle,
 };
