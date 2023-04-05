@@ -28,7 +28,7 @@ export async function sendAndHandleServerSideRequest(
   payload: any = {},
   ctx: GetServerSidePropsContext
 ) {
-  const { accessToken } = ctx?.req.cookies;
+  const accessToken = getCookie("accessToken", ctx);
   const response: AxiosResponse = await axios({
     method,
     url: `${process.env.NEXT_PUBLIC_API_URL}${uri}`,
@@ -43,7 +43,9 @@ export async function sendAndHandleServerSideRequest(
 }
 
 export function parseErrorMessage(error: any): string {
-  return error?.response?.data?.message || "Something went wrong";
+  if (error?.response?.data?.message) return error?.response?.data?.message;
+  if (error instanceof Error) return error.message;
+  return "Something went wrong";
 }
 
 export async function handleInvalidToken(

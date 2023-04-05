@@ -26,7 +26,7 @@ import useAuthStore from "store/useAuthStore";
 import { TCreateJobWizardRef } from "components/employers/post-a-job/CreateJobWizard";
 import PaymentService from "service/payment_service";
 import { parseErrorMessage } from "utils/api";
-import { getCookie, removeCookies, setCookie } from "cookies-next";
+import { getCookie, hasCookie, removeCookies, setCookie } from "cookies-next";
 
 interface PostJobPageProps {
   categories: Category[];
@@ -52,7 +52,6 @@ function PostJobPage(props: PostJobPageProps) {
   } = props;
   const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
 
-  const { showErrorAlert } = useAlert();
   const router = useRouter();
 
   const {
@@ -125,7 +124,6 @@ function PostJobPage(props: PostJobPageProps) {
     JobService.create(params)
   );
 
-  const { accessToken } = useAuthStore();
   const formWizardRef = useRef<TCreateJobWizardRef>(null);
 
   const handleSubmit = async (val: Partial<Job>) => {
@@ -143,16 +141,6 @@ function PostJobPage(props: PostJobPageProps) {
       formWizardRef.current?.showErrorAlert(parseErrorMessage(error));
       formWizardRef.current?.setLoading(false);
     }
-  };
-
-  const onContinueToPayment = (val: Partial<Job>) => {
-    if (!accessToken) {
-      setCookie("job", JSON.stringify(val));
-      showErrorAlert("Please sign in first");
-      router.push("/auth/sign-in");
-      return;
-    }
-    formWizardRef.current?.setWizardStep(2);
   };
 
   return (
@@ -202,7 +190,6 @@ function PostJobPage(props: PostJobPageProps) {
           categories={categories}
           defaultValue={defaultValue}
           employmentTypes={employmentTypes}
-          onContinueToPayment={onContinueToPayment}
           clientToken={clientToken}
         />
       </div>
@@ -219,25 +206,37 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     LocationService.gets(),
     EmploymentTypeService.gets(),
     PackageService.gets(),
-    PaymentService.getClientToken(),
   ]);
   props.categories = res[0].data;
   props.locations = res[1].data;
   props.employmentTypes = res[2].data;
   props.packages = res[3].data;
-  props.clientToken = res[4].data.client_token;
-  try {
-    const user = (await AuthService.fetchMe(context)).data?.user || null;
 
-    props.user = user;
+  if (!hasCookie("paypalClientToken", context)) {
+    const { data } = await PaymentService.getClientToken();
+    props.clientToken = data.client_token;
+    setCookie("paypalClientToken", props.clientToken, {
+      ...context,
+      maxAge: 3600,
+    });
+  } else {
+    props.clientToken = getCookie("paypalClientToken", context);
+  }
 
-    if (user?.job_token_temp) {
-      const { data } = await JobService.getJobTemp(user.job_token_temp);
-      console.log({ job: data.job });
-      props.defaultValue = data.job;
+  if (hasCookie("accessToken", context)) {
+    try {
+      const user = (await AuthService.fetchMe(context)).data?.user || null;
+
+      props.user = user;
+
+      if (user?.job_token_temp) {
+        const { data } = await JobService.getJobTemp(user.job_token_temp);
+        console.log({ job: data.job });
+        props.defaultValue = data.job;
+      }
+    } catch (error) {
+      props.user = null;
     }
-  } catch (error) {
-    props.user = null;
   }
 
   return {

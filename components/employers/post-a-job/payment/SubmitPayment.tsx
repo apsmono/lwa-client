@@ -4,7 +4,8 @@ import { Alert, Button, Loader, Typography } from "components/common";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { parseErrorMessage } from "utils/api";
 import usePaymentStore from "./store/usePaymentStore";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
+import useAuthStore from "store/useAuthStore";
 
 export interface TSubmitPaymentRef {
   setLoading: (val: boolean) => void;
@@ -14,11 +15,16 @@ export interface TSubmitPaymentRef {
 
 interface ISubmitPaymentProps {
   onClick: (order_id: string, package_id: number) => void;
+  validateAccountForm?: () => Promise<unknown> | undefined;
+  registerEmployers: () => Promise<{
+    access_token: string;
+    refresh_token: string;
+  }>;
 }
 
 const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
   (props, ref) => {
-    const { onClick } = props;
+    const { onClick, validateAccountForm, registerEmployers } = props;
     const { cardFields } = usePayPalHostedFields();
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState<{
@@ -31,6 +37,7 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
       type: "success",
     });
     const { packageItem } = usePaymentStore();
+    const { accessToken, setAuth } = useAuthStore();
 
     useImperativeHandle(ref, () => ({
       setLoading: (val) => {
@@ -71,6 +78,20 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
           throw new Error("Something went wrong");
         }
 
+        if (!accessToken && validateAccountForm) {
+          try {
+            await validateAccountForm();
+            const { access_token, refresh_token } = await registerEmployers();
+            setCookie("accessToken", access_token);
+            setCookie("refreshToken", refresh_token);
+            setAuth({
+              accessToken: access_token,
+              refreshToken: refresh_token,
+            });
+          } catch (error) {
+            throw new Error("Please fill account form");
+          }
+        }
         const packageId = +(getCookie("package_id") || "0");
 
         if (packageId !== 3) {
@@ -86,6 +107,7 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
           const order = await cardFields?.submit();
           orderId = order!.orderId;
         }
+
         onClick(orderId, packageItem!.id);
       } catch (error) {
         setAlert({
