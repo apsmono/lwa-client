@@ -19,5 +19,5 @@ export const schema = yup.object({
   company_headquarter: yup.string().required("This field is required"),
   company_url: yup.string().required("This field is required"),
   company_about: yup.string().required("This field is required"),
-  company_offer: yup.string().required("This field is required"),
+  company_offer: yup.string(),
 });

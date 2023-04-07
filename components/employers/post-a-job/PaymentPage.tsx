@@ -52,12 +52,14 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
     }, []);
 
     const registerEmployers = React.useCallback(async () => {
+      submitPaymentRef.current!.setLoading(true);
       const values = accountFormSectionRef.current?.getFormData()!;
       const response = await AuthService.signUpEmployers({
         ...values,
         name: company_name!,
       });
       const { access_token, refresh_token } = response.data;
+      submitPaymentRef.current!.setLoading(false);
       return {
         access_token,
         refresh_token,

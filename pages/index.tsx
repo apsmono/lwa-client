@@ -4,8 +4,7 @@ import CategoryService from "service/category_service";
 import { GuestLayout } from "components/layout";
 import JobService from "service/job_service";
 import { Category, Job } from "service/types";
-import { FeaturedJob, Jobs, PopularCategory, Subscribe } from "components/home";
-import { useRouter } from "next/router";
+import { FeaturedJob, Jobs, Subscribe } from "components/home";
 import { Search } from "react-feather";
 
 interface HomePropsInterface {
@@ -18,13 +17,12 @@ interface HomePropsInterface {
 function Home(props: HomePropsInterface) {
   const { categories, featuredJobs, jobs, totalJobs } = props;
 
-  const router = useRouter();
-
   return (
     <GuestLayout
       navBarProps={{ className: "bg-primary-500" }}
       title="Home"
       categories={categories}
+      bottomComponent={<Subscribe categories={categories} />}
     >
       <div className="bg-primary-500 border-b-2 border-black">
         <div className="flex mb-8 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
@@ -73,7 +71,6 @@ function Home(props: HomePropsInterface) {
           <Jobs categories={categories} jobs={jobs} totalItems={totalJobs} />
         </div>
       </div>
-      <Subscribe categories={categories} />
     </GuestLayout>
   );
 }

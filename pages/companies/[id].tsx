@@ -23,6 +23,8 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
     <GuestLayout
       categories={categories}
       title={`Company Detail | ${company.company_name}`}
+      bottomComponent={<Subscribe categories={categories} />}
+      addBottomSpace={false}
     >
       <div className="mx-auto p-6 max-w-5xl">
         <div className="flex sm:flex-row flex-col justify-between gap-4 mb-4">
@@ -78,7 +80,7 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
         })}
       </div>
 
-      <div className="bg-gray-100">
+      <div className="bg-gray-100 pb-48">
         <div className="mx-auto p-6 max-w-5xl">
           <Typography variant="h6" className="font-bold">
             Similar Jobs
@@ -99,7 +101,6 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
           })}
         </div>
       </div>
-      <Subscribe categories={categories} />
     </GuestLayout>
   );
 }

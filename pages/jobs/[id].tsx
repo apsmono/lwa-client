@@ -15,11 +15,14 @@ interface JobDetailPageProps {
 function JobDetailPage(props: JobDetailPageProps) {
   const { job, categories } = props;
   return (
-    <GuestLayout categories={categories} title={`Job Detail | ${job.title}`}>
+    <GuestLayout
+      categories={categories}
+      title={`Job Detail | ${job.title}`}
+      bottomComponent={<Subscribe categories={categories} />}
+    >
       <div className="p-6 mb-12">
         <JobDisplay job={job} className="px-6 max-w-5xl mx-auto" />
       </div>
-      <Subscribe categories={categories} />
     </GuestLayout>
   );
 }

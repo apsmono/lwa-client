@@ -170,9 +170,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
                   buttonProps?.className
                 )}
               >
-                <span
-                  className={clsx("block truncate", { "text-red-500": error })}
-                >
+                <span className={clsx("block", { "text-red-500": error })}>
                   {renderValue()}
                 </span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -222,7 +220,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
                           <>
                             <span
                               className={clsx(
-                                "block truncate",
+                                "block",
                                 {
                                   "font-medium underline": active || selected,
                                 },

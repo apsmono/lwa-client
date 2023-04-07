@@ -29,6 +29,7 @@ import { getCookie, removeCookies } from "cookies-next";
 interface GuestLayoutProps {
   title: string;
   children: ReactNode;
+  bottomComponent?: ReactNode;
   categories: Category[];
   employers?: User;
   navBarProps?: { className: string };
@@ -36,6 +37,7 @@ interface GuestLayoutProps {
   customLogo?: ReactNode;
   className?: string;
   meta?: ReactNode;
+  addBottomSpace?: boolean;
 }
 
 function GuestLayout(props: GuestLayoutProps) {
@@ -47,6 +49,8 @@ function GuestLayout(props: GuestLayoutProps) {
     navBarProps,
     sidebar,
     className,
+    bottomComponent,
+    addBottomSpace = true,
     meta,
   } = props;
   const router = useRouter();
@@ -164,7 +168,7 @@ function GuestLayout(props: GuestLayoutProps) {
         <link rel="icon" href="/favicon.ico" />
         {meta}
       </Head>
-      <div className="relative">
+      <div className={clsx("relative", [addBottomSpace && "pb-48"])}>
         {sidebar}
         <GuestSidebar
           categories={categories}
@@ -194,7 +198,7 @@ function GuestLayout(props: GuestLayoutProps) {
               )}
               <div className="hidden lg:flex gap-8 items-center">
                 <NavBarDropdown
-                  title="✨ Categories"
+                  title="🚀 Categories"
                   list={categories.map((item) => ({
                     title: item.name,
                     route: `/jobs?category_id=${item.id}`,
@@ -244,6 +248,7 @@ function GuestLayout(props: GuestLayoutProps) {
           <div className={className}>{children}</div>
         </div>
       </div>
+      {bottomComponent}
       <GuestFooter
         categories={categories}
         usefulLinks={usefulLinks}

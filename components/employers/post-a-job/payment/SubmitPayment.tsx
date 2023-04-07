@@ -167,7 +167,7 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
 
           <div className="flex justify-end">
             <Button
-              disabled={!packageItem}
+              disabled={!packageItem || loading}
               onClick={handleClick}
               block
               variant="white"

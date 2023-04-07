@@ -58,13 +58,14 @@ function BlogPage(props: IBlogPageProps) {
                 <img
                   src={`${process.env.NEXT_PUBLIC_API_URL}${item.thumbnail}`}
                   alt=""
-                  className="rounded-lg"
+                  className="rounded-lg mb-2"
                 />
               </picture>
               <Link href={`/blog/${item.slug}`}>
                 <Typography
                   variant="h4"
                   className="font-palo tracking-wide font-bold uppercase"
+                  style={{ lineHeight: "1.75rem" }}
                 >
                   {item.title}
                 </Typography>

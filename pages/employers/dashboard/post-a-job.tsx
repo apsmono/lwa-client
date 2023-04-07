@@ -4,6 +4,7 @@ import { TCreateJobWizardRef } from "components/employers/post-a-job/CreateJobWi
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { EmployersLayout } from "components/layout";
 import { ROUTE_EMPLOYERS_LISTING } from "config/routes";
+import { getCookie, hasCookie, setCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
@@ -67,7 +68,9 @@ function PostJobPage(props: IPostJobPageProps) {
       formWizardRef.current?.showSuccessAlert(response.message);
 
       reset();
-      router.replace(ROUTE_EMPLOYERS_LISTING);
+      setTimeout(() => {
+        router.replace(ROUTE_EMPLOYERS_LISTING);
+      }, 500);
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));
       formWizardRef.current?.setLoading(false);
@@ -103,13 +106,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     LocationService.gets(),
     EmploymentTypeService.gets(),
     PackageService.gets(),
-    PaymentService.getClientToken(),
   ]);
   props.categories = res[0].data;
   props.locations = res[1].data;
   props.employmentTypes = res[2].data;
   props.packages = res[3].data;
-  props.clientToken = res[4].data.client_token;
 
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;
@@ -125,6 +126,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  if (!hasCookie("paypalClientToken", context)) {
+    const { data } = await PaymentService.getClientToken();
+    props.clientToken = data.client_token;
+    setCookie("paypalClientToken", props.clientToken, {
+      ...context,
+      maxAge: 3600,
+    });
+  } else {
+    props.clientToken = getCookie("paypalClientToken", context);
+  }
   return {
     props,
   };
