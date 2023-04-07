@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from "next";
-import { sendAndHandleRequest } from "utils/api";
+import { getURLSearchParams, sendAndHandleRequest } from "utils/api";
 
 export default class CompanyService {
   static async gets(payload = {}) {
@@ -35,10 +35,12 @@ export default class CompanyService {
 
   static async getJobActivities(
     companyId: number,
+    payload = {},
     ctx?: GetServerSidePropsContext
   ) {
+    const params = getURLSearchParams(payload);
     return sendAndHandleRequest(
-      `/companies/${companyId}/jobs/activity`,
+      `/companies/${companyId}/jobs/activity?${params}`,
       "get",
       null,
       ctx

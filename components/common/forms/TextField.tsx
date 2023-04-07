@@ -45,7 +45,10 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
     } = props;
     const registerAttr = register ? register(props.name ?? "") : {};
     return (
-      <div className={clsx("mb-3", containerProps?.className)}>
+      <div
+        className={clsx("mb-3", containerProps?.className)}
+        style={containerProps?.style}
+      >
         {label && (
           <InputLabel
             append={labelAppend}

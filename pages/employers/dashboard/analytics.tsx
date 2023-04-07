@@ -1,8 +1,14 @@
-import { Card, CardTitle, Typography } from "components/common";
+import {
+  Button,
+  Card,
+  CardTitle,
+  TextField,
+  Typography,
+} from "components/common";
 import { PageTitle } from "components/common/dashboard";
 import { EmployersLayout } from "components/layout";
 import { GetServerSideProps } from "next";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthService } from "service/auth_service";
 import CategoryService from "service/category_service";
 import CompanyService from "service/company_service";
@@ -18,6 +24,8 @@ import {
   BarChart,
 } from "recharts";
 import { handleInvalidTokenServerSide } from "utils/api";
+import { useCurrentPng } from "recharts-to-png";
+import { saveAs } from "file-saver";
 
 interface IAnalyticsProps {
   categories: Category[];
@@ -27,7 +35,30 @@ interface IAnalyticsProps {
 
 function Analytics(props: IAnalyticsProps) {
   const { categories, user, activities: defaultActivities } = props;
-  const [activities] = useState(defaultActivities);
+  const [activities, setActivities] = useState(defaultActivities);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [getPng, { ref }] = useCurrentPng();
+
+  useEffect(() => {
+    let active = true;
+
+    const timeout = setTimeout(async () => {
+      const params: any = {};
+      if (startDate) params.start_date = startDate;
+      if (endDate) params.end_date = endDate;
+      const response = await CompanyService.getJobActivities(
+        user!.company!.id,
+        params
+      );
+      if (!active) return;
+      setActivities(response.data.activities);
+    }, 1000);
+    return () => {
+      active = false;
+      clearTimeout(timeout);
+    };
+  }, [startDate, endDate, user]);
 
   const clickData = useMemo(() => {
     return activities.map((act, i) => ({
@@ -39,9 +70,46 @@ function Analytics(props: IAnalyticsProps) {
   const totalClick = useMemo(() => {
     return clickData.reduce((a, b) => a + b.amount, 0);
   }, [clickData]);
+
+  const handleExport = useCallback(async () => {
+    const png = await getPng();
+
+    if (png) {
+      saveAs(png, "CTRChart.png");
+    }
+  }, [getPng]);
   return (
     <EmployersLayout categories={categories} employers={user} title="Analytics">
       <PageTitle>Analytics</PageTitle>
+      <div className="flex flex-col md:flex-row gap-2 justify-end mb-4">
+        <div className="flex flex-col md:flex-row gap-2 items-center">
+          <Typography variant="h6" className="font-bold">
+            Showing data from
+          </Typography>
+          <div className="flex gap-2 items-center">
+            <TextField
+              containerProps={{ style: { marginBottom: 0 } }}
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="border-gray-200"
+            />
+            <Typography className="font-bold" variant="h6">
+              -
+            </Typography>
+            <TextField
+              containerProps={{ style: { marginBottom: 0 } }}
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="border-gray-200"
+            />
+          </div>
+        </div>
+        <Button onClick={() => handleExport()} rounded={false} variant="white">
+          Export
+        </Button>
+      </div>
       <div className="grid grid-cols-3 mb-4">
         <div className="py-6 border-2 border-black bg-secondary-300 rounded-lg text-center">
           <Typography className="font-bold" variant="h4">
@@ -52,9 +120,9 @@ function Analytics(props: IAnalyticsProps) {
       </div>
       <div>
         <Card className="border-black">
-          <CardTitle>CTR Charts</CardTitle>
+          <CardTitle className="text-center">CTR Charts</CardTitle>
           <ResponsiveContainer width="100%" height={350}>
-            <BarChart data={clickData}>
+            <BarChart ref={ref} data={clickData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
@@ -93,7 +161,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         context
       ),
       handleInvalidTokenServerSide(
-        () => CompanyService.getJobActivities(user.company.id, context),
+        () => CompanyService.getJobActivities(user.company.id, {}, context),
         context
       ),
     ]);
