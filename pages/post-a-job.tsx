@@ -19,14 +19,13 @@ import {
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { CreateJobWizard } from "components/employers/post-a-job";
 import JobService from "service/job_service";
-import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import { useRouter } from "next/router";
-import useAuthStore from "store/useAuthStore";
 import { TCreateJobWizardRef } from "components/employers/post-a-job/CreateJobWizard";
 import PaymentService from "service/payment_service";
 import { parseErrorMessage } from "utils/api";
 import { getCookie, hasCookie, removeCookies, setCookie } from "cookies-next";
+import usePaymentStore from "components/employers/post-a-job/payment/store/usePaymentStore";
 
 interface PostJobPageProps {
   categories: Category[];
@@ -53,6 +52,7 @@ function PostJobPage(props: PostJobPageProps) {
   const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
 
   const router = useRouter();
+  const { reset: resetPayment } = usePaymentStore();
 
   const {
     company_name,
@@ -132,6 +132,7 @@ function PostJobPage(props: PostJobPageProps) {
       const response = await wrappedCreateItem({ ...val });
       formWizardRef.current?.showSuccessAlert(response.message);
       reset();
+      resetPayment();
       removeCookies("job");
 
       setTimeout(() => {

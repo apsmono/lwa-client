@@ -3,7 +3,6 @@ import { Typography } from "components/common";
 
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { Job } from "service/types";
-import { Package } from "service/types/master_data_type";
 import { AuthService } from "service/auth_service";
 import AccountFormSection, {
   TAccountFormSectionRef,
@@ -11,18 +10,16 @@ import AccountFormSection, {
 import useJobStore from "./store/useJobStore";
 import PaypalPaymentForm from "./payment/PaypalPaymentForm";
 import { TPaypalPaymmentButtonOnClick } from "./payment/PaypalPaymentButton";
-import PackageList from "./PackageList";
 import { TSubmitPaymentRef } from "./payment/SubmitPayment";
 
 interface PaymentPageProps {
-  packages: Package[];
   clientToken: string;
   onSubmit: (val: Partial<Job>) => void;
 }
 
 const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
   (props, ref) => {
-    const { packages, onSubmit, clientToken } = props;
+    const { onSubmit, clientToken } = props;
 
     const submitPaymentRef = useRef<TSubmitPaymentRef>(null);
     const accountFormSectionRef = useRef<TAccountFormSectionRef>(null);
@@ -130,17 +127,6 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
           }}
         >
           <div className="grid grid-cols-1 gap-6 mt-4">
-            <div className="flex flex-col gap-4">
-              <div>
-                <Typography
-                  variant="h3"
-                  className="font-bold font-palo uppercase"
-                >
-                  Gain more visibility!
-                </Typography>
-              </div>
-              <PackageList packages={packages} />
-            </div>
             <Typography className="text-center font-bold">
               Want to post more than 10+ jobs?{" "}
               <a href="mailto:youremail@test.com">Contact us</a> for customised

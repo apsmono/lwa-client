@@ -1,3 +1,4 @@
+import { removeCookies } from "cookies-next";
 import { Job } from "service/types";
 import { create } from "zustand";
 
@@ -46,6 +47,7 @@ const useJobStore = create<JobState>((set) => {
       }));
     },
     reset: () => {
+      removeCookies("job");
       set((state) => ({
         ...state,
         ...initialState,

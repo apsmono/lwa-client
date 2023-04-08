@@ -1,6 +1,7 @@
 import { PageTitle } from "components/common/dashboard";
 import { CreateJobWizard } from "components/employers/post-a-job";
 import { TCreateJobWizardRef } from "components/employers/post-a-job/CreateJobWizard";
+import usePaymentStore from "components/employers/post-a-job/payment/store/usePaymentStore";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { EmployersLayout } from "components/layout";
 import { ROUTE_EMPLOYERS_LISTING } from "config/routes";
@@ -51,6 +52,7 @@ function PostJobPage(props: IPostJobPageProps) {
   });
 
   const router = useRouter();
+  const { reset: resetPayment } = usePaymentStore();
 
   const { reset } = useJobStore();
 
@@ -68,6 +70,7 @@ function PostJobPage(props: IPostJobPageProps) {
       formWizardRef.current?.showSuccessAlert(response.message);
 
       reset();
+      resetPayment();
       setTimeout(() => {
         router.replace(ROUTE_EMPLOYERS_LISTING);
       }, 500);

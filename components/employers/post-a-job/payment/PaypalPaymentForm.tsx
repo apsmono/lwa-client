@@ -4,12 +4,12 @@ import {
 } from "@paypal/react-paypal-js";
 import { InputLabel, TextField, Typography } from "components/common";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
-import { getCookie } from "cookies-next";
 import PaymentService from "service/payment_service";
 import SubmitPayment, { TSubmitPaymentRef } from "./SubmitPayment";
 import PaypalPaymentButton, {
   TPaypalPaymmentButtonOnClick,
 } from "./PaypalPaymentButton";
+import usePaymentStore from "./store/usePaymentStore";
 
 interface IPaypalPaymentFormProps {
   onApprove: (order_id: string, package_id: number) => void;
@@ -34,6 +34,7 @@ const PaypalPaymentForm = forwardRef<
     validateHostedField,
   } = props;
   const submitPaymentRef = useRef<TSubmitPaymentRef>(null);
+  const { packageItem } = usePaymentStore();
   useImperativeHandle(
     ref,
     () => ({
@@ -48,9 +49,7 @@ const PaypalPaymentForm = forwardRef<
   return (
     <PayPalHostedFieldsProvider
       createOrder={async () => {
-        const { data } = await PaymentService.createOrder(
-          +(getCookie("package_id") || 0)
-        );
+        const { data } = await PaymentService.createOrder(packageItem!.id);
 
         return data.id;
       }}

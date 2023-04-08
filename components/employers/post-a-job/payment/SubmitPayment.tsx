@@ -4,7 +4,7 @@ import { Alert, Button, Loader, Typography } from "components/common";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { parseErrorMessage } from "utils/api";
 import usePaymentStore from "./store/usePaymentStore";
-import { getCookie, setCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 import useAuthStore from "store/useAuthStore";
 
 export interface TSubmitPaymentRef {
@@ -92,7 +92,7 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
             throw new Error("Please fill account form");
           }
         }
-        const packageId = +(getCookie("package_id") || "0");
+        const packageId = packageItem!.id;
 
         if (packageId !== 3) {
           setLoading(true);

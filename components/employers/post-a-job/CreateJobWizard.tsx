@@ -103,6 +103,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
                 setStep(2);
               }
             }}
+            packages={packages}
           />
         )}
         {step === 2 && (
@@ -112,7 +113,6 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
           <PaymentPage
             clientToken={clientToken}
             onSubmit={onSubmit}
-            packages={packages}
             ref={paymentPageRef}
           />
         )}

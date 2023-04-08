@@ -55,6 +55,9 @@ const AccountForm = forwardRef<TAccountFormRef, IAccountFormProps>(
       salary,
       package_id,
       company_name,
+      employment_type,
+      location,
+      category_name,
     } = useJobStore();
 
     const router = useRouter();
@@ -94,6 +97,9 @@ const AccountForm = forwardRef<TAccountFormRef, IAccountFormProps>(
           salary,
           package_id,
           company_name,
+          employment_type,
+          location,
+          category_name,
         })
       );
       router.push("/auth/sign-in");
