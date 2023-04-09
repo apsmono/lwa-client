@@ -17,7 +17,6 @@ import { CompanyFormRef } from "../company/CompanyForm";
 import { JobForm } from "../job";
 import { JobFormRef } from "../job/JobForm";
 import useJobStore from "./store/useJobStore";
-import PackageList from "./PackageList";
 
 interface JobFormPageProps {
   locations: LocationType[];
@@ -25,7 +24,6 @@ interface JobFormPageProps {
   languages: LanguageType[];
   categories: Category[];
   onSubmit?: (val: Partial<Job>) => void;
-  packages: Package[];
 }
 
 function JobFormPage(props: JobFormPageProps) {
@@ -35,7 +33,6 @@ function JobFormPage(props: JobFormPageProps) {
     languages,
     locations,
     onSubmit = (val) => {},
-    packages,
   } = props;
 
   const {
@@ -57,22 +54,15 @@ function JobFormPage(props: JobFormPageProps) {
     skill,
     employment_type_id,
     location_id,
-    package_id,
   } = useJobStore();
 
   const jobFormRef = useRef<JobFormRef>(null);
   const companyFormRef = useRef<CompanyFormRef>(null);
-  const pricingDivRef = useRef<HTMLDivElement>(null);
 
   const { showErrorAlert } = useAlert();
   const { setLoading } = useContext(AppContext);
 
   const handleContinueToPayment = async () => {
-    if (!package_id) {
-      pricingDivRef.current?.scrollIntoView();
-      showErrorAlert("Please select a plan");
-      return;
-    }
     await Promise.all([
       jobFormRef.current?.submitForm(),
       companyFormRef.current?.submitForm(),
@@ -108,16 +98,6 @@ function JobFormPage(props: JobFormPageProps) {
     <>
       <div className="grid grid-cols-1 gap:6 lg:gap-12 mt-4 mb-48">
         <div className="flex flex-col gap-4">
-          <div ref={pricingDivRef} className="flex flex-col gap-4">
-            <Typography variant="h3" className="font-bold font-palo uppercase">
-              Gain more visibility!
-            </Typography>
-            <PackageList packages={packages} />
-
-            <Typography variant="h4" className="font-bold">
-              Tell us about your Job
-            </Typography>
-          </div>
           <JobForm
             locations={locations}
             employmentTypes={employmentTypes}

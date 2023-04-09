@@ -9,15 +9,23 @@ interface PackageCardProps {
   lastItem?: boolean;
   onClick?: (item: Package) => void;
   isSelected?: boolean;
+  disabled?: boolean;
 }
 
 function PackageCard(props: PackageCardProps) {
-  const { item, onClick = (item) => {}, lastItem, isSelected } = props;
+  const {
+    item,
+    onClick = (item) => {},
+    lastItem,
+    isSelected,
+    disabled,
+  } = props;
   return (
     <div
       className={clsx(
         "border-2 border-black with-shadow p-6 rounded-2xl flex flex-col gap-3 justify-between",
-        { "bg-secondary-300": isSelected }
+        { "bg-secondary-300": isSelected },
+        { "bg-gray-200": disabled }
       )}
     >
       <div className="flex flex-col items-center gap-1">
@@ -53,6 +61,7 @@ function PackageCard(props: PackageCardProps) {
       </ul>
       <Button
         onClick={() => onClick(item)}
+        disabled={disabled}
         variant={!isSelected ? "white" : "secondary"}
       >
         {isSelected ? "Current plan" : "Select this plan"}

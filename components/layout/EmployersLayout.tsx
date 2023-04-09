@@ -12,7 +12,7 @@ interface IEmployersLayoutProps {
   navBarProps?: { className: string };
 }
 function EmployersLayout(props: IEmployersLayoutProps) {
-  const { children, categories, title, employers, navBarProps } = props;
+  const { children, categories, title, employers } = props;
   const [open, setOpen] = useState(false);
   const onSidebarClose = () => {
     setOpen(false);

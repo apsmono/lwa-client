@@ -11,4 +11,5 @@ export type User = {
   email_verified_at: string;
   status: number;
   registration_token: string;
+  is_free_post_used: boolean;
 };

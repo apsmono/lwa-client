@@ -73,7 +73,7 @@ function PostJobPage(props: IPostJobPageProps) {
       resetPayment();
       setTimeout(() => {
         router.replace(ROUTE_EMPLOYERS_LISTING);
-      }, 500);
+      }, 1000);
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));
       formWizardRef.current?.setLoading(false);

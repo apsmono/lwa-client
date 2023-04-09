@@ -11,6 +11,7 @@ import {
   Job,
   LocationType,
   Package,
+  User,
 } from "service/types";
 import JobFormPage from "./JobFormPage";
 import JobPreview from "./JobPreview";
@@ -103,7 +104,6 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
                 setStep(2);
               }
             }}
-            packages={packages}
           />
         )}
         {step === 2 && (
@@ -114,6 +114,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
             clientToken={clientToken}
             onSubmit={onSubmit}
             ref={paymentPageRef}
+            packages={packages}
           />
         )}
       </>

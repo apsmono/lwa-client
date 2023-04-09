@@ -1,6 +1,6 @@
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import React from "react";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import useAuthStore from "store/useAuthStore";
 import usePaymentStore from "./store/usePaymentStore";
 import { parseErrorMessage } from "utils/api";
@@ -38,9 +38,13 @@ function PaypalPaymentButton(props: IPaypalPaymentButtonProps) {
           purchase_units: [
             {
               amount: {
-                value: packageItem!.price.toString(),
+                value: JSON.parse(
+                  getCookie("packageItem")!.toString()
+                ).price.toString(),
               },
-              custom_id: packageItem!.id.toString(),
+              custom_id: JSON.parse(
+                getCookie("packageItem")!.toString()
+              ).id.toString(),
             },
           ],
         });

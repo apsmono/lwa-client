@@ -77,6 +77,7 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
         if (!cardFields) {
           throw new Error("Something went wrong");
         }
+        if (!packageItem) return;
 
         if (!accessToken && validateAccountForm) {
           try {

@@ -6,12 +6,33 @@ import { AlertContext } from "context/alertContext";
 import { Alert, Loader, UnauthorizedModal } from "components/common";
 import { AppContext } from "context/appContext";
 import { AuthContext } from "context/authContext";
+import useAuthStore from "store/useAuthStore";
+import { AuthService } from "service/auth_service";
+
 export default function App({ Component, pageProps }: AppProps) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [alertType, setAlertType] = useState();
   const [loading, setLoading] = useState(false);
   const [openUnauthorizedModal, setOpenUnauthorizedModal] = useState(false);
+  const { accessToken, setAuth } = useAuthStore();
+
+  useEffect(() => {
+    let active = true;
+
+    const fetchData = async () => {
+      const response = await AuthService.fetchMe();
+      if (!active) return;
+      setAuth({ user: response.data.user });
+    };
+
+    if (accessToken) fetchData();
+
+    return () => {
+      active = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken]);
 
   useEffect(() => {
     Router.events.on("routeChangeStart", (url) => {

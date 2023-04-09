@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { Package } from "service/types";
+import { setCookie } from "cookies-next";
+import useAuthStore from "store/useAuthStore";
 import PackageCard from "./PackageCard";
 import usePaymentStore from "./payment/store/usePaymentStore";
 import useJobStore from "./store/useJobStore";
-import { setCookie } from "cookies-next";
 
 interface IPackageListProps {
   packages: Package[];
@@ -13,6 +14,7 @@ function PackageList(props: IPackageListProps) {
   const { packages } = props;
   const { setJobPayment, packageItem } = usePaymentStore();
   const { setJob } = useJobStore();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     setCookie("packageItem", JSON.stringify(packageItem));
@@ -30,6 +32,7 @@ function PackageList(props: IPackageListProps) {
             setJob({ package_id: val?.id });
           }}
           isSelected={packageItem?.id === item.id}
+          disabled={item.price === 0 && user?.is_free_post_used}
         />
       ))}
     </div>

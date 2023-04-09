@@ -57,8 +57,7 @@ function GuestLayout(props: GuestLayoutProps) {
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const { showErrorAlert, showSuccessAlert } = useAlert();
   const { setLoading } = useContext(AppContext);
-  const { setAuth } = useAuthStore();
-  const [employers, setEmployers] = useState(null);
+  const { user, setAuth, reset } = useAuthStore();
   const wrappedLogout = useWrapHandleInvalidToken((refreshToken: string) =>
     AuthService.logout(refreshToken)
   );
@@ -69,10 +68,7 @@ function GuestLayout(props: GuestLayoutProps) {
     try {
       setLoading(true);
       await wrappedLogout(refreshToken);
-      setAuth({
-        accessToken: "",
-        refreshToken: "",
-      });
+      reset();
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));
       return;
@@ -88,7 +84,7 @@ function GuestLayout(props: GuestLayoutProps) {
     }, 300);
   };
   const employersList = useMemo(() => {
-    if (!employers) {
+    if (!user) {
       return [
         {
           title: "Post a Job",
@@ -120,7 +116,7 @@ function GuestLayout(props: GuestLayoutProps) {
       },
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [employers]);
+  }, [user]);
   const usefulLinks = useMemo(() => {
     return [
       { title: "Blog", route: "/blog" },
@@ -135,24 +131,6 @@ function GuestLayout(props: GuestLayoutProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [openSidebar, setOpenSidebar] = useState(false);
-  const accessToken = getCookie("accessToken");
-
-  useEffect(() => {
-    let active = true;
-
-    const fetchData = async () => {
-      const response = await AuthService.fetchMe();
-      if (!active) return;
-      setEmployers(response.data);
-    };
-
-    if (accessToken) fetchData();
-
-    return () => {
-      active = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleSearchJobs = async (e: FormEvent) => {
     e.preventDefault();
