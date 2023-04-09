@@ -122,7 +122,7 @@ function SignUpPage(props: SignUpPageProps) {
     <GuestLayout title="Sign Up" categories={categories}>
       <div className="max-w-5xl mx-auto p-6">
         <Typography
-          className="text-center font-bold mb-4 font-palo uppercase lg:text-7xl"
+          className="text-center font-bold mb-4 font-palo uppercase lg:text-6xl"
           variant="h1"
         >
           Create an Employer Account
