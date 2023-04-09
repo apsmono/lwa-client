@@ -168,7 +168,7 @@ function GuestLayout(props: GuestLayoutProps) {
         <link rel="icon" href="/favicon.ico" />
         {meta}
       </Head>
-      <div className={clsx("relative", [addBottomSpace && "pb-48"])}>
+      <div className={clsx("relative", [addBottomSpace && "pb-24"])}>
         {sidebar}
         <GuestSidebar
           categories={categories}
