@@ -90,7 +90,7 @@ const PaypalPaymentForm = forwardRef<
                   hostedFieldType="number"
                   options={{
                     selector: "#card-number",
-                    placeholder: "4111 1111 1111 1111",
+                    placeholder: "xxxx xxxx xxxx xxxx",
                   }}
                 />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2">
