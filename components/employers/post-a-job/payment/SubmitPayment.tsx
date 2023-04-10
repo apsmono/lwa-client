@@ -89,7 +89,8 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
               accessToken: access_token,
               refreshToken: refresh_token,
             });
-          } catch (error) {
+          } catch (error: any) {
+            if (error?.email?.message) throw new Error(error?.email?.message);
             throw new Error("Please fill account form");
           }
         }

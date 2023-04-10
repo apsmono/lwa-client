@@ -93,11 +93,11 @@ const PaypalPaymentForm = forwardRef<
                     placeholder: "xxxx xxxx xxxx xxxx",
                   }}
                 />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                {/* <div className="absolute right-4 top-1/2 -translate-y-1/2">
                   <picture>
                     <img src="/cc-logo.png" alt="CC" />
                   </picture>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">

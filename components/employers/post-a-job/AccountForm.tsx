@@ -34,6 +34,7 @@ const AccountForm = forwardRef<TAccountFormRef, IAccountFormProps>(
       register,
       getValues,
       formState: { errors },
+      setError,
     } = useForm({
       resolver: yupResolver(schema),
     });
@@ -65,17 +66,44 @@ const AccountForm = forwardRef<TAccountFormRef, IAccountFormProps>(
     const formAttribute = (label: string, name: string, id: string) => {
       return getFormAttribute(label, name, id, register, errors);
     };
+    useImperativeHandle(
+      ref,
+      () => ({
+        handleSubmit: () => {
+          return Promise.all([
+            new Promise((res, rej) => handleSubmit(res, rej)()),
+            new Promise((res, rej) => {
+              const val = { ...getValues() };
 
-    useImperativeHandle(ref, () => ({
-      handleSubmit: () => new Promise((res, rej) => handleSubmit(res, rej)()),
-      getFormData: () => {
-        const val = getValues();
-        return {
-          email: val.email,
-          password: val.password,
-        };
-      },
-    }));
+              if (!val.email.includes(company_url)) {
+                setError(
+                  "email",
+                  {
+                    message: "Email must contain company url",
+                    type: "required",
+                  },
+                  { shouldFocus: true }
+                );
+                rej({
+                  email: {
+                    message: "Email must contain company url",
+                  },
+                });
+              }
+              res("");
+            }),
+          ]);
+        },
+        getFormData: () => {
+          const val = getValues();
+          return {
+            email: val.email,
+            password: val.password,
+          };
+        },
+      }),
+      [company_url, getValues, handleSubmit, setError]
+    );
 
     const handleSignInClick = () => {
       setCookie(
