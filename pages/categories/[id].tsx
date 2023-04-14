@@ -11,20 +11,16 @@ import { Category, Job } from "service/types";
 interface CategoryDetailPageProps {
   jobs: Job[];
   category: Category;
-  categories: Category[];
 }
 
 function CategoryDetailPage(props: CategoryDetailPageProps) {
-  const { categories, category, jobs } = props;
+  const { category, jobs } = props;
   const router = useRouter();
   const handleClick = (job: Job) => {
     router.push(`/jobs/${job.id}`);
   };
   return (
-    <GuestLayout
-      title={`Category Detail | ${category.name}`}
-      categories={categories}
-    >
+    <GuestLayout title={`Category Detail | ${category.name}`}>
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
         <Typography variant="h1" className="font-bold text-center">
           {category.name} Job
@@ -58,12 +54,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   const jobs = await (await JobService.gets({ category_id: id })).data;
-  const categories = await (await CategoryService.gets()).data;
 
   props.category = category;
   props.jobs = jobs;
-  props.categories = categories;
-
   return {
     props,
   };
