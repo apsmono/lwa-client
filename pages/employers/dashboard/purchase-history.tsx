@@ -13,15 +13,13 @@ import React, {
   useState,
 } from "react";
 import { AuthService } from "service/auth_service";
-import CategoryService from "service/category_service";
 import CompanyService from "service/company_service";
-import { Category, Job, User } from "service/types";
+import { Job, User } from "service/types";
 import { handleInvalidTokenServerSide, parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import { currencyFormat } from "utils/number";
 
 interface IPurchaseHistoryProps {
-  categories: Category[];
   user: User;
   jobs: Job[];
   order_summary: { price: number; total: number };
@@ -29,13 +27,7 @@ interface IPurchaseHistoryProps {
 }
 
 function Anaytics(props: IPurchaseHistoryProps) {
-  const {
-    categories,
-    user,
-    order_summary,
-    jobs: defaultJobs,
-    pagination,
-  } = props;
+  const { user, order_summary, jobs: defaultJobs, pagination } = props;
 
   const [jobs, setJobs] = useState(defaultJobs);
   const { setLoading } = useContext(AppContext);
@@ -92,11 +84,7 @@ function Anaytics(props: IPurchaseHistoryProps) {
   }, [pageData.page]);
 
   return (
-    <EmployersLayout
-      categories={categories}
-      employers={user}
-      title="Purchase History"
-    >
+    <EmployersLayout employers={user} title="Purchase History">
       <PageTitle>Purchase History</PageTitle>
 
       <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
@@ -150,9 +138,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {
     currentStep: context.query.step || "",
   };
-  const res = await Promise.all([CategoryService.gets()]);
-  props.categories = res[0].data;
-
   try {
     const user =
       (

@@ -2,15 +2,10 @@ import { Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
-import CategoryService from "service/category_service";
-import { Category } from "service/types";
 
-interface IPrivacyPageProps {
-  categories: Category[];
-}
+interface IPrivacyPageProps {}
 
 function PrivacyPage(props: IPrivacyPageProps) {
-  const { categories } = props;
   const items = [
     {
       title: "Personal Information",
@@ -56,7 +51,7 @@ function PrivacyPage(props: IPrivacyPageProps) {
     },
   ];
   return (
-    <GuestLayout categories={categories} title="Privacy Policy">
+    <GuestLayout title="Privacy Policy">
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
         <Typography
           variant="h1"
@@ -95,15 +90,7 @@ function PrivacyPage(props: IPrivacyPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {
-    currentStep: context.query.step || "",
-  };
-  const res = await Promise.all([CategoryService.gets()]);
-  props.categories = res[0].data;
-
-  return {
-    props,
-  };
+  return { props: {} };
 };
 
 export default PrivacyPage;

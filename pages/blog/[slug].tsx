@@ -18,15 +18,14 @@ import CategoryService from "service/category_service";
 import { Blog, Category } from "service/types";
 
 interface IBlogDetailPageProps {
-  categories: Category[];
   blog: Blog;
 }
 
 function BlogDetailPage(props: IBlogDetailPageProps) {
-  const { categories, blog } = props;
+  const { blog } = props;
+
   return (
     <GuestLayout
-      categories={categories}
       title={`${blog.title} | LWA`}
       meta={
         <>
@@ -102,14 +101,9 @@ function BlogDetailPage(props: IBlogDetailPageProps) {
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { slug } = context.query;
-  const res = await Promise.all([
-    CategoryService.gets(),
-    BlogService.get(slug?.toString() || ""),
-  ]);
+  const res = await Promise.all([BlogService.get(slug?.toString() || "")]);
   const props: any = {};
-
-  props.categories = res[0].data;
-  props.blog = res[1].data.blog;
+  props.blog = res[0].data.blog;
 
   if (!props.blog) {
     return {

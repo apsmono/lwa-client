@@ -2,15 +2,10 @@ import { Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
-import CategoryService from "service/category_service";
-import { Category } from "service/types";
 
-interface ITermsAndConditionProps {
-  categories: Category[];
-}
+interface ITermsAndConditionProps {}
 
 function TermsAndConditionPage(props: ITermsAndConditionProps) {
-  const { categories } = props;
   const items = [
     {
       title: "Acceptance",
@@ -97,7 +92,7 @@ function TermsAndConditionPage(props: ITermsAndConditionProps) {
     },
   ];
   return (
-    <GuestLayout categories={categories} title="Terms and Conditions">
+    <GuestLayout title="Terms and Conditions">
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
         <Typography
           variant="h1"
@@ -128,14 +123,8 @@ function TermsAndConditionPage(props: ITermsAndConditionProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {
-    currentStep: context.query.step || "",
-  };
-  const res = await Promise.all([CategoryService.gets()]);
-  props.categories = res[0].data;
-
   return {
-    props,
+    props: {},
   };
 };
 

@@ -4,24 +4,28 @@ import JobCard from "components/home/job/JobCard";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 import { Globe, Mail, MapPin } from "react-feather";
 import CategoryService from "service/category_service";
 import CompanyService from "service/company_service";
 import JobService from "service/job_service";
-import { Category, Company, Job } from "service/types";
+import { Company, Job } from "service/types";
+import useAppStore from "store/useAppStore";
 
 interface CompanyDetailPageProps {
   company: Company;
-  categories: Category[];
   similarJobs: Job[];
 }
 
 function CompanyDetailPage(props: CompanyDetailPageProps) {
-  const { company, categories, similarJobs } = props;
+  const { company, similarJobs } = props;
+  const { categories } = useAppStore();
+
+  const companyJobs = useMemo(() => {
+    return company.jobs.filter((j) => j.status === "open");
+  }, [company]);
   return (
     <GuestLayout
-      categories={categories}
       title={`Company Detail | ${company.company_name}`}
       bottomComponent={<Subscribe categories={categories} />}
       addBottomSpace={false}
@@ -69,7 +73,7 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
         <Typography variant="h6" className="font-bold">
           Jobs at {company.company_name}
         </Typography>
-        {company.jobs.map((job) => {
+        {companyJobs.map((job) => {
           const item = { ...job };
           item.company_logo = company.company_logo;
           return (
@@ -114,10 +118,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       notFound: true,
     };
   }
-  const categories = await (await CategoryService.gets()).data;
   const props = {
     company,
-    categories,
     similarJobs,
   };
   return {

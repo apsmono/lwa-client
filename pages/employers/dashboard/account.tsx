@@ -8,20 +8,18 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { AuthService } from "service/auth_service";
-import CategoryService from "service/category_service";
-import { Category, User } from "service/types";
+import { User } from "service/types";
 import { UserService } from "service/user_service";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 
 interface IAccountSettingPage {
-  categories: Category[];
   user: User;
 }
 
 function AccountSettingPage(props: IAccountSettingPage) {
-  const { categories, user } = props;
+  const { user } = props;
   const { setLoading } = useContext(AppContext);
   const { showErrorAlert, showSuccessAlert } = useAlert();
   const router = useRouter();
@@ -46,11 +44,7 @@ function AccountSettingPage(props: IAccountSettingPage) {
   };
 
   return (
-    <EmployersLayout
-      title="Account Settings"
-      categories={categories}
-      employers={user}
-    >
+    <EmployersLayout title="Account Settings" employers={user}>
       <PageTitle>Account Settings</PageTitle>
 
       <Typography className="font-medium capitalize">
@@ -67,9 +61,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {
     currentStep: context.query.step || "",
   };
-  const res = await Promise.all([CategoryService.gets()]);
-  props.categories = res[0].data;
-
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;
 

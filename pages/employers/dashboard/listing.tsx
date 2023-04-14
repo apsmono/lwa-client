@@ -21,24 +21,17 @@ import React, {
 } from "react";
 import { ChevronRight } from "react-feather";
 import { AuthService } from "service/auth_service";
-import CategoryService from "service/category_service";
 import CompanyService from "service/company_service";
 import EmploymentTypeService from "service/employment_type_service";
 import JobService from "service/job_service";
 import LocationService from "service/location_service";
-import {
-  Category,
-  EmploymentType,
-  Job,
-  LocationType,
-  User,
-} from "service/types";
+import { EmploymentType, Job, LocationType, User } from "service/types";
+import useAppStore from "store/useAppStore";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 
 interface IManageListingPageProps {
-  categories: Category[];
   user: User;
   jobs: Job[];
   pagination: { totalItems: number; page: string };
@@ -48,7 +41,6 @@ interface IManageListingPageProps {
 
 function ManageListingPage(props: IManageListingPageProps) {
   const {
-    categories,
     user,
     jobs: defaultJobs,
     pagination,
@@ -74,6 +66,8 @@ function ManageListingPage(props: IManageListingPageProps) {
     totalItems: pagination.totalItems,
     page: pagination.page,
   });
+
+  const { categories } = useAppStore();
 
   const totalPages = useMemo(
     () => Math.ceil((pageData?.totalItems || 1) / 5),
@@ -156,11 +150,7 @@ function ManageListingPage(props: IManageListingPageProps) {
   };
   return (
     <>
-      <EmployersLayout
-        categories={categories}
-        title="Manage Listing"
-        employers={user}
-      >
+      <EmployersLayout title="Manage Listing" employers={user}>
         <PageTitle>Posted Jobs</PageTitle>
         <div className="flex flex-col md:flex-row gap-y-2 justify-between items-center mb-3">
           <div className="flex gap-4">
@@ -278,13 +268,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     currentStep: context.query.step || "",
   };
   const res = await Promise.all([
-    CategoryService.gets(),
     EmploymentTypeService.gets(),
     LocationService.gets(),
   ]);
-  props.categories = res[0].data;
-  props.employmentTypes = res[1].data;
-  props.locations = res[2].data;
+  props.employmentTypes = res[0].data;
+  props.locations = res[1].data;
 
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;

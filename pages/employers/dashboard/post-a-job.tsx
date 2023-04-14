@@ -10,26 +10,24 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { AuthService } from "service/auth_service";
-import CategoryService from "service/category_service";
 import EmploymentTypeService from "service/employment_type_service";
 import JobService from "service/job_service";
 import LocationService from "service/location_service";
 import PackageService from "service/package_service";
 import PaymentService from "service/payment_service";
 import {
-  Category,
   EmploymentType,
   Job,
   LocationType,
   Package,
   User,
 } from "service/types";
+import useAppStore from "store/useAppStore";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 
 interface IPostJobPageProps {
-  categories: Category[];
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   packages: Package[];
@@ -38,14 +36,8 @@ interface IPostJobPageProps {
 }
 
 function PostJobPage(props: IPostJobPageProps) {
-  const {
-    categories,
-    employmentTypes,
-    locations,
-    clientToken,
-    packages,
-    user,
-  } = props;
+  const { employmentTypes, locations, clientToken, packages, user } = props;
+  const { categories } = useAppStore();
   const [defaultValue] = useState((): Partial<Job> => {
     const { company } = user;
     return { ...company };
@@ -80,11 +72,7 @@ function PostJobPage(props: IPostJobPageProps) {
     }
   };
   return (
-    <EmployersLayout
-      title="Post a Job"
-      categories={categories}
-      employers={user}
-    >
+    <EmployersLayout title="Post a Job" employers={user}>
       <PageTitle>Post a Job</PageTitle>
       <CreateJobWizard
         clientToken={clientToken}
@@ -105,15 +93,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     currentStep: context.query.step || "",
   };
   const res = await Promise.all([
-    CategoryService.gets(),
     LocationService.gets(),
     EmploymentTypeService.gets(),
     PackageService.gets(),
   ]);
-  props.categories = res[0].data;
-  props.locations = res[1].data;
-  props.employmentTypes = res[2].data;
-  props.packages = res[3].data;
+  props.locations = res[0].data;
+  props.employmentTypes = res[1].data;
+  props.packages = res[2].data;
 
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;

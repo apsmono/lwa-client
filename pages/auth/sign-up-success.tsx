@@ -2,17 +2,11 @@ import { Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
-import CategoryService from "service/category_service";
-import { Category } from "service/types";
-
-interface ISignUpSuccess {
-  categories: Category[];
-}
+interface ISignUpSuccess {}
 
 function SignUpSuccess(props: ISignUpSuccess) {
-  const { categories } = props;
   return (
-    <GuestLayout categories={categories} title="Sign Up Success">
+    <GuestLayout title="Sign Up Success">
       <div className="flex flex-col items-center">
         <Typography className="lg:text-7xl font-palo font-bold uppercase">
           THANK YOU FOR SIGNING UP!
@@ -33,15 +27,8 @@ function SignUpSuccess(props: ISignUpSuccess) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {
-    sourceRef: context.query.ref || "",
-  };
-
-  const categories = await (await CategoryService.gets()).data;
-  props.categories = categories;
-
   return {
-    props,
+    props: {},
   };
 };
 

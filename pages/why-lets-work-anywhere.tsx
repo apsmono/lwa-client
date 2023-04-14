@@ -2,15 +2,9 @@ import { Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
-import CategoryService from "service/category_service";
-import { Category } from "service/types";
-
-interface IWhyLWAPageProps {
-  categories: Category[];
-}
+interface IWhyLWAPageProps {}
 
 function WhyLWAPage(props: IWhyLWAPageProps) {
-  const { categories } = props;
   const items = [
     {
       title: "WIDE REACH",
@@ -45,7 +39,7 @@ function WhyLWAPage(props: IWhyLWAPageProps) {
     },
   ];
   return (
-    <GuestLayout categories={categories} title="Why Lets Work Anywhere">
+    <GuestLayout title="Why Lets Work Anywhere">
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
         <Typography
           variant="h1"
@@ -78,15 +72,7 @@ function WhyLWAPage(props: IWhyLWAPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {
-    currentStep: context.query.step || "",
-  };
-  const res = await Promise.all([CategoryService.gets()]);
-  props.categories = res[0].data;
-
-  return {
-    props,
-  };
+  return { props: {} };
 };
 
 export default WhyLWAPage;

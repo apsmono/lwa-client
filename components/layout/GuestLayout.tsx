@@ -25,12 +25,12 @@ import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import GuestFooter from "./footer/GuestFooter";
 import { getCookie, removeCookies } from "cookies-next";
+import useAppStore from "store/useAppStore";
 
 interface GuestLayoutProps {
   title: string;
   children: ReactNode;
   bottomComponent?: ReactNode;
-  categories: Category[];
   employers?: User;
   navBarProps?: { className: string };
   sidebar?: ReactNode;
@@ -45,7 +45,6 @@ function GuestLayout(props: GuestLayoutProps) {
     title,
     children,
     customLogo,
-    categories,
     navBarProps,
     sidebar,
     className,
@@ -61,6 +60,7 @@ function GuestLayout(props: GuestLayoutProps) {
   const wrappedLogout = useWrapHandleInvalidToken((refreshToken: string) =>
     AuthService.logout(refreshToken)
   );
+  const { categories } = useAppStore();
 
   const handleLogout = async () => {
     const refreshToken = getCookie("refreshToken")!;

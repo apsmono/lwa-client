@@ -3,8 +3,6 @@ import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import CategoryService from "service/category_service";
-import { Category } from "service/types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -19,7 +17,6 @@ import JobService from "service/job_service";
 import { removeCookies } from "cookies-next";
 
 interface SignUpPageProps {
-  categories: Category[];
   sourceRef: string;
 }
 
@@ -34,7 +31,7 @@ const schema = yup.object().shape({
 });
 
 function SignUpPage(props: SignUpPageProps) {
-  const { categories, sourceRef } = props;
+  const { sourceRef } = props;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -119,7 +116,7 @@ function SignUpPage(props: SignUpPageProps) {
     router.push("/auth/sign-in");
   };
   return (
-    <GuestLayout title="Sign Up" categories={categories}>
+    <GuestLayout title="Sign Up">
       <div className="max-w-5xl mx-auto p-6">
         <Typography
           className="text-center font-bold mb-4 font-palo uppercase lg:text-6xl"
@@ -203,9 +200,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {
     sourceRef: context.query.ref || "",
   };
-
-  const categories = await (await CategoryService.gets()).data;
-  props.categories = categories;
 
   return {
     props,

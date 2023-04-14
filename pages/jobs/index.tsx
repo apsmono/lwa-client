@@ -18,11 +18,11 @@ import EmploymentTypeService from "service/employment_type_service";
 import JobService from "service/job_service";
 import LocationService from "service/location_service";
 import { Category, EmploymentType, Job, LocationType } from "service/types";
+import useAppStore from "store/useAppStore";
 
 interface JobListPageProps {
   jobs: Job[];
   category?: Category;
-  categories: Category[];
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   jobTitle?: string;
@@ -30,7 +30,6 @@ interface JobListPageProps {
 
 function JobListPage(props: JobListPageProps) {
   const {
-    categories,
     category,
     jobs,
     employmentTypes,
@@ -38,6 +37,7 @@ function JobListPage(props: JobListPageProps) {
     jobTitle: userJobTitle,
   } = props;
   const router = useRouter();
+  const { categories } = useAppStore();
   const [employmentType, setEmploymentType] = useState<any[]>([]);
   const [location, setLocation] = useState<any[]>([]);
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
@@ -77,13 +77,19 @@ function JobListPage(props: JobListPageProps) {
     router.push(`/jobs/${job.id}`);
   };
 
+  useEffect(() => {
+    setJobList(jobs);
+  }, [jobs]);
+
   const title = useMemo(() => {
     if (!category) return "Jobs";
     return `Jobs - ${category.name}`;
   }, [category]);
 
   const fetchJobs = useCallback(async () => {
-    const params: any = {};
+    const params: any = {
+      status: "open",
+    };
     const categoryIds = [];
     if (employmentType.length) {
       params.employment_type_id = employmentType.map((l) => l.id);
@@ -146,7 +152,10 @@ function JobListPage(props: JobListPageProps) {
   const salaryListRef = useRef<SelectRefType>(null);
 
   return (
-    <GuestLayout title={title} categories={categories}>
+    <GuestLayout
+      title={title}
+      bottomComponent={<Subscribe categories={categories} />}
+    >
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
         {category ? (
           <>
@@ -279,7 +288,6 @@ function JobListPage(props: JobListPageProps) {
           </div>
         ))}
       </div>
-      <Subscribe categories={categories} />
     </GuestLayout>
   );
 }
@@ -287,7 +295,9 @@ function JobListPage(props: JobListPageProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
   const { category_id, title } = context.query;
-  const jobParams: any = {};
+  const jobParams: any = {
+    status: "open",
+  };
 
   if (category_id) {
     const category = await (
@@ -300,14 +310,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const res = await Promise.all([
     JobService.gets(jobParams),
-    CategoryService.gets(),
     EmploymentTypeService.gets(),
     LocationService.gets(),
   ]);
   props.jobs = res[0].data;
-  props.categories = res[1].data;
-  props.employmentTypes = res[2].data;
-  props.locations = res[3].data;
+  props.employmentTypes = res[1].data;
+  props.locations = res[2].data;
   if (title) props.jobTitle = title;
 
   return {

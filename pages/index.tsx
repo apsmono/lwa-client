@@ -3,25 +3,25 @@ import { GetServerSideProps } from "next";
 import CategoryService from "service/category_service";
 import { GuestLayout } from "components/layout";
 import JobService from "service/job_service";
-import { Category, Job } from "service/types";
+import { Job } from "service/types";
 import { FeaturedJob, Jobs, Subscribe } from "components/home";
 import { Search } from "react-feather";
+import useAppStore from "store/useAppStore";
 
 interface HomePropsInterface {
-  categories: Category[];
   featuredJobs: Job[];
   jobs: Job[];
   totalJobs: number;
 }
 
 function Home(props: HomePropsInterface) {
-  const { categories, featuredJobs, jobs, totalJobs } = props;
+  const { featuredJobs, jobs, totalJobs } = props;
+  const { categories } = useAppStore();
 
   return (
     <GuestLayout
       navBarProps={{ className: "bg-primary-500" }}
       title="Home"
-      categories={categories}
       bottomComponent={<Subscribe categories={categories} />}
     >
       <div className="bg-primary-500 border-b-2 border-black">
@@ -78,17 +78,15 @@ function Home(props: HomePropsInterface) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
 
-  const categories = await (await CategoryService.gets()).data;
   const popularCategoriesRes = await CategoryService.gets({
     offset: 1,
     limit: 8,
   });
   const featuredJobs = await (
-    await JobService.gets({ is_featured: true })
+    await JobService.gets({ is_featured: true, status: "open" })
   ).data;
-  const jobRes = await JobService.gets({ offset: 1, limit: 7 });
+  const jobRes = await JobService.gets({ offset: 1, limit: 7, status: "open" });
 
-  props.categories = categories;
   props.featuredJobs = featuredJobs;
   props.popularCategories = popularCategoriesRes.data;
   props.totalPopularCategories = popularCategoriesRes.page.totalItems;

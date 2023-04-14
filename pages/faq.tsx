@@ -6,17 +6,15 @@ import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React, { useMemo } from "react";
 
-import CategoryService from "service/category_service";
 import PackageService from "service/package_service";
-import { Category, Package } from "service/types";
+import { Package } from "service/types";
 
 interface IFaqPageProps {
-  categories: Category[];
   packages: Package[];
 }
 
 function FaqPage(props: IFaqPageProps) {
-  const { categories, packages } = props;
+  const { packages } = props;
 
   const faqItems = useMemo(() => {
     return [
@@ -82,7 +80,7 @@ function FaqPage(props: IFaqPageProps) {
     ];
   }, [packages]);
   return (
-    <GuestLayout title="Faq" categories={categories}>
+    <GuestLayout title="Faq">
       <Typography
         variant="h1"
         className="font-palo font-bold tracking-wide text-center mb-4"
@@ -117,10 +115,7 @@ function FaqPage(props: IFaqPageProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
 
-  const categories = await (await CategoryService.gets()).data;
   const packages = await (await PackageService.gets()).data;
-
-  props.categories = categories;
   props.packages = packages;
 
   return {

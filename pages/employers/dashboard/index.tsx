@@ -3,18 +3,16 @@ import { EmployersLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
 import { AuthService } from "service/auth_service";
-import CategoryService from "service/category_service";
-import { Category, User } from "service/types";
+import { User } from "service/types";
 
 interface IEmployersDashboardProps {
-  categories: Category[];
   user: User;
 }
 
 function EmployersDashboard(props: IEmployersDashboardProps) {
-  const { categories, user } = props;
+  const { user } = props;
   return (
-    <EmployersLayout title="Dashboard" categories={categories} employers={user}>
+    <EmployersLayout title="Dashboard" employers={user}>
       <div className="h-[100vh]">
         <PageTitle>Dashboard</PageTitle>
       </div>
@@ -26,9 +24,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {
     currentStep: context.query.step || "",
   };
-  const res = await Promise.all([CategoryService.gets()]);
-  props.categories = res[0].data;
-
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;
 

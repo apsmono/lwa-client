@@ -10,9 +10,8 @@ import { EmployersLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthService } from "service/auth_service";
-import CategoryService from "service/category_service";
 import CompanyService from "service/company_service";
-import { Category, User } from "service/types";
+import { User } from "service/types";
 import {
   ResponsiveContainer,
   CartesianGrid,
@@ -28,13 +27,12 @@ import { useCurrentPng } from "recharts-to-png";
 import { saveAs } from "file-saver";
 
 interface IAnalyticsProps {
-  categories: Category[];
   user: User;
   activities: { totalClick: number; title: string; id: number }[];
 }
 
 function Analytics(props: IAnalyticsProps) {
-  const { categories, user, activities: defaultActivities } = props;
+  const { user, activities: defaultActivities } = props;
   const [activities, setActivities] = useState(defaultActivities);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -79,7 +77,7 @@ function Analytics(props: IAnalyticsProps) {
     }
   }, [getPng]);
   return (
-    <EmployersLayout categories={categories} employers={user} title="Analytics">
+    <EmployersLayout employers={user} title="Analytics">
       <PageTitle>Analytics</PageTitle>
       <div className="flex flex-col md:flex-row gap-2 justify-end mb-4">
         <div className="flex flex-col md:flex-row gap-2 items-center">
@@ -141,9 +139,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {
     currentStep: context.query.step || "",
   };
-  const res = await Promise.all([CategoryService.gets()]);
-  props.categories = res[0].data;
-
   try {
     const user =
       (

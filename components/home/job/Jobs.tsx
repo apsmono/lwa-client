@@ -23,11 +23,10 @@ function Jobs(props: JobsProps) {
   const handleClick = (job: Job) => {
     router.push(`/jobs/${job.id}`);
   };
-
   const handleShowMoreJobs = async () => {
     try {
       setLoading(true);
-      const res = await JobService.gets({ offset, limit: 7 });
+      const res = await JobService.gets({ offset, limit: 7, status: "open" });
       const itemCopy = [...items, ...res.data];
       setItems(itemCopy);
       setOffset((oldVal) => oldVal + 1);

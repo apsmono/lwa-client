@@ -6,18 +6,16 @@ import Link from "next/link";
 import React, { useContext, useState } from "react";
 import BlogService from "service/blog_service";
 
-import CategoryService from "service/category_service";
-import { Blog, Category } from "service/types";
+import { Blog } from "service/types";
 import { dateFormat } from "utils/date";
 
 interface IBlogPageProps {
-  categories: Category[];
   blogs: Blog[];
   totalItems: number;
 }
 
 function BlogPage(props: IBlogPageProps) {
-  const { categories, blogs: blogList = [], totalItems } = props;
+  const { blogs: blogList = [], totalItems } = props;
 
   const [offset, setOffset] = useState(2);
 
@@ -42,7 +40,7 @@ function BlogPage(props: IBlogPageProps) {
   };
 
   return (
-    <GuestLayout categories={categories} title="Blog">
+    <GuestLayout title="Blog">
       <div className="w-full max-w-5xl mx-auto p-6 pb-48">
         <Typography
           variant="h1"
@@ -99,13 +97,9 @@ function BlogPage(props: IBlogPageProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
-  const res = await Promise.all([
-    CategoryService.gets(),
-    BlogService.gets({ limit: 6 }),
-  ]);
-  props.categories = res[0].data;
-  props.blogs = res[1].data;
-  props.totalItems = res[1].page.totalItems;
+  const res = await Promise.all([BlogService.gets({ limit: 6 })]);
+  props.blogs = res[0].data;
+  props.totalItems = res[0].page.totalItems;
 
   return {
     props,

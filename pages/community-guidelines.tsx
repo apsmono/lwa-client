@@ -2,15 +2,10 @@ import { Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React, { useMemo } from "react";
-import CategoryService from "service/category_service";
-import { Category } from "service/types";
 
-interface ICommunityGuidelineProps {
-  categories: Category[];
-}
+interface ICommunityGuidelineProps {}
 
 function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
-  const { categories } = props;
   const items = useMemo(() => {
     return [
       {
@@ -57,7 +52,7 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
     ];
   }, []);
   return (
-    <GuestLayout categories={categories} title="Community Guideline">
+    <GuestLayout title="Community Guideline">
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
         <Typography
           variant="h1"
@@ -95,14 +90,8 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {
-    currentStep: context.query.step || "",
-  };
-  const res = await Promise.all([CategoryService.gets()]);
-  props.categories = res[0].data;
-
   return {
-    props,
+    props: {},
   };
 };
 

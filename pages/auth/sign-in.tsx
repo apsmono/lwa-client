@@ -17,9 +17,7 @@ import { parseErrorMessage } from "utils/api";
 import useAuthStore from "store/useAuthStore";
 import { Eye, EyeOff } from "react-feather";
 
-interface SignInPageProps {
-  categories: Category[];
-}
+interface SignInPageProps {}
 
 const schema = yup.object().shape({
   email: yup.string().email().required("This field is required"),
@@ -27,7 +25,6 @@ const schema = yup.object().shape({
 });
 
 function SignInPage(props: SignInPageProps) {
-  const { categories } = props;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -80,7 +77,7 @@ function SignInPage(props: SignInPageProps) {
     }
   };
   return (
-    <GuestLayout title="Sign In" categories={categories}>
+    <GuestLayout title="Sign In">
       <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
         <Typography
           className="text-center font-bold mb-4 font-palo uppercase lg:text-6xl"
@@ -140,13 +137,8 @@ function SignInPage(props: SignInPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {};
-
-  const categories = await (await CategoryService.gets()).data;
-  props.categories = categories;
-
   return {
-    props,
+    props: {},
   };
 };
 

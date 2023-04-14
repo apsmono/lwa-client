@@ -8,6 +8,8 @@ import { AppContext } from "context/appContext";
 import { AuthContext } from "context/authContext";
 import useAuthStore from "store/useAuthStore";
 import { AuthService } from "service/auth_service";
+import CategoryService from "service/category_service";
+import useAppStore from "store/useAppStore";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [showAlert, setShowAlert] = useState(false);
@@ -16,6 +18,22 @@ export default function App({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false);
   const [openUnauthorizedModal, setOpenUnauthorizedModal] = useState(false);
   const { accessToken, setAuth } = useAuthStore();
+  const { setAppState } = useAppStore();
+
+  useEffect(() => {
+    let active = true;
+
+    (async () => {
+      const response = await CategoryService.gets();
+      if (!active) return;
+      setAppState({ categories: response.data });
+    })();
+
+    return () => {
+      active = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     let active = true;

@@ -4,12 +4,10 @@ import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React, { useRef, useState } from "react";
 import { AuthService } from "service/auth_service";
-import CategoryService from "service/category_service";
 import EmploymentTypeService from "service/employment_type_service";
 import LocationService from "service/location_service";
 import PackageService from "service/package_service";
 import {
-  Category,
   LocationType,
   EmploymentType,
   Package,
@@ -26,9 +24,9 @@ import PaymentService from "service/payment_service";
 import { parseErrorMessage } from "utils/api";
 import { getCookie, hasCookie, removeCookies, setCookie } from "cookies-next";
 import usePaymentStore from "components/employers/post-a-job/payment/store/usePaymentStore";
+import useAppStore from "store/useAppStore";
 
 interface PostJobPageProps {
-  categories: Category[];
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   packages: Package[];
@@ -39,8 +37,8 @@ interface PostJobPageProps {
 }
 
 function PostJobPage(props: PostJobPageProps) {
+  const { categories } = useAppStore();
   const {
-    categories,
     currentStep,
     user,
     defaultValue: defaultValueProps = null,
@@ -145,7 +143,7 @@ function PostJobPage(props: PostJobPageProps) {
   };
 
   return (
-    <GuestLayout title="Post a Job" categories={categories}>
+    <GuestLayout title="Post a Job">
       <div className="max-w-6xl mx-auto flex flex-col gap-2 p-4">
         <div className="w-full rounded-full with-shadow border border-black">
           <span
@@ -203,15 +201,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     currentStep: context.query.step || "",
   };
   const res = await Promise.all([
-    CategoryService.gets(),
     LocationService.gets(),
     EmploymentTypeService.gets(),
     PackageService.gets(),
   ]);
-  props.categories = res[0].data;
-  props.locations = res[1].data;
-  props.employmentTypes = res[2].data;
-  props.packages = res[3].data;
+  props.locations = res[0].data;
+  props.employmentTypes = res[1].data;
+  props.packages = res[2].data;
 
   if (!hasCookie("paypalClientToken", context)) {
     const { data } = await PaymentService.getClientToken();
