@@ -33,4 +33,8 @@ export default class JobService {
   static async deleteJob(jobId: number) {
     return sendAndHandleRequest(`/jobs/${jobId}`, "delete");
   }
+
+  static async pauseJob(jobId: number) {
+    return sendAndHandleRequest(`/jobs/${jobId}/pause`, "put");
+  }
 }

@@ -48,10 +48,13 @@ function ManageListingPage(props: IManageListingPageProps) {
     locations,
   } = props;
   const [refetch, setRefetch] = useState(false);
-  const [status, setStatus] = useState("open");
+  const [status, setStatus] = useState<any>({ val: "", label: "All" });
   const [jobs, setJobs] = useState(defaultJobs);
   const [title, setTitle] = useState("");
-  const [sorting, setSorting] = useState<any>(null);
+  const [sorting, setSorting] = useState<any>({
+    val: "created_at",
+    label: "Most Recent",
+  });
   const { showErrorAlert, showSuccessAlert } = useAlert();
   const [currentJob, setCurrentJob] = useState<Job | undefined>();
   const [open, setOpen] = useState(false);
@@ -60,6 +63,9 @@ function ManageListingPage(props: IManageListingPageProps) {
 
   const wrappedUpdateJobs = useWrapHandleInvalidToken(
     (id: number, payload: any) => JobService.update(id, payload)
+  );
+  const wrappedPauseJobs = useWrapHandleInvalidToken((id: number) =>
+    JobService.pauseJob(id)
   );
 
   const [pageData, setPageData] = useState({
@@ -81,6 +87,7 @@ function ManageListingPage(props: IManageListingPageProps) {
         offset: pageData.page,
       };
       if (title) params.title = title;
+      if (status) params.status = status.val;
       if (sorting?.val) {
         params.sort_by = sorting.val;
         params.sort_direction = "DESC";
@@ -101,7 +108,7 @@ function ManageListingPage(props: IManageListingPageProps) {
       return { data: [], page: { page: 1, totalItems: 1 } };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, pageData.page, totalPages, sorting]);
+  }, [title, pageData.page, totalPages, sorting, status]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -117,7 +124,7 @@ function ManageListingPage(props: IManageListingPageProps) {
 
     return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, pageData.page, sorting, refetch]);
+  }, [fetchData, refetch]);
 
   const handleDialogClose = async ({ confirmed }: { confirmed: boolean }) => {
     setOpen(false);
@@ -148,31 +155,41 @@ function ManageListingPage(props: IManageListingPageProps) {
       setLoading(false);
     }
   };
+
+  const onPauseClick = async (job: Job) => {
+    try {
+      setLoading(true);
+      const response = await wrappedPauseJobs(job.id);
+
+      showSuccessAlert(response.message);
+      setRefetch(!refetch);
+    } catch (error) {
+      showErrorAlert(parseErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <EmployersLayout title="Manage Listing" employers={user}>
         <PageTitle>Posted Jobs</PageTitle>
         <div className="flex flex-col md:flex-row gap-y-2 justify-between items-center mb-3">
-          <div className="flex gap-4">
-            <div>
-              <Button
-                rounded={false}
-                onClick={() => setStatus("open")}
-                variant={status === "open" ? "secondary" : "white"}
-              >
-                Open
-              </Button>
-            </div>
-            <div>
-              <Button
-                onClick={() => setStatus("closed")}
-                rounded={false}
-                variant={status === "closed" ? "secondary" : "white"}
-              >
-                Closed
-              </Button>
-            </div>
-          </div>
+          <Select
+            label="Sort by"
+            rounded={false}
+            options={[
+              { val: "", label: "All" },
+              { val: "pending", label: "Pending" },
+              { val: "open", label: "Open" },
+              { val: "closed", label: "Closed" },
+              { val: "paused", label: "Paused" },
+            ]}
+            defaultValue={status}
+            onChange={(val) => setStatus(val)}
+            renderOption={(opt) => opt.label}
+            className="md:w-40 w-full"
+          />
 
           <div className="flex flex-col md:flex-row gap-x-2 items-end">
             <TextField
@@ -188,6 +205,7 @@ function ManageListingPage(props: IManageListingPageProps) {
                 { val: "created_at", label: "Most Recent" },
                 { val: "click_counts", label: "Most Relevant" },
               ]}
+              defaultValue={sorting}
               onChange={(val) => setSorting(val)}
               renderOption={(opt) => opt.label}
               className="md:w-40 w-full"
@@ -213,6 +231,9 @@ function ManageListingPage(props: IManageListingPageProps) {
               }}
               key={job.id}
               job={job as Job}
+              onPauseClick={() => {
+                onPauseClick(job);
+              }}
             />
           ))}
         </div>

@@ -8,10 +8,11 @@ interface IListingItemProps {
   job: Job;
   onDeleteClick?: () => void;
   onEditClick?: () => void;
+  onPauseClick?: () => void;
 }
 
 function ListingItem(props: IListingItemProps) {
-  const { job, onDeleteClick, onEditClick } = props;
+  const { job, onDeleteClick, onEditClick, onPauseClick } = props;
   return (
     <div className="rounded-lg flex items-center justify-between border-2 border-black p-4 w-full">
       <div className="flex gap-6">
@@ -51,16 +52,33 @@ function ListingItem(props: IListingItemProps) {
           >
             Edit
           </Button>
-          <Button variant="link" className="text-center text-black">
-            Pause
-          </Button>
-          <Button
-            variant="link"
-            className="text-center text-black"
-            onClick={onDeleteClick}
-          >
-            Delete
-          </Button>
+          {job.status === "open" ? (
+            <Button
+              onClick={onPauseClick}
+              variant="link"
+              className="text-center text-black"
+            >
+              Pause
+            </Button>
+          ) : null}
+          {job.status === "paused" ? (
+            <Button
+              onClick={onPauseClick}
+              variant="link"
+              className="text-center text-black"
+            >
+              Resume
+            </Button>
+          ) : null}
+          {job.status !== "closed" ? (
+            <Button
+              variant="link"
+              className="text-center text-black"
+              onClick={onDeleteClick}
+            >
+              Delete
+            </Button>
+          ) : null}
         </div>
       </MyPopOver>
     </div>
