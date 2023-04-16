@@ -30,7 +30,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
   const { id } = context.query;
 
-  const job = await (await JobService.get(+id!)).data;
+  const res = await (await JobService.get(+id!)).data;
+
+  const { job } = res;
   if (!job) {
     return {
       notFound: true,
@@ -42,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  props.job = job.job;
+  props.job = job;
   return {
     props,
   };
