@@ -73,24 +73,27 @@ const AccountForm = forwardRef<TAccountFormRef, IAccountFormProps>(
           return Promise.all([
             new Promise((res, rej) => handleSubmit(res, rej)()),
             new Promise((res, rej) => {
-              const val = { ...getValues() };
+              setTimeout(() => {
+                const val = { ...getValues() };
+                const emailDomain = val.email.split("@")[1] || "";
 
-              if (!val.email.includes(company_url)) {
-                setError(
-                  "email",
-                  {
-                    message: "Email must contain company url",
-                    type: "required",
-                  },
-                  { shouldFocus: true }
-                );
-                rej({
-                  email: {
-                    message: "Email must contain company url",
-                  },
-                });
-              }
-              res("");
+                if (!company_url?.includes(emailDomain)) {
+                  setError(
+                    "email",
+                    {
+                      message: "Email must contain company url",
+                      type: "required",
+                    },
+                    { shouldFocus: true }
+                  );
+                  rej({
+                    email: {
+                      message: "Email must contain company url",
+                    },
+                  });
+                }
+                res("");
+              }, 500);
             }),
           ]);
         },

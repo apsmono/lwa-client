@@ -181,11 +181,11 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
           <AccountFormSection ref={accountFormSectionRef} />
         </PayPalScriptProvider>
 
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <Button onClick={onBack} variant="black">
             Back
           </Button>
-        </div>
+        </div> */}
       </>
     );
   }

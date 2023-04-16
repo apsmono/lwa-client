@@ -16,7 +16,6 @@ import { useForm } from "react-hook-form";
 import { Company } from "service/types";
 import { getFormAttribute, purgeInitialFormData } from "utils/form";
 import { BASE_BLANK_FORM, schema } from "./constants";
-import useAlert from "utils/hooks/useAlert";
 
 interface CompanyFormProps {
   defaultValue: Partial<Company>;
@@ -37,7 +36,6 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
       return purgeInitialFormData(defaultValue, BASE_BLANK_FORM);
     });
     const dropZoneRef = useRef<DropzoneRefType>(null);
-    const { showErrorAlert } = useAlert();
 
     const {
       register,
@@ -77,32 +75,34 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
           const promises = Promise.all([
             new Promise((res, rej) => handleSubmit(res, rej)()),
             new Promise((res, rej) => {
-              const company: Partial<Company> = { ...getValues() };
-              if (company.company_email) {
-                if (!company.company_email.includes(company.company_url!)) {
-                  setError(
-                    "company_email",
-                    {
-                      message: "Email must contain company url",
-                      type: "required",
-                    },
-                    { shouldFocus: true }
-                  );
-                  showErrorAlert("Email must contain company url");
-                  rej({
-                    company_email: {
-                      message: "Email must contain company url",
-                    },
-                  });
+              setTimeout(() => {
+                const company: Partial<Company> = { ...getValues() };
+                if (company.company_email) {
+                  const emailDomain = company.company_email.split("@")[1];
+                  if (!company.company_url!.includes(emailDomain)) {
+                    setError(
+                      "company_email",
+                      {
+                        message: "Email must contain company url",
+                        type: "required",
+                      },
+                      { shouldFocus: true }
+                    );
+                    rej({
+                      company_email: {
+                        message: "Email must contain company url",
+                      },
+                    });
+                  }
                 }
-              }
-              res("");
+                res("");
+              }, 500);
             }),
           ]);
           return promises;
         },
       }),
-      [getValues, handleSubmit, setError, showErrorAlert]
+      [getValues, handleSubmit, setError]
     );
 
     return (
