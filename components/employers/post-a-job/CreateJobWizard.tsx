@@ -115,6 +115,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
             onSubmit={onSubmit}
             ref={paymentPageRef}
             packages={packages}
+            onBack={() => setStep(2)}
           />
         )}
       </>

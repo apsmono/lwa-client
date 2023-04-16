@@ -1,7 +1,16 @@
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { Typography } from "components/common";
+import {
+  PayPalScriptProvider,
+  destroySDKScript,
+  getScriptID,
+} from "@paypal/react-paypal-js";
+import { Button, Typography } from "components/common";
 
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import { Job, Package } from "service/types";
 import { AuthService } from "service/auth_service";
 import AccountFormSection, {
@@ -17,14 +26,27 @@ interface PaymentPageProps {
   clientToken: string;
   onSubmit: (val: Partial<Job>) => void;
   packages: Package[];
+  onBack?: () => void;
 }
 
 const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
   (props, ref) => {
-    const { onSubmit, clientToken, packages } = props;
+    const { onSubmit, clientToken, packages, onBack } = props;
 
     const submitPaymentRef = useRef<TSubmitPaymentRef>(null);
     const accountFormSectionRef = useRef<TAccountFormSectionRef>(null);
+
+    const divRef = useRef(null);
+
+    useEffect(() => {
+      return () => {
+        destroySDKScript(
+          getScriptID({
+            "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+          })
+        );
+      };
+    }, []);
 
     const {
       title,
@@ -158,6 +180,12 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
           </div>
           <AccountFormSection ref={accountFormSectionRef} />
         </PayPalScriptProvider>
+
+        <div className="mt-4">
+          <Button onClick={onBack} variant="black">
+            Back
+          </Button>
+        </div>
       </>
     );
   }

@@ -34,6 +34,7 @@ const PaypalPaymentForm = forwardRef<
     validateHostedField,
   } = props;
   const submitPaymentRef = useRef<TSubmitPaymentRef>(null);
+
   const { packageItem } = usePaymentStore();
   useImperativeHandle(
     ref,
