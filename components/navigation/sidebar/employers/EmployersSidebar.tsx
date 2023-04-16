@@ -33,12 +33,13 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
 
   const links = useMemo(
     () => [
+      { title: "Dashboard", href: `${ROUTE_EMPLOYERS_DASHBOARD}` },
       {
         title: "Manage Listings",
         href: ROUTE_EMPLOYERS_LISTING,
       },
       { title: "Post a Job", href: `${ROUTE_EMPLOYERS_DASHBOARD}/post-a-job` },
-      { title: "Analytics", href: `${ROUTE_EMPLOYERS_DASHBOARD}/analytics` },
+
       {
         title: "Purchase History",
         href: `${ROUTE_EMPLOYERS_DASHBOARD}/purchase-history`,
