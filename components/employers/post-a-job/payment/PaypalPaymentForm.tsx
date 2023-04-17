@@ -1,3 +1,5 @@
+// @refresh reset
+
 import {
   PayPalHostedField,
   PayPalHostedFieldsProvider,
@@ -5,11 +7,11 @@ import {
 import { InputLabel, TextField, Typography } from "components/common";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import PaymentService from "service/payment_service";
+import { getCookie } from "cookies-next";
 import SubmitPayment, { TSubmitPaymentRef } from "./SubmitPayment";
 import PaypalPaymentButton, {
   TPaypalPaymmentButtonOnClick,
 } from "./PaypalPaymentButton";
-import usePaymentStore from "./store/usePaymentStore";
 
 interface IPaypalPaymentFormProps {
   onApprove: (order_id: string, package_id: number) => void;
@@ -35,7 +37,6 @@ const PaypalPaymentForm = forwardRef<
   } = props;
   const submitPaymentRef = useRef<TSubmitPaymentRef>(null);
 
-  const { packageItem } = usePaymentStore();
   useImperativeHandle(
     ref,
     () => ({
@@ -50,6 +51,7 @@ const PaypalPaymentForm = forwardRef<
   return (
     <PayPalHostedFieldsProvider
       createOrder={async () => {
+        const packageItem = JSON.parse(getCookie("packageItem")!.toString());
         const { data } = await PaymentService.createOrder(packageItem!.id);
 
         return data.id;
@@ -94,11 +96,6 @@ const PaypalPaymentForm = forwardRef<
                     placeholder: "xxxx xxxx xxxx xxxx",
                   }}
                 />
-                {/* <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                  <picture>
-                    <img src="/cc-logo.png" alt="CC" />
-                  </picture>
-                </div> */}
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">

@@ -47,7 +47,7 @@ function PostJobPage(props: PostJobPageProps) {
     employmentTypes,
     clientToken,
   } = props;
-  const [step, setStep] = useState(currentStep === "PAYMENT" ? 2 : 1);
+  const [step] = useState(currentStep === "PAYMENT" ? 2 : 1);
 
   const router = useRouter();
   const { reset: resetPayment } = usePaymentStore();
@@ -182,7 +182,6 @@ function PostJobPage(props: PostJobPageProps) {
         <CreateJobWizard
           ref={formWizardRef}
           initialStep={step}
-          onStepChange={(val) => setStep(val)}
           onSubmit={handleSubmit}
           locations={locations}
           packages={packages}

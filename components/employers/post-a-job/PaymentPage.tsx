@@ -47,7 +47,6 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
         );
       };
     }, []);
-
     const {
       title,
       apply_link,
@@ -88,11 +87,12 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onPaypalPaymentButtonClick = async (
-      actions: TPaypalPaymmentButtonOnClick
-    ) => {
-      await accountFormSectionRef.current?.handleSubmit();
-    };
+    const onPaypalPaymentButtonClick = React.useCallback(
+      async (actions: TPaypalPaymmentButtonOnClick) => {
+        await accountFormSectionRef.current?.handleSubmit();
+      },
+      []
+    );
 
     useImperativeHandle(
       ref,
@@ -110,36 +110,54 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
       [submitPaymentRef]
     );
 
-    const handlePaymentClick = async (
-      order_id: string = "",
-      packageId: number
-    ) => {
-      const job: any = {
-        title,
-        order_id,
+    const handlePaymentClick = React.useCallback(
+      async (order_id: string = "", packageId: number) => {
+        const job: any = {
+          title,
+          order_id,
+          apply_link,
+          category_id,
+          skill,
+          employment_type_id,
+          is_worldwide,
+          salary,
+          description,
+          package_id: packageId,
+        };
+        if (!is_worldwide) {
+          job.location_id = location_id;
+        }
+        const company = {
+          company_name,
+          company_headquarter,
+          company_url,
+          company_about,
+          company_email,
+          company_offer,
+          company_logo,
+        };
+        onSubmit({ ...job, ...company, order_id });
+      },
+      [
         apply_link,
         category_id,
-        skill,
-        employment_type_id,
-        is_worldwide,
-        salary,
-        description,
-        package_id: packageId,
-      };
-      if (!is_worldwide) {
-        job.location_id = location_id;
-      }
-      const company = {
-        company_name,
-        company_headquarter,
-        company_url,
         company_about,
         company_email,
-        company_offer,
+        company_headquarter,
         company_logo,
-      };
-      onSubmit({ ...job, ...company, order_id });
-    };
+        company_name,
+        company_offer,
+        company_url,
+        description,
+        employment_type_id,
+        is_worldwide,
+        location_id,
+        onSubmit,
+        salary,
+        skill,
+        title,
+      ]
+    );
     return (
       <>
         <PayPalScriptProvider
@@ -148,6 +166,7 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
             "data-client-token": clientToken,
             components: "hosted-fields,buttons",
             intent: "capture",
+            vault: false,
           }}
         >
           <div className="grid grid-cols-1 gap-6 mt-4">
@@ -181,11 +200,11 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
           <AccountFormSection ref={accountFormSectionRef} />
         </PayPalScriptProvider>
 
-        {/* <div className="mt-4">
+        <div className="mt-4">
           <Button onClick={onBack} variant="black">
             Back
           </Button>
-        </div> */}
+        </div>
       </>
     );
   }
