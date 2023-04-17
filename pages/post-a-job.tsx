@@ -145,40 +145,6 @@ function PostJobPage(props: PostJobPageProps) {
   return (
     <GuestLayout title="Post a Job">
       <div className="max-w-6xl mx-auto flex flex-col gap-2 p-4">
-        <div className="w-full rounded-full with-shadow border border-black">
-          <span
-            className={clsx("inline-block w-1/3 rounded-full", {
-              "bg-secondary-500": step === 1,
-            })}
-          >
-            &nbsp;
-          </span>
-          <span
-            className={clsx("inline-block w-1/3 rounded-full", {
-              "bg-secondary-500": step === 2,
-            })}
-          >
-            &nbsp;
-          </span>
-          <span
-            className={clsx("inline-block w-1/3 rounded-full", {
-              "bg-secondary-500": step === 3,
-            })}
-          >
-            &nbsp;
-          </span>
-        </div>
-        <div className="flex justify-between mb-4">
-          <Typography variant="h5" className="font-palo font-bold uppercase">
-            1. Create your listing
-          </Typography>
-          <Typography variant="h5" className="font-palo font-bold uppercase">
-            2. Preview your post
-          </Typography>
-          <Typography variant="h5" className="font-palo font-bold uppercase">
-            3. Confirm & pay
-          </Typography>
-        </div>
         <CreateJobWizard
           ref={formWizardRef}
           initialStep={step}
@@ -189,6 +155,7 @@ function PostJobPage(props: PostJobPageProps) {
           defaultValue={defaultValue}
           employmentTypes={employmentTypes}
           clientToken={clientToken}
+          showStep
         />
       </div>
     </GuestLayout>

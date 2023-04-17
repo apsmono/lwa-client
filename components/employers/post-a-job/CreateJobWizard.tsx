@@ -18,6 +18,8 @@ import JobPreview from "./JobPreview";
 import { TSubmitPaymentRef } from "./payment/SubmitPayment";
 import PaymentPage from "./PaymentPage";
 import useJobStore from "./store/useJobStore";
+import clsx from "clsx";
+import { Typography } from "components/common";
 
 export type TCreateJobWizardRef = {
   setWizardStep: (step: number) => void;
@@ -34,6 +36,7 @@ interface ICreateJobWizardProps {
   onSubmit: (val: Partial<Job>) => void;
   defaultValue?: Partial<Job>;
   onContinueToPayment?: (val: Partial<Job>) => void;
+  showStep?: boolean;
 }
 
 const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
@@ -49,6 +52,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
       defaultValue,
       onContinueToPayment,
       clientToken,
+      showStep,
     } = props;
 
     const [step, setStep] = useState(initialStep);
@@ -90,6 +94,53 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
     }, [step]);
     return (
       <>
+        {showStep ? (
+          <>
+            <div className="w-full rounded-full with-shadow border border-black">
+              <span
+                className={clsx("inline-block w-1/3 rounded-full", {
+                  "bg-secondary-500": step === 1,
+                })}
+              >
+                &nbsp;
+              </span>
+              <span
+                className={clsx("inline-block w-1/3 rounded-full", {
+                  "bg-secondary-500": step === 2,
+                })}
+              >
+                &nbsp;
+              </span>
+              <span
+                className={clsx("inline-block w-1/3 rounded-full", {
+                  "bg-secondary-500": step === 3,
+                })}
+              >
+                &nbsp;
+              </span>
+            </div>
+            <div className="flex justify-between mb-4">
+              <Typography
+                variant="h5"
+                className="font-palo font-bold uppercase"
+              >
+                1. Create your listing
+              </Typography>
+              <Typography
+                variant="h5"
+                className="font-palo font-bold uppercase"
+              >
+                2. Preview your post
+              </Typography>
+              <Typography
+                variant="h5"
+                className="font-palo font-bold uppercase"
+              >
+                3. Confirm & pay
+              </Typography>
+            </div>
+          </>
+        ) : null}
         {step === 1 && (
           <JobFormPage
             categories={categories}
