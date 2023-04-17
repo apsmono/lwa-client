@@ -17,7 +17,7 @@ const schema = yup.object({
   password: yup.string().min(6).required("This field is required"),
   confirm_password: yup
     .string()
-    .oneOf([yup.ref("password")], "Password not match"),
+    .oneOf([yup.ref("password")], "Password do not match"),
 });
 
 export type TAccountFormRef = {

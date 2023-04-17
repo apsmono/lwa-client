@@ -42,10 +42,13 @@ export async function sendAndHandleServerSideRequest(
   return { data, message, page };
 }
 
-export function parseErrorMessage(error: any): string {
+export function parseErrorMessage(
+  error: any,
+  default_msg: string = "Something went wrong"
+): string {
   if (error?.response?.data?.message) return error?.response?.data?.message;
   if (error instanceof Error) return error.message;
-  return "Something went wrong";
+  return default_msg;
 }
 
 export async function handleInvalidToken(

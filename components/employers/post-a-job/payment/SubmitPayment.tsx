@@ -90,8 +90,11 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
               refreshToken: refresh_token,
             });
           } catch (error: any) {
-            if (error?.email?.message) throw new Error(error?.email?.message);
-            throw new Error("Please fill account form");
+            const keys = Object.keys(error);
+            if (keys.includes("email") || keys.includes("password")) {
+              throw new Error("Please fill account form");
+            }
+            throw new Error(parseErrorMessage(error));
           }
         }
         const packageId = packageItem!.id;
