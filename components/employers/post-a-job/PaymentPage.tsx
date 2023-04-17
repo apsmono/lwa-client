@@ -178,10 +178,6 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
                 Gain more visibility!
               </Typography>
               <PackageList packages={packages} />
-
-              <Typography variant="h4" className="font-bold">
-                Tell us about your Job
-              </Typography>
             </div>
             <Typography className="text-center font-bold">
               Want to post more than 10+ jobs?{" "}
