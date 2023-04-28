@@ -62,6 +62,7 @@ function Home(props: HomePropsInterface) {
             placeholder="Search..."
             register={register}
             name="title"
+            rounded
           />
           <Select
             options={categories}

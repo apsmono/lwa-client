@@ -23,10 +23,13 @@ interface SignUpPageProps {
 const schema = yup.object().shape({
   email: yup.string().email().required("This field is required"),
   name: yup.string().required("This field is required"),
-  password: yup.string().min(6).required("This field is required"),
+  password: yup
+    .string()
+    .min(6, "Must be at least 6 characters")
+    .required("This field is required"),
   confirm_password: yup
     .string()
-    .min(6, "Must be at leaset 6 character")
+    .min(6, "Must be at least 6 characters")
     .oneOf([yup.ref("password"), null], "Password not match"),
 });
 
@@ -118,34 +121,30 @@ function SignUpPage(props: SignUpPageProps) {
   return (
     <GuestLayout title="Sign Up">
       <div className="max-w-5xl mx-auto p-6">
-        <Typography
-          className="text-center font-bold mb-4 font-palo uppercase lg:text-6xl"
-          variant="h1"
-        >
+        <p className="text-center font-bold mb-4 font-palo uppercase text-5xl lg:text-6xl tracking-wide">
           Create an Employer Account
-        </Typography>
-        <Typography className="text-center mb-4">
-          Are you a hiring manager? Manage your job postings and company details
-          in one place.
+        </p>
+        <Typography className="text-center mb-8">
+          Are you a hiring manager? Manage your job postings and <br /> company
+          details in one place.
         </Typography>
 
         <div className="relative">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="max-w-xl w-full mx-auto p-4 bg-gray-100 rounded-lg border-2 border-black">
-              <Typography className="text-right">*Required field</Typography>
+            <div className="max-w-xl w-full mx-auto p-4">
               <TextField
                 type="email"
-                {...formAttribute("Email Address*", "email", "email")}
-                placeholder="your-company@mail.com"
+                {...formAttribute("Email", "email", "email")}
+                placeholder="Work Email"
               />
               <TextField
                 placeholder="Company that you're hiring for"
-                {...formAttribute("Company Name*", "name", "name")}
+                {...formAttribute("Company Name", "name", "name")}
               />
               <TextField
                 type={showPassword ? "text" : "password"}
-                placeholder="*********"
-                {...formAttribute("Password*", "password", "password")}
+                placeholder="6 characters minimum"
+                {...formAttribute("Create Password", "password", "password")}
                 inputSuffix={
                   <button
                     type="button"
@@ -157,9 +156,9 @@ function SignUpPage(props: SignUpPageProps) {
               />
               <TextField
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder="*********"
+                placeholder="6 characters minimum"
                 {...formAttribute(
-                  "Confirm Password*",
+                  "Confirm Password",
                   "confirm_password",
                   "confirm_password"
                 )}
@@ -174,8 +173,8 @@ function SignUpPage(props: SignUpPageProps) {
               />
             </div>
             <div className="flex flex-col items-center mt-4 gap-2">
-              <div>
-                <Button isLoading={loading} type="submit" variant="secondary">
+              <div className="w-full max-w-xl mx-auto px-4">
+                <Button size="md" isLoading={loading} type="submit" block>
                   Create an Employer Account
                 </Button>
               </div>
@@ -183,7 +182,7 @@ function SignUpPage(props: SignUpPageProps) {
                 Already have an account?{" "}
                 <span
                   onClick={handleSignInClick}
-                  className="cursor-pointer underline"
+                  className="cursor-pointer underline decoration-primary-500 text-primary-500"
                 >
                   Sign in here
                 </span>

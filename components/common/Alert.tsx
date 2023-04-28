@@ -11,8 +11,8 @@ interface AlertProps {
 function Alert(props: Partial<AlertProps>) {
   const { msg, show, type = "success", className } = props;
   const styles = {
-    success: "bg-green-500",
-    error: "bg-red-500",
+    success: "bg-success-500",
+    error: "bg-danger-500",
   };
   return (
     <div
