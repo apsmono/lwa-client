@@ -79,21 +79,17 @@ function SignInPage(props: SignInPageProps) {
   return (
     <GuestLayout title="Sign In">
       <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
-        <Typography
-          className="text-center font-bold mb-4 font-palo uppercase lg:text-6xl"
-          variant="h3"
-        >
+        <p className="text-center font-bold mb-4 font-palo uppercase text-5xl lg:text-6xl tracking-wide">
           Sign in to your Employers Account
-        </Typography>
-        <Typography className="text-center mb-4">
-          Are you a hiring manager? Manage your job postings and company details
-          in one place.
+        </p>
+        <Typography className="text-center mb-8">
+          Are you a hiring manager? Manage your job postings and <br /> company
+          details in one place.
         </Typography>
 
         <div className="relative">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="max-w-xl w-full mx-auto p-4 bg-gray-100 rounded-lg border-2 border-black with-shadow">
-              <Typography className="text-right">*Required field</Typography>
+            <div className="max-w-xl w-full mx-auto p-4">
               <TextField
                 type="email"
                 placeholder="your-company@mail.com"
@@ -114,8 +110,8 @@ function SignInPage(props: SignInPageProps) {
               />
             </div>
             <div className="flex flex-col items-center mt-4 gap-2">
-              <div>
-                <Button type="submit" isLoading={loading} variant="secondary">
+              <div className="w-full max-w-xl px-4">
+                <Button size="md" type="submit" isLoading={loading} block>
                   Sign In
                 </Button>
               </div>
@@ -123,7 +119,7 @@ function SignInPage(props: SignInPageProps) {
                 Don&apos;t have an account?{" "}
                 <span
                   onClick={handleSignUpClick}
-                  className="cursor-pointer underline"
+                  className="cursor-pointer underline decoration-primary-500 text-primary-500"
                 >
                   Sign up here
                 </span>
