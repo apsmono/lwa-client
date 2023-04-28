@@ -34,10 +34,11 @@ export type TSubscribeRef = {
 interface ISubscribeProps {
   categories: Category[];
   className?: string;
+  variant?: "secondary" | "black";
 }
 
 const Subscribe = forwardRef<TSubscribeRef, ISubscribeProps>((props, ref) => {
-  const { categories, className } = props;
+  const { categories, className, variant = "black" } = props;
 
   const {
     reset,
@@ -77,43 +78,59 @@ const Subscribe = forwardRef<TSubscribeRef, ISubscribeProps>((props, ref) => {
 
   return (
     <div
-      className={clsx("bg-primary-500 px-6 border-t-2 border-black", className)}
+      className={clsx(
+        "px-6 rounded-2xl",
+        className,
+        { "bg-secondary-200": variant === "secondary" },
+        { "bg-black": variant === "black" }
+      )}
     >
-      <div className="max-w-5xl flex justify-center mx-auto py-12">
-        <div className="flex flex-col justify-center gap-2">
-          <Typography variant="h3" className="font-bold">
+      <div className="flex justify-center py-12 w-full">
+        <div
+          className={clsx("flex flex-col justify-center gap-2 md:w-2/3", {
+            "text-white": variant === "black",
+          })}
+        >
+          <Typography variant="h3" className="font-bold text-center mb-3">
             Subscribe now to receive daily job updates!
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit, (err) => console.log(err))}>
-            <div className="flex flex-wrap gap-4">
-              <Select
-                ref={selectRef}
-                options={categories}
-                renderOption={(opt) => opt.name}
-                placeholder="Job Category"
-                className="w-full md:w-48"
-                register={register}
-                name="category_id"
-                error={!!errors?.category_id}
-                helperText={errors?.category_id?.message}
-                getInputValue={(val: any) => val?.id || ""}
-                setFormValue={setValue}
-              />
-              <TextField
-                placeholder="Type your email here"
-                containerProps={{ className: "flex-1" }}
-                register={register}
-                name="email"
-                error={!!errors?.email}
-                helperText={errors?.email?.message}
-              />
-            </div>
-            <div className="flex justify-center">
-              <Button type="submit" variant="black" withShadow={false}>
-                Subscribe
-              </Button>
-            </div>
-          </form>
+          <div className="w-full mx-auto">
+            <form onSubmit={handleSubmit(onSubmit, (err) => console.log(err))}>
+              <div className="flex md:flex-row flex-col gap-4 items-center">
+                <Select
+                  ref={selectRef}
+                  options={categories}
+                  renderOption={(opt) => opt.name}
+                  placeholder="Job Category"
+                  className="w-full md:w-48"
+                  register={register}
+                  name="category_id"
+                  error={!!errors?.category_id}
+                  helperText={errors?.category_id?.message}
+                  getInputValue={(val: any) => val?.id || ""}
+                  setFormValue={setValue}
+                />
+                <TextField
+                  placeholder="Type your email here"
+                  containerProps={{ className: "md:flex-1 w-full" }}
+                  register={register}
+                  name="email"
+                  error={!!errors?.email}
+                  helperText={errors?.email?.message}
+                />
+                <div>
+                  <Button
+                    type="submit"
+                    variant={variant === "black" ? "primary" : "secondary"}
+                    withShadow={false}
+                    className="mb-3"
+                  >
+                    Subscribe
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

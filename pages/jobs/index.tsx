@@ -154,7 +154,9 @@ function JobListPage(props: JobListPageProps) {
   return (
     <GuestLayout
       title={title}
-      bottomComponent={<Subscribe categories={categories} />}
+      bottomComponent={
+        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
+      }
     >
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
         {category ? (
@@ -299,6 +301,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     status: "open",
   };
 
+  if (title) {
+    props.title = title;
+    jobParams.title = title;
+  }
+
   if (category_id) {
     const category = await (
       await CategoryService.get(+category_id)
@@ -306,7 +313,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     jobParams.category_id = category_id;
     props.category = category;
   }
-  if (title) props.title = title;
 
   const res = await Promise.all([
     JobService.gets(jobParams),

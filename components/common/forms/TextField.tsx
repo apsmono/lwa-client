@@ -33,7 +33,7 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
       register,
       error = false,
       helperText,
-      rounded = false,
+      rounded = true,
       labelClassName,
       withShadow = false,
       labelAppend,
@@ -67,9 +67,9 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
             autoComplete="off"
             id={id}
             className={clsx(
-              "w-full py-2 px-4 focus:outline-none border-2 border-black",
+              "w-full py-2 px-4 focus:outline-none border border-neutral-500 active:border-primary-500 transition-all",
               className,
-              [error && "border border-red-500"],
+              [error && "border-danger-500"],
               [rounded && "rounded-full"],
               [!rounded && "rounded-lg"],
               [withShadow && "with-shadow"],

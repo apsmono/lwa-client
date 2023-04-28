@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { Typography } from "components/common";
 import Link from "next/link";
 import React, { useState } from "react";
 import { ChevronDown } from "react-feather";
@@ -26,7 +27,7 @@ function GuestSidebarItem(props: Partial<GuestSidebarProps>) {
         </div>
         <ul
           className={clsx(
-            "max-h-0 transition-all pl-4 overflow-y-hidden duration-300 flex flex-col gap-1",
+            "max-h-0 transition-all pl-4 overflow-y-hidden duration-300 flex flex-col gap-2",
             {
               "max-h-[500px]": expand,
             }
@@ -37,7 +38,9 @@ function GuestSidebarItem(props: Partial<GuestSidebarProps>) {
               {item.onClick ? (
                 <button onClick={item.onClick}>{item.title}</button>
               ) : (
-                <Link href={item.route}>{item.title}</Link>
+                <Link href={item.route}>
+                  <Typography>{item.title}</Typography>
+                </Link>
               )}
             </li>
           ))}

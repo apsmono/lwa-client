@@ -44,7 +44,7 @@ function GuestSidebar(props: Partial<GuestSidebarProps>) {
           }))}
         />
       </ul>
-      <Button variant="black" withShadow={false}>
+      <Button variant="primary" withShadow={false}>
         Post a Job
       </Button>
     </MySidebar>

@@ -21,29 +21,52 @@ function GuestFooter(props: GuestFooterProps) {
   }, [categories]);
 
   return (
-    <div className="flex flex-col md:flex-row justify-between bg-black p-6 gap-8 relative z-10">
+    <div className="flex flex-col md:flex-row justify-between p-6 gap-8 relative z-10 text-black">
       <div>
-        <Typography
-          className="text-white font-bold mb-3 font-palo uppercase"
-          variant="h2"
-        >
+        <Typography className="font-bold mb-3 capitalize" variant="h4">
           let&apos;s work anywhere
         </Typography>
         <div className="flex gap-2">
           <IconButton
             contained
-            color="secondary"
+            color="primary"
             onClick={() => {
               if (window) {
                 window.open("https://www.instagram.com/letsworkanywherecom/");
               }
             }}
           >
-            <Instagram color="black" size={24} />
+            <Instagram color="white" size={24} />
+          </IconButton>
+          <IconButton
+            contained
+            color="secondary"
+            onClick={() => {
+              if (window) {
+                window.open("https://facebook.com/LWA_com");
+              }
+            }}
+          >
+            <div className="relative w-[24px] h-[24px]">
+              <Image src="/facebook.png" fill alt="Linkedin" />
+            </div>
           </IconButton>
           <IconButton
             contained
             color="primary"
+            onClick={() => {
+              if (window) {
+                window.open("https://twitter.com/LWA_com");
+              }
+            }}
+          >
+            <div className="relative w-[24px] h-[24px]">
+              <Image src="/twitter.png" fill alt="Linkedin" />
+            </div>
+          </IconButton>
+          <IconButton
+            contained
+            color="secondary"
             onClick={() => {
               if (window) {
                 window.open(
@@ -56,58 +79,28 @@ function GuestFooter(props: GuestFooterProps) {
               <Image src="/linkedin.png" fill alt="Linkedin" />
             </div>
           </IconButton>
-          <IconButton
-            contained
-            color="secondary"
-            onClick={() => {
-              if (window) {
-                window.open("https://www.facebook.com/LWAcom");
-              }
-            }}
-          >
-            <div className="relative w-[24px] h-[24px]">
-              <Image src="/twitter.png" fill alt="Linkedin" />
-            </div>
-          </IconButton>
-          <IconButton
-            contained
-            color="primary"
-            onClick={() => {
-              if (window) {
-                window.open("https://facebook.com/LWA_com");
-              }
-            }}
-          >
-            <div className="relative w-[24px] h-[24px]">
-              <Image src="/facebook.png" fill alt="Linkedin" />
-            </div>
-          </IconButton>
         </div>
       </div>
 
-      <div className="flex gap-8 flex-col md:flex-row">
-        {categoryList.map((cl, i) => (
-          <FooterList
-            key={i}
-            title={i === 0 ? "Categories" : <span>&nbsp;</span>}
-            list={cl.map((c) => ({
-              route: `/jobs?category_id=${c.id}`,
-              title: c.name,
-            }))}
-          />
-        ))}
+      {categoryList.map((cl, i) => (
+        <FooterList
+          key={i}
+          title="Category"
+          list={cl.map((c) => ({
+            route: `/jobs?category_id=${c.id}`,
+            title: c.name,
+          }))}
+        />
+      ))}
 
-        <div className="flex flex-col gap-4">
-          <FooterList
-            title="Employers"
-            list={employersList.map((item) => ({
-              route: item.route,
-              title: item.title,
-            }))}
-          />
-          <FooterList title="Useful Links" list={usefulLinks} />
-        </div>
-      </div>
+      <FooterList
+        title="Employers"
+        list={employersList.map((item) => ({
+          route: item.route,
+          title: item.title,
+        }))}
+      />
+      <FooterList title="Useful Links" list={usefulLinks} />
     </div>
   );
 }

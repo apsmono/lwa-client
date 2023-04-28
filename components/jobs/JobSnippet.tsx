@@ -17,22 +17,24 @@ function JobSnippet(props: Partial<JobSnippetProps>) {
   return (
     <div
       className={clsx(
-        "flex justify-center gap-2 flex-col items-center sm:flex-row sm:items-start",
+        "flex justify-center gap-2 flex-col md:items-center sm:flex-row sm:items-start",
         className
       )}
     >
-      <CompanyLogo src={job?.company_logo} />
-      <div>
-        <p>
-          <span className="font-bold">{job?.title || "-"}</span> |{" "}
-          {job?.company_name || "-"}
-        </p>
+      <CompanyLogo size="lg" src={job?.company_logo} />
+      <div className="flex flex-col gap-2">
+        <Typography className="font-bold" variant="h5">
+          {job?.title || "-"}
+        </Typography>
+        <p>{job?.company_name}</p>
         <div className="flex mt-1 gap-2 flex-wrap">
           <Feature
+            className="border border-primary-500"
             icon={<Typography>🌏</Typography>}
             title={job?.is_worldwide ? "Worldwide" : job?.location || "-"}
           />
           <Feature
+            className="border border-primary-500"
             icon={<Typography>💰</Typography>}
             title={currencyFormat(job?.salary || 0, {
               ...CURRENCY_FORMAT_DEFAULT_CONFIG,
@@ -40,14 +42,14 @@ function JobSnippet(props: Partial<JobSnippetProps>) {
             })}
           />
           <Feature
+            className="border border-primary-500"
             icon={<Typography>🕛</Typography>}
             title={job?.employment_type || "-"}
           />
-          <div className="px-4 py-1 bg-white border border-black rounded-full flex items-center">
-            <Typography variant="small" className="text-xs">
-              {job?.category_name || "-"}
-            </Typography>
-          </div>
+          <Feature
+            title={job?.category_name || "-"}
+            className="border border-primary-500"
+          />
         </div>
       </div>
     </div>

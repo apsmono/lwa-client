@@ -1,9 +1,16 @@
 import SectionTitle from "components/common/SectionTitle";
 import { useRouter } from "next/router";
 import React, { useRef } from "react";
-import { ChevronLeft, ChevronRight } from "react-feather";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+} from "react-feather";
 import { Job } from "service/types";
 import FeaturedJobCard from "./FeaturedJobCard";
+import { Typography } from "components/common";
+import clsx from "clsx";
 
 interface FeaturedJobProps {
   jobs: Job[];
@@ -26,29 +33,59 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
     router.push(`/jobs/${job.id}`);
   };
   return (
-    <div className="flex flex-col">
-      <SectionTitle>Featured Jobs</SectionTitle>
-      <div className="w-full relative px-6">
-        <button className="absolute left-0 top-1/2" onClick={toLeft}>
-          <ChevronLeft color="black" />
+    <div className="w-full flex pl-6 lg:pl-24">
+      <div>
+        <p className="font-palo font-extrabold text-3xl md:text-7xl uppercase">
+          Featured <br />
+          Jobs
+        </p>
+
+        <div className="flex gap-2 my-6">
+          <button
+            className={clsx(
+              "md:w-16 md:h-16 bg-neutral-200 rounded-full flex items-center justify-center opacity-60 transition-all",
+              "hover:opacity-100",
+              "active:opacity-100",
+              "w-10 h-10"
+            )}
+            onClick={toLeft}
+          >
+            <ArrowLeft />
+          </button>
+          <button
+            className={clsx(
+              "md:w-16 md:h-16 bg-neutral-200 rounded-full flex items-center justify-center opacity-60 transition-all",
+              "hover:opacity-100",
+              "active:opacity-100",
+              "w-10 h-10"
+            )}
+            onClick={toRight}
+          >
+            <ArrowRight />
+          </button>
+        </div>
+        <button>
+          <Typography variant="h5" className="underline">
+            View More
+          </Typography>
         </button>
+      </div>
+      <div className="relative pl-6 lg:pl-24 overflow-hidden">
         <div
           className="w-full flex overflow-x-scroll no-scrollbar mt-4"
           ref={scrollRef}
         >
           <div className="flex flex-nowrap gap-4">
-            {jobs.map((job) => (
+            {jobs.map((job, i) => (
               <FeaturedJobCard
                 key={job.id}
                 job={job}
                 onClick={() => handleClick(job)}
+                variant={i % 2 === 0 ? "primary" : "secondary"}
               />
             ))}
           </div>
         </div>
-        <button className="absolute right-0 top-1/2" onClick={toRight}>
-          <ChevronRight color="black" />
-        </button>
       </div>
     </div>
   );

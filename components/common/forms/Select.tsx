@@ -66,7 +66,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
       getInputValue = (val: any) => val,
       setFormValue,
       buttonProps,
-      rounded = false,
+      rounded = true,
       alignment = "left",
       hideValue,
     } = props;
@@ -163,22 +163,21 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
             <div className="relative">
               <Listbox.Button
                 className={clsx(
-                  "relative w-full cursor-default overflow-hidden bg-white text-left focus:outline-none border-black border-2 pl-4 py-2",
+                  "relative w-full cursor-default overflow-hidden bg-white text-left focus:outline-none border-neutral-400 border py-1",
                   { "border-red-500": error },
                   { "rounded-full": rounded },
                   { "rounded-lg": !rounded },
                   buttonProps?.className
                 )}
               >
-                <span className={clsx("block", { "text-red-500": error })}>
-                  {renderValue()}
-                </span>
-                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                <div className="pl-4 pr-5">
+                  <span className={clsx("block", { "text-red-500": error })}>
+                    {renderValue()}
+                  </span>
+                </div>
+                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center">
                   <ChevronDown
-                    className={clsx(
-                      { "text-black": !error },
-                      { "text-red-500": error }
-                    )}
+                    className={clsx({ "text-red-500": error })}
                     aria-hidden="true"
                   />
                 </span>

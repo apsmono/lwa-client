@@ -190,7 +190,6 @@ function GuestLayout(props: GuestLayoutProps) {
                 </Link>
                 <NavBarDropdown title="💼 Employers" list={employersList} />
                 <Button
-                  variant="secondary"
                   withShadow={false}
                   onClick={() => router.push("/post-a-job")}
                 >
@@ -226,7 +225,7 @@ function GuestLayout(props: GuestLayoutProps) {
           <div className={className}>{children}</div>
         </div>
       </div>
-      {bottomComponent}
+      <div className="px-6">{bottomComponent}</div>
       <GuestFooter
         categories={categories}
         usefulLinks={usefulLinks}

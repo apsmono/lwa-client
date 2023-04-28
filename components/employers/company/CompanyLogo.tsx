@@ -1,13 +1,13 @@
 import clsx from "clsx";
-import Image from "next/image";
 import React, { useMemo } from "react";
 
 interface CompanyLogoProps {
   src?: string;
+  size?: "sm" | "md" | "lg";
   className?: string;
 }
 
-function CompanyLogo({ src, className }: CompanyLogoProps) {
+function CompanyLogo({ src, className, size = "md" }: CompanyLogoProps) {
   const imgSrc = useMemo(() => {
     if (!src) return "";
 
@@ -16,26 +16,34 @@ function CompanyLogo({ src, className }: CompanyLogoProps) {
     }
     return `${process.env.NEXT_PUBLIC_API_URL}${src}`;
   }, [src]);
+  const sizeStyles = {
+    sm: "w-12 h-12",
+    md: "w-16 h-16",
+    lg: "w-20 h-20",
+  };
   if (!src) {
     return (
       <div
         className={clsx(
-          "w-12 h-12 rounded-full border border-black",
-          className
+          "rounded-full border border-black",
+          className,
+          sizeStyles[size]
         )}
       />
     );
   }
   return (
-    <div className={clsx("w-12 h-12 relative rounded-full", className)}>
-      <Image
-        fill
+    <picture>
+      <img
         src={imgSrc}
-        alt="Company logo"
-        className="rounded-full"
-        style={{ objectFit: "cover", backgroundPosition: "center" }}
+        alt="Logo"
+        className={clsx(
+          "rounded-full object-contain object-center",
+          className,
+          sizeStyles[size]
+        )}
       />
-    </div>
+    </picture>
   );
 }
 

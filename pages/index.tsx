@@ -3,10 +3,13 @@ import { GetServerSideProps } from "next";
 import CategoryService from "service/category_service";
 import { GuestLayout } from "components/layout";
 import JobService from "service/job_service";
-import { Job } from "service/types";
+import { Category, Job } from "service/types";
 import { FeaturedJob, Jobs, Subscribe } from "components/home";
-import { Search } from "react-feather";
 import useAppStore from "store/useAppStore";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { getURLSearchParams } from "utils/api";
+import { useRouter } from "next/router";
 
 interface HomePropsInterface {
   featuredJobs: Job[];
@@ -17,59 +20,68 @@ interface HomePropsInterface {
 function Home(props: HomePropsInterface) {
   const { featuredJobs, jobs, totalJobs } = props;
   const { categories } = useAppStore();
+  const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const { register, handleSubmit, setValue } = useForm();
+  const router = useRouter();
+
+  const onSubmit = (val: any) => {
+    const payload: any = {};
+
+    if (val.title) payload.title = val.title;
+    if (val.category_id) payload.category_id = val.category_id;
+    const params = getURLSearchParams(payload);
+
+    router.push(`/jobs?${params}`);
+  };
 
   return (
     <GuestLayout
-      navBarProps={{ className: "bg-primary-500" }}
       title="Home"
-      bottomComponent={<Subscribe categories={categories} />}
+      bottomComponent={
+        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
+      }
     >
-      <div className="bg-primary-500 border-b-2 border-black">
-        <div className="flex mb-8 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
-          <div className="flex flex-col gap-4 w-full md:w-2/3">
-            <p className="font-black mb-4 text-left uppercase font-palo text-7xl">
-              Find REMOTE WORK TODAY
-            </p>
-            <Typography className="mb-4">
-              Your gateway to the best remote jobs from trusted companies and
-              employers. Explore our wide range of categories including
-              programming, design, customer service, and more. Find your dream
-              job and work remotely!
-            </Typography>
-            <div className="flex">
-              <TextField
-                className="rounded-r-none"
-                containerProps={{ className: "flex-1" }}
-                inputPrefix={
-                  <button>
-                    <Search size={18} />
-                  </button>
-                }
-              />
-              <Select
-                options={categories}
-                renderOption={(opt) => opt.name}
-                buttonProps={{ className: "rounded-l-none border-l-0" }}
-                placeholder="Categories"
-                className="w-36"
-              />
-            </div>
-          </div>
-          <div className="hidden md:block w-1/3 pl-8">
-            <picture>
-              <img src="/home-ilustration.png" alt="" className="w-full" />
-            </picture>
-          </div>
-        </div>
-      </div>
-      <div className="md:px-6 p-6 max-w-5xl mx-auto">
-        <div className="mb-12">
-          <FeaturedJob jobs={featuredJobs} />
+      <div className="flex flex-col mb-8 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
+        <div className="max-w-2xl">
+          <p className="font-extrabold mb-4 uppercase font-palo text-9xl text-center">
+            Find REMOTE <br /> WORK TODAY
+          </p>
+
+          <Typography className="mb-4 text-center">
+            Your gateway to the best remote jobs from trusted companies and
+            employers. Explore our wide range of categories including
+            programming, design, customer service, and more. Find your dream job
+            and work remotely!
+          </Typography>
         </div>
 
-        <div className="mb-6">
-          <Jobs categories={categories} jobs={jobs} totalItems={totalJobs} />
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex w-full gap-4">
+          <TextField
+            containerProps={{ className: "flex-1" }}
+            inputSuffix={<button type="submit">🔍</button>}
+            placeholder="Search..."
+            register={register}
+            name="title"
+          />
+          <Select
+            options={categories}
+            renderOption={(opt) => opt.name}
+            placeholder="Categories"
+            defaultValue={selectedCategory}
+            onChange={(val) => setSelectedCategory(val)}
+            setFormValue={setValue}
+            name="category_id"
+            register={register}
+            getInputValue={(val) => val?.id}
+            buttonProps={{ className: "bg-primary-500 text-white" }}
+          />
+        </form>
+      </div>
+      <div className="mb-6">
+        <FeaturedJob jobs={featuredJobs} />
+      </div>
+      <div className="md:px-6 p-6 max-w-7xl mx-auto">
+        <Jobs categories={categories} jobs={jobs} totalItems={totalJobs} />
       </div>
     </GuestLayout>
   );

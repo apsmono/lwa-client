@@ -5,18 +5,22 @@ import React from "react";
 import { Job } from "service/types";
 import { currencyFormat, CURRENCY_FORMAT_DEFAULT_CONFIG } from "utils/number";
 import Feature from "./Feature";
+import { dateFormat } from "utils/date";
 
 interface FeaturedJobCard {
   job: Job;
   onClick?: () => void;
+  variant?: "primary" | "secondary";
 }
 
 function FeaturedJobCard(props: FeaturedJobCard) {
-  const { job, onClick } = props;
+  const { job, onClick, variant = "primary" } = props;
   return (
     <div
       className={clsx(
-        "w-72 py-4 bg-secondary-500 rounded-xl border-2 border-black flex items-center flex-col cursor-pointer mb-2 hover:with-shadow transition-all"
+        "w-72 py-9 rounded-2xl flex flex-col gap-4 cursor-pointer mb-2 transition-all px-6",
+        { "bg-primary-500": variant === "primary" },
+        { "bg-secondary-500": variant === "secondary" }
       )}
       onClick={onClick}
     >
@@ -25,13 +29,16 @@ function FeaturedJobCard(props: FeaturedJobCard) {
           src={`${process.env.NEXT_PUBLIC_API_URL}${job.company_logo}`}
           fill
           alt="Company logo"
+          className="object-cover"
         />
       </div>
-      <Typography variant="h6" className="font-bold">
-        {job.title}
-      </Typography>
-      <Typography>{job.company_name}</Typography>
-      <div className="flex mt-1 gap-2 px-4 flex-wrap justify-center">
+      <div>
+        <Typography variant="h4" className="font-bold mb-2">
+          {job.title}
+        </Typography>
+        <Typography>{job.company_name}</Typography>
+      </div>
+      <div className="flex mt-1 gap-2 flex-wrap">
         <Feature
           icon={<Typography variant="body">🌏</Typography>}
           title={job.is_worldwide ? "Worldwide" : job.location}
@@ -48,9 +55,19 @@ function FeaturedJobCard(props: FeaturedJobCard) {
           title={job.employment_type}
         />
       </div>
-      <div className="px-4 rounded-full border border-black mt-4 bg-w bg-white">
-        {job.category_name}
+      <div>
+        <span
+          className={clsx("px-4 py-1 rounded-full mt-4 text-white", {
+            "bg-primary-800": variant === "primary",
+            "bg-secondary-700": variant === "secondary",
+          })}
+        >
+          {job.category_name}
+        </span>
       </div>
+      <Typography>
+        {dateFormat(job.created_at, { day: "2-digit", month: "short" })}
+      </Typography>
     </div>
   );
 }

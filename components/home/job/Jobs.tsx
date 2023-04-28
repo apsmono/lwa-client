@@ -39,15 +39,15 @@ function Jobs(props: JobsProps) {
 
   return (
     <div className="flex flex-col">
-      <SectionTitle>Jobs</SectionTitle>
       {items.map((job, i) => (
         <React.Fragment key={job.id}>
-          <div className="mb-4">
+          <div className="mb-6">
             <JobCard onClick={() => handleClick(job)} job={job} />
           </div>
-          {(i + 1) % 10 === 0 ? (
+          {(i + 1) % 4 === 0 ? (
             <Subscribe
-              className="mb-4 rounded-lg border-2 border-black"
+              className="mb-6"
+              variant="secondary"
               categories={categories}
             />
           ) : null}
@@ -55,9 +55,7 @@ function Jobs(props: JobsProps) {
       ))}
       {totalItems > items.length && (
         <div className="flex justify-center">
-          <Button onClick={handleShowMoreJobs} variant="black">
-            View More
-          </Button>
+          <Button onClick={handleShowMoreJobs}>View More</Button>
         </div>
       )}
     </div>
