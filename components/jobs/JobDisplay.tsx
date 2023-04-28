@@ -21,7 +21,7 @@ function JobDisplay(props: Partial<JobDisplayProps>) {
   return (
     <div className={clsx("flex flex-col gap-4", className)}>
       <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-2 mb-4">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-4 items-center">
           <CompanyLogo src={job?.company_logo} size="lg" />
           <div>
             <Typography className="font-bold" variant="h5">

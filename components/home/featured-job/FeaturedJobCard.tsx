@@ -29,7 +29,7 @@ function FeaturedJobCard(props: FeaturedJobCard) {
           src={`${process.env.NEXT_PUBLIC_API_URL}${job.company_logo}`}
           fill
           alt="Company logo"
-          className="object-cover"
+          className="object-cover rounded-full"
         />
       </div>
       <div>

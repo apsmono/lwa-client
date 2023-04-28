@@ -1,12 +1,11 @@
 import { Typography } from "components/common";
+import { CompanyLogo } from "components/employers/company";
 import { Subscribe } from "components/home";
+import Feature from "components/home/featured-job/Feature";
 import JobCard from "components/home/job/JobCard";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import React, { useMemo } from "react";
-import { Globe, Mail, MapPin } from "react-feather";
-import CategoryService from "service/category_service";
 import CompanyService from "service/company_service";
 import JobService from "service/job_service";
 import { Company, Job } from "service/types";
@@ -27,50 +26,53 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
   return (
     <GuestLayout
       title={`Company Detail | ${company.company_name}`}
-      bottomComponent={<Subscribe categories={categories} />}
+      bottomComponent={
+        <Subscribe categories={categories} className="max-w-7xl mx-auto" />
+      }
       addBottomSpace={false}
     >
       <div className="mx-auto p-6 max-w-5xl">
         <div className="flex sm:flex-row flex-col justify-between gap-4 mb-4">
           <div className="flex items-center gap-2">
-            <div className="relative h-14 w-14">
-              <Image
-                fill
-                src={`${process.env.NEXT_PUBLIC_API_URL}${company.company_logo}`}
-                alt="Logo"
-              />
-            </div>
+            <CompanyLogo src={company.company_logo} />
             <Typography variant="h3" className="font-bold">
               {company.company_name}
             </Typography>
           </div>
-          <ul>
-            <li className="flex gap-2 items-center">
-              <MapPin size={18} /> {company.company_headquarter}
-            </li>
-            <li className="flex gap-2 items-center">
-              <Globe size={18} /> {company.company_url}
-            </li>
-            <li className="flex gap-2 items-center">
-              <Mail size={18} /> {company.company_email}
-            </li>
-          </ul>
         </div>
 
-        <Typography className="font-bold" variant="h6">
-          About
+        <div className="flex mt-4 mb-8 gap-2">
+          <Feature
+            className="border border-primary-500"
+            icon="📧"
+            title={company.company_email}
+          />
+          <Feature
+            className="border border-primary-500"
+            icon="📍"
+            title={company.company_headquarter}
+          />
+          <Feature
+            className="border border-primary-500"
+            icon="🌐"
+            title={company.company_url}
+          />
+        </div>
+
+        <Typography className="font-bold mb-2" variant="h4">
+          About Overleaf
         </Typography>
-        <Typography className="whitespace-pre-line text-justify mb-4">
+        <Typography className="whitespace-pre-line text-justify mb-8">
           {company.company_about}
         </Typography>
-        <Typography className="font-bold" variant="h6">
+        <Typography className="font-bold mb-2" variant="h4">
           Benefits
         </Typography>
-        <Typography className="whitespace-pre-line text-justify mb-4">
+        <Typography className="whitespace-pre-line text-justify mb-8">
           {company.company_offer ?? "-"}
         </Typography>
 
-        <Typography variant="h6" className="font-bold">
+        <Typography variant="h4" className="font-bold mb-2">
           Jobs at {company.company_name}
         </Typography>
         {companyJobs.map((job) => {
@@ -84,9 +86,9 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
         })}
       </div>
 
-      <div className="bg-gray-100 pb-48">
+      <div className="bg-primary-100 pb-8 mb-48 mt-4">
         <div className="mx-auto p-6 max-w-5xl">
-          <Typography variant="h6" className="font-bold">
+          <Typography variant="h5" className="font-bold mb-2">
             Similar Jobs
           </Typography>
           {similarJobs.length === 0 && (
@@ -98,7 +100,7 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
             const item = { ...job };
             item.company_logo = company.company_logo;
             return (
-              <div key={job.id} className="mb-2">
+              <div key={job.id} className="mb-4">
                 <JobCard job={item} showStatus={false} />
               </div>
             );
