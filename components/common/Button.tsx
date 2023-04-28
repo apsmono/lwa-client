@@ -16,6 +16,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   block: boolean;
   isLoading: boolean;
   withShadow: boolean;
+  filled: boolean;
 }
 
 function Button(props: Partial<ButtonProps>) {
@@ -30,6 +31,7 @@ function Button(props: Partial<ButtonProps>) {
     disabled,
     isLoading = false,
     withShadow = false,
+    filled = true,
     ...otherProps
   } = props;
   const arrClassNames = [];
@@ -55,29 +57,31 @@ function Button(props: Partial<ButtonProps>) {
     arrClassNames.push("rounded-lg");
   }
 
-  switch (variant) {
-    case "primary":
-      arrClassNames.push("bg-primary-500 hover:bg-primary-600");
-      break;
-    case "secondary":
-      arrClassNames.push("bg-secondary-500 hover:bg-secondary-600");
-      break;
-    case "danger":
-      arrClassNames.push("bg-red-500 hover:bg-red-600 text-white");
-      break;
-    case "link":
-      arrClassNames.push(
-        "text-blue-500 hover:decoration-blue-500 hover:underline"
-      );
-      break;
-    case "white":
-      arrClassNames.push("bg-white text-black");
-      break;
-    case "black":
-      arrClassNames.push("text-white bg-black");
-      break;
-    default:
-      arrClassNames.push("bg-primary-500 hover:bg-primary-600");
+  if (filled) {
+    switch (variant) {
+      case "primary":
+        arrClassNames.push("bg-primary-500 hover:bg-primary-600");
+        break;
+      case "secondary":
+        arrClassNames.push("bg-secondary-500 hover:bg-secondary-600");
+        break;
+      case "danger":
+        arrClassNames.push("bg-red-500 hover:bg-red-600 text-white");
+        break;
+      case "link":
+        arrClassNames.push(
+          "text-blue-500 hover:decoration-blue-500 hover:underline"
+        );
+        break;
+      case "white":
+        arrClassNames.push("bg-white text-black");
+        break;
+      case "black":
+        arrClassNames.push("text-white bg-black");
+        break;
+      default:
+        arrClassNames.push("bg-primary-500 hover:bg-primary-600");
+    }
   }
   return (
     <button

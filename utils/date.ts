@@ -38,3 +38,38 @@ export const dateFormat = (
 
   return date.toLocaleString(timeZone, options as Intl.DateTimeFormatOptions);
 };
+
+export const timeRelative = (
+  current: Date,
+  previous: Date,
+  opt: Intl.RelativeTimeFormatOptions = { style: "short" },
+  locale: string = "en"
+) => {
+  const formatter = new Intl.RelativeTimeFormat(locale, opt);
+  const diff = current.getTime() - previous.getTime();
+
+  const msPerMinute = 60 * 1000;
+  const msPerHour = msPerMinute * 60;
+  const msPerDay = msPerHour * 24;
+  const msPerMonth = msPerDay * 30;
+  const msPerYear = msPerDay * 365;
+
+  let unit: Intl.RelativeTimeFormatUnit = "seconds";
+
+  if (diff < msPerMinute) {
+    unit = "seconds";
+    return Math.round(diff / 1000) + " seconds ago";
+  } else if (diff < msPerHour) {
+    unit = "minutes";
+  } else if (diff < msPerDay) {
+    unit = "hours";
+  } else if (diff < msPerMonth) {
+    if (Math.round(diff / msPerDay) === 1) unit = "day";
+    else unit = "days";
+  } else if (diff < msPerYear) {
+    unit = "months";
+  } else {
+    unit = "years";
+  }
+  return formatter.format(Math.floor(-diff / (1000 * 60 * 60 * 24)), unit);
+};

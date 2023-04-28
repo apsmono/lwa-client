@@ -17,10 +17,16 @@ function JobDetailPage(props: JobDetailPageProps) {
   return (
     <GuestLayout
       title={`Job Detail | ${job.title}`}
-      bottomComponent={<Subscribe categories={categories} />}
+      bottomComponent={
+        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
+      }
     >
       <div className="p-6 mb-12">
-        <JobDisplay job={job} className="px-6 max-w-5xl mx-auto" />
+        <JobDisplay
+          job={job}
+          className="px-6 max-w-5xl mx-auto"
+          showLearnMore={false}
+        />
       </div>
     </GuestLayout>
   );
