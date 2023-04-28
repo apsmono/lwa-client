@@ -71,7 +71,7 @@ function Button(props: Partial<ButtonProps>) {
       );
       break;
     case "white":
-      arrClassNames.push("bg-white");
+      arrClassNames.push("bg-white text-black");
       break;
     case "black":
       arrClassNames.push("text-white bg-black");

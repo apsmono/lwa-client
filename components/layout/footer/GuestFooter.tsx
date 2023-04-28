@@ -21,7 +21,7 @@ function GuestFooter(props: GuestFooterProps) {
   }, [categories]);
 
   return (
-    <div className="flex flex-col md:flex-row justify-between p-6 gap-8 relative z-10 text-black">
+    <div className="flex flex-col md:flex-row justify-between p-6 gap-8 relative z-10 text-black py-12">
       <div>
         <Typography className="font-bold mb-3 capitalize" variant="h4">
           let&apos;s work anywhere

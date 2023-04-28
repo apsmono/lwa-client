@@ -9,6 +9,7 @@ import Dropzone from "./Dropzone";
 import Radio from "./Radio";
 import CurrencyField from "./CurrencyField";
 import PasswordTextField from "./PasswordTextField";
+import Checkbox from "./Checkbox";
 
 export {
   InputLabel,
@@ -22,4 +23,5 @@ export {
   Radio,
   CurrencyField,
   PasswordTextField,
+  Checkbox,
 };

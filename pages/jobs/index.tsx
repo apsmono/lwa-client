@@ -1,7 +1,8 @@
-import { Chip, Select, TextField, Typography } from "components/common";
-import { SelectRefType } from "components/common/forms/Select";
+import { Button, Chip, TextField, Typography } from "components/common";
 import { Subscribe } from "components/home";
 import JobCard from "components/home/job/JobCard";
+import { JobFilter } from "components/jobs";
+import { TJobFilterRef } from "components/jobs/JobFilter";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -146,10 +147,22 @@ function JobListPage(props: JobListPageProps) {
     setJobList(res);
   };
 
-  const employmentTypeRef = useRef<SelectRefType>(null);
-  const locationRef = useRef<SelectRefType>(null);
-  const categoriesListRef = useRef<SelectRefType>(null);
-  const salaryListRef = useRef<SelectRefType>(null);
+  const employmentTypeRef = useRef<TJobFilterRef>(null);
+  const locationRef = useRef<TJobFilterRef>(null);
+  const categoriesListRef = useRef<TJobFilterRef>(null);
+  const salaryListRef = useRef<TJobFilterRef>(null);
+  const datePostedRef = useRef<TJobFilterRef>(null);
+  const sortingRef = useRef<TJobFilterRef>(null);
+  const handleResetClick = () => {
+    employmentTypeRef.current?.removeValue();
+    locationRef.current?.removeValue();
+    categoriesListRef.current?.removeValue();
+    salaryListRef.current?.removeValue();
+    datePostedRef.current?.removeValue();
+    sortingRef.current?.removeValue();
+    setDatePosted(null);
+    setSorting(null);
+  };
 
   return (
     <GuestLayout
@@ -180,20 +193,21 @@ function JobListPage(props: JobListPageProps) {
             onChange={(e) => setJobTitle(e.target.value)}
           />
         </form>
-        <div className="flex gap-x-4 flex-wrap">
-          <Select
-            placeholder="Sort by"
+        <div className="flex gap-x-4 flex-wrap items-center">
+          <JobFilter
+            ref={sortingRef}
+            label="Sort by"
             options={[
               { val: "created_at", label: "Most Recent" },
               { val: "click_counts", label: "Most Relevant" },
             ]}
             renderOption={(val) => val?.label}
             onChange={(val) => setSorting(val)}
-            className="sm:w-36 w-full"
-            alignment="center"
+            getOptionValue={(val) => val?.val}
           />
-          <Select
-            placeholder="Date posted"
+          <JobFilter
+            ref={datePostedRef}
+            label="Date posted"
             options={[
               { val: "", label: "Anytime" },
               { val: 7, label: "Past week" },
@@ -201,52 +215,54 @@ function JobListPage(props: JobListPageProps) {
               { val: 30, label: "Past month" },
             ]}
             renderOption={(val) => val.label}
-            className="sm:w-40 w-full"
             onChange={(val) => setDatePosted(val)}
-            alignment="center"
+            getOptionValue={(val) => val?.val}
           />
-          <Select
-            multiple
-            placeholder="Job Type"
-            options={[...employmentTypes]}
+          <JobFilter
+            label="Job Type"
+            options={employmentTypes}
             renderOption={(val) => val?.name}
-            onChange={(val) => setEmploymentType(val)}
-            className="sm:w-36 w-full"
-            ref={employmentTypeRef}
-            alignment="center"
-            hideValue
-          />
-          <Select
             multiple
-            placeholder="Locations"
+            onChange={(val) => setEmploymentType(val)}
+            getOptionValue={(val) => val?.id}
+            ref={employmentTypeRef}
+          />
+          <JobFilter
+            multiple
+            label="Locations"
             options={[...locations]}
             renderOption={(val) => val?.name}
             onChange={(val) => setLocation(val)}
-            className="sm:w-36 w-full"
+            getOptionValue={(val) => val?.id}
             ref={locationRef}
-            alignment="center"
-            hideValue
           />
-          <Select
+          <JobFilter
             multiple
-            placeholder="Category"
+            label="Category"
             options={[...categories]}
             renderOption={(val) => val?.name}
-            className="sm:w-36 w-full"
             ref={categoriesListRef}
             onChange={(val) => setCategoriesList(val)}
-            alignment="center"
-            hideValue
+            getOptionValue={(val) => val?.id}
           />
-          <Select
-            placeholder="Salary"
+          <JobFilter
+            label="Salary"
             options={salaries}
             renderOption={(opt) => opt.label}
             ref={salaryListRef}
-            className="sm:w-36 w-full"
+            getOptionValue={(val) => val?.id}
             onChange={(val) => setSalary(val)}
-            alignment="center"
           />
+          <div className="mb-3">
+            <Button
+              variant="white"
+              size="sm"
+              className="px-2"
+              onClick={handleResetClick}
+            >
+              Reset
+            </Button>
+          </div>
           <div className="flex gap-2 flex-wrap w-full">
             {employmentType.map((et, i) => (
               <Chip
