@@ -82,7 +82,7 @@ const Dropzone = forwardRef<DropzoneRefType, Partial<DropzoneProps>>(
         {label && <InputLabel>{label}</InputLabel>}
         <div
           className={clsx(
-            "border border-black with-shadow p-4 rounded-2xl cursor-pointer flex flex-col justify-center",
+            "border-[1.5px] border-neutral-500 border-dashed px-4 rounded-2xl cursor-pointer flex flex-col justify-center",
             className
           )}
         >
@@ -99,9 +99,25 @@ const Dropzone = forwardRef<DropzoneRefType, Partial<DropzoneProps>>(
                 </Button>
               </>
             ) : (
-              <Typography className="text-center">
-                Click or drag your photo here to upload
-              </Typography>
+              <div className="flex flex-col sm:flex-row gap-2 justify-between">
+                <div className="flex gap-4 items-center">
+                  <picture>
+                    <img src="/gallery.png" alt="" className="w-5" />
+                  </picture>
+                  <Typography className="text-center text-neutral-500 font-medium">
+                    Click or drag your photo here to upload
+                  </Typography>
+                </div>
+                <div>
+                  <Button
+                    filled={false}
+                    className="border border-neutral-300 text-neutral-300"
+                    block
+                  >
+                    Add File
+                  </Button>
+                </div>
+              </div>
             )}
           </div>
         </div>

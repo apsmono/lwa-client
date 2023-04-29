@@ -70,11 +70,12 @@ function CurrencyField(props: Partial<CurrencyFieldProps>) {
           autoComplete="off"
           id={id}
           className={clsx(
-            "w-full py-2 px-4 focus:outline-none border-2 border-black pl-6",
+            "w-full py-2 px-4 border-[1.5px] border-neutral-500 transition-all pl-7",
             className,
-            [error && "border border-red-500"],
+            [error && "border-danger-500 focus:border-danger-500"],
+            [!error && "focus:outline-neutral-500"],
             [rounded && "rounded-full"],
-            [!rounded && "rounded-xl"],
+            [!rounded && "rounded-lg"],
             [withShadow && "with-shadow"]
           )}
           name={name}

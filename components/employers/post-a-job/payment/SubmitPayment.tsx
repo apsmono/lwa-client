@@ -146,7 +146,10 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
             <Loader color="black" />
           </div>
         ) : null}
-        <div className="border-2 border-black with-shadow bg-secondary-300 p-6 flex flex-col gap-3 rounded-xl">
+        <div
+          className="p-6 flex flex-col gap-3 rounded-xl"
+          style={{ backgroundColor: "#F5F5F5" }}
+        >
           <Typography variant="h5" className="font-bold">
             Payment Summary
           </Typography>
@@ -176,6 +179,7 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
               onClick={handleClick}
               block
               variant="white"
+              className="border border-neutral-300"
             >
               Place your order
             </Button>

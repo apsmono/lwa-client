@@ -25,10 +25,8 @@ const AccountFormSection = forwardRef<
   if (accessToken) return null;
 
   return (
-    <div className="grid grid-cols-2">
-      <div className="col-span-1">
-        <AccountForm ref={accountFormRef} />
-      </div>
+    <div className="mt-4">
+      <AccountForm ref={accountFormRef} />
     </div>
   );
 });

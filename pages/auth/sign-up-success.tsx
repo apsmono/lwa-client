@@ -8,9 +8,12 @@ function SignUpSuccess(props: ISignUpSuccess) {
   return (
     <GuestLayout title="Sign Up Success">
       <div className="flex flex-col items-center">
-        <Typography className="lg:text-7xl font-palo font-bold uppercase">
-          THANK YOU FOR SIGNING UP!
-        </Typography>
+        <picture className="my-4">
+          <img src="/sign-up-success.png" alt="" className="w-28" />
+        </picture>
+        <p className="text-6xl lg:text-7xl font-palo font-extrabold uppercase text-center">
+          THANK YOU FOR <br /> SIGNING UP!
+        </p>
         <div className="max-w-2xl mt-4">
           <Typography className="text-center">
             Please check your email and click the link on the email for{" "}
@@ -18,9 +21,6 @@ function SignUpSuccess(props: ISignUpSuccess) {
             redirected back to finish your payment.
           </Typography>
         </div>
-        <picture className="my-4">
-          <img src="/sign-up-success.png" alt="" />
-        </picture>
       </div>
     </GuestLayout>
   );

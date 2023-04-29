@@ -11,15 +11,13 @@ import {
   Job,
   LocationType,
   Package,
-  User,
 } from "service/types";
-import JobFormPage from "./JobFormPage";
-import JobPreview from "./JobPreview";
-import { TSubmitPaymentRef } from "./payment/SubmitPayment";
-import PaymentPage from "./PaymentPage";
-import useJobStore from "./store/useJobStore";
-import clsx from "clsx";
-import { Typography } from "components/common";
+import JobFormPage from "../JobFormPage";
+import JobPreview from "../JobPreview";
+import { TSubmitPaymentRef } from "../payment/SubmitPayment";
+import PaymentPage from "../PaymentPage";
+import useJobStore from "../store/useJobStore";
+import JobWizardStep from "./JobWizardStep";
 
 export type TCreateJobWizardRef = {
   setWizardStep: (step: number) => void;
@@ -96,49 +94,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
       <>
         {showStep ? (
           <>
-            <div className="w-full rounded-full with-shadow border border-black">
-              <span
-                className={clsx("inline-block w-1/3 rounded-full", {
-                  "bg-secondary-500": step === 1,
-                })}
-              >
-                &nbsp;
-              </span>
-              <span
-                className={clsx("inline-block w-1/3 rounded-full", {
-                  "bg-secondary-500": step === 2,
-                })}
-              >
-                &nbsp;
-              </span>
-              <span
-                className={clsx("inline-block w-1/3 rounded-full", {
-                  "bg-secondary-500": step === 3,
-                })}
-              >
-                &nbsp;
-              </span>
-            </div>
-            <div className="flex justify-between mb-4">
-              <Typography
-                variant="h5"
-                className="font-palo font-bold uppercase"
-              >
-                1. Create your listing
-              </Typography>
-              <Typography
-                variant="h5"
-                className="font-palo font-bold uppercase"
-              >
-                2. Preview your post
-              </Typography>
-              <Typography
-                variant="h5"
-                className="font-palo font-bold uppercase"
-              >
-                3. Confirm & pay
-              </Typography>
-            </div>
+            <JobWizardStep activeStep={step} key={step} />
           </>
         ) : null}
         {step === 1 && (

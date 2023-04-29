@@ -106,12 +106,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
     );
 
     return (
-      <div
-        className={clsx(
-          "border border-black with-shadow rounded-2xl",
-          className
-        )}
-      >
+      <div className={clsx(className)}>
         <TextField
           labelDescription="Enter your company or oranization's name"
           {...getFieldAttribute(
@@ -133,11 +128,11 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
         />
 
         <Dropzone
-          label="Company Logo*"
+          label="Logo*"
           ref={dropZoneRef}
           defaultImage={defaultValue.company_logo}
           onDropFiles={onLogoDrop}
-          className="min-h-[128px]"
+          className="min-h-[100px]"
         />
 
         <TextField

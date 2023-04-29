@@ -19,12 +19,12 @@ function InputLabel(props: Partial<InputLabelProps>) {
         className
       )}
     >
-      <Typography className="flex justify-between" variant="body">
+      <Typography className="flex justify-between" variant="h6">
         <span className="font-medium">{children}</span>{" "}
-        {append && <span>{append}</span>}
+        {append && <Typography variant="h6">{append}</Typography>}
       </Typography>
       {description && (
-        <Typography variant="small" className="italic">
+        <Typography variant="xs" className="italic text-neutral-500 mt-1">
           {description}
         </Typography>
       )}

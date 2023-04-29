@@ -98,6 +98,9 @@ function JobFormPage(props: JobFormPageProps) {
     <>
       <div className="grid grid-cols-1 gap:6 lg:gap-12 mt-4 mb-48">
         <div className="flex flex-col gap-4">
+          <Typography variant="h4" className="font-bold mt-8">
+            Tell us about your Job
+          </Typography>
           <JobForm
             locations={locations}
             employmentTypes={employmentTypes}
@@ -105,7 +108,6 @@ function JobFormPage(props: JobFormPageProps) {
             categories={categories}
             ref={jobFormRef}
             showSubmit={false}
-            className="border border-black with-shadow rounded-2xl p-6"
             defaultValue={{
               apply_link,
               category_id,
@@ -135,13 +137,10 @@ function JobFormPage(props: JobFormPageProps) {
               company_logo,
             }}
             onLogoDrop={handleCompanyLogoDrop}
-            className="p-6"
           />
 
           <div className="flex justify-end">
-            <Button variant="black" onClick={handleContinueToPayment}>
-              Next to preview
-            </Button>
+            <Button onClick={handleContinueToPayment}>Next to preview</Button>
           </div>
         </div>
       </div>

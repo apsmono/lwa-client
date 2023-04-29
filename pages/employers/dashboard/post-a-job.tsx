@@ -1,10 +1,10 @@
 import { PageTitle } from "components/common/dashboard";
 import { CreateJobWizard } from "components/employers/post-a-job";
-import { TCreateJobWizardRef } from "components/employers/post-a-job/CreateJobWizard";
+import { TCreateJobWizardRef } from "components/employers/post-a-job/wizard/CreateJobWizard";
 import usePaymentStore from "components/employers/post-a-job/payment/store/usePaymentStore";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { EmployersLayout } from "components/layout";
-import { ROUTE_EMPLOYERS_LISTING } from "config/routes";
+import { ROUTE_POST_SUCCESS } from "config/routes";
 import { getCookie, hasCookie, setCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -64,7 +64,7 @@ function PostJobPage(props: IPostJobPageProps) {
       reset();
       resetPayment();
       setTimeout(() => {
-        router.replace(ROUTE_EMPLOYERS_LISTING);
+        router.replace(ROUTE_POST_SUCCESS);
       }, 1000);
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));

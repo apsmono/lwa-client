@@ -39,9 +39,9 @@ function RadioButton(props: Partial<RadioButtonProps>) {
           id={id}
           className={clsx(
             "border border-black text-black rounded-full form-checkbox",
-            ["w-4 h-4" && radioSize === "sm"],
-            ["w-6 h-6" && radioSize === "md"],
-            ["w-8 h-8" && radioSize === "lg"],
+            { "w-4 h-4": radioSize === "sm" },
+            { "w-6 h-6": radioSize === "md" },
+            { "w-8 h-8": radioSize === "lg" },
             className
           )}
           value={value}

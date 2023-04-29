@@ -66,7 +66,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
       getInputValue = (val: any) => val,
       setFormValue,
       buttonProps,
-      rounded = true,
+      rounded = false,
       alignment = "left",
       hideValue,
     } = props;
@@ -163,7 +163,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
             <div className="relative">
               <Listbox.Button
                 className={clsx(
-                  "relative w-full cursor-default overflow-hidden bg-white text-left focus:outline-none border-neutral-400 border py-1",
+                  "relative w-full cursor-default overflow-hidden bg-white text-left focus:outline-none border-neutral-400 border py-2",
                   { "border-red-500": error },
                   { "rounded-full": rounded },
                   { "rounded-lg": !rounded },

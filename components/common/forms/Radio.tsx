@@ -11,11 +11,21 @@ interface IRadioProps {
   id: string;
   register: UseFormRegister<any>;
   onChange?: (val: any) => void;
+  radioSize?: "sm" | "md" | "lg";
 }
 
 function Radio(props: IRadioProps) {
-  const { value, name, register, options, error, helperText, id, onChange } =
-    props;
+  const {
+    value,
+    name,
+    register,
+    options,
+    error,
+    helperText,
+    id,
+    onChange,
+    radioSize,
+  } = props;
   const [val, setVal] = useState(value);
 
   useEffect(() => {
@@ -39,6 +49,7 @@ function Radio(props: IRadioProps) {
           onClick={(newVal) => {
             setVal(newVal);
           }}
+          radioSize={radioSize}
           checked={opt.value === val}
         />
       ))}

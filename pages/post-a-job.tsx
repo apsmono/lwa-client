@@ -19,12 +19,13 @@ import { CreateJobWizard } from "components/employers/post-a-job";
 import JobService from "service/job_service";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import { useRouter } from "next/router";
-import { TCreateJobWizardRef } from "components/employers/post-a-job/CreateJobWizard";
+import { TCreateJobWizardRef } from "components/employers/post-a-job/wizard/CreateJobWizard";
 import PaymentService from "service/payment_service";
 import { parseErrorMessage } from "utils/api";
 import { getCookie, hasCookie, removeCookies, setCookie } from "cookies-next";
 import usePaymentStore from "components/employers/post-a-job/payment/store/usePaymentStore";
 import useAppStore from "store/useAppStore";
+import { ROUTE_POST_SUCCESS } from "config/routes";
 
 interface PostJobPageProps {
   locations: LocationType[];
@@ -134,7 +135,7 @@ function PostJobPage(props: PostJobPageProps) {
       removeCookies("job");
 
       setTimeout(() => {
-        router.replace("/");
+        router.replace(ROUTE_POST_SUCCESS);
       }, 1000);
     } catch (error) {
       formWizardRef.current?.showErrorAlert(parseErrorMessage(error));

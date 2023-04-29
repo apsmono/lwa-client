@@ -137,22 +137,22 @@ const AccountForm = forwardRef<TAccountFormRef, IAccountFormProps>(
     };
     return (
       <>
-        <Typography className="font-bold font-palo" variant="h3">
+        <Typography className="font-bold" variant="h3">
           CREATE YOUR EMPLOYER ACCOUNT
         </Typography>
-        <div className="border-2 border-black p-4 rounded-lg">
+        <div className="border border-primary-500 p-4 rounded-lg">
           <TextField
-            {...formAttribute("Email Address*", "email", "email")}
+            {...formAttribute("Email Address", "email", "email")}
             type="email"
-            labelAppend="Required fields*"
+            placeholder="Work Email"
           />
           <PasswordTextField
-            {...formAttribute("Create Password*", "password", "password")}
+            {...formAttribute("Create Password", "password", "password")}
             placeholder="6 characters minimum"
           />
           <PasswordTextField
             {...formAttribute(
-              "Confirm Password*",
+              "Confirm Password",
               "confirm_password",
               "confirm_password"
             )}

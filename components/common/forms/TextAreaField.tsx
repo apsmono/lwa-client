@@ -54,11 +54,12 @@ const TextAreaField = forwardRef<
         id={id}
         rows={5}
         className={clsx(
-          "w-full py-2 px-4 focus:outline-none border-2 border-black",
+          "w-full py-2 px-4 border-[1.5px] border-neutral-500 transition-all",
           className,
-          [error && "border border-red-500"],
+          [error && "border-danger-500 focus:border-danger-500"],
+          [!error && "focus:outline-neutral-500"],
           [rounded && "rounded-full"],
-          [!rounded && "rounded-xl"],
+          [!rounded && "rounded-lg"],
           [withShadow && "with-shadow"]
         )}
         {...otherProps}

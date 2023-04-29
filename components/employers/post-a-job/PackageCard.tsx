@@ -23,22 +23,25 @@ function PackageCard(props: PackageCardProps) {
   return (
     <div
       className={clsx(
-        "border-2 border-black with-shadow p-6 rounded-2xl flex flex-col gap-3 justify-between",
-        { "bg-secondary-300": isSelected },
-        { "bg-gray-200": disabled }
+        "border p-6 rounded-2xl flex flex-col gap-3 justify-between",
+        { "border-primary-500": isSelected },
+        { "bg-neutral-100": disabled },
+        { "border-neutral-500": !isSelected }
       )}
     >
-      <div className="flex flex-col items-center gap-1">
-        <Typography variant="h3" className="font-bold font-palo uppercase">
+      <div className="flex flex-col gap-1">
+        <Typography variant="h5" className="font-medium">
           {item.name}
         </Typography>
         {item.price > 0 ? (
-          <Typography variant="h5">
+          <Typography variant="h2" className="font-bold">
             {item.price > 0 ? "+" : ""}${item.price}
           </Typography>
         ) : null}
         {item.description ? (
-          <Typography variant="h5">{item.description}</Typography>
+          <Typography variant="h2" className="font-bold">
+            {item.description}
+          </Typography>
         ) : null}
       </div>
       <ul className="flex flex-col gap-1">
@@ -62,9 +65,13 @@ function PackageCard(props: PackageCardProps) {
       <Button
         onClick={() => onClick(item)}
         disabled={disabled}
-        variant={!isSelected ? "white" : "secondary"}
+        variant={!isSelected ? "white" : "primary"}
+        filled={isSelected}
+        className={clsx("border border-primary-500", {
+          "text-neutral-500": !isSelected,
+        })}
       >
-        {isSelected ? "Current plan" : "Select this plan"}
+        {isSelected ? "Current plan" : "Select plan"}
       </Button>
     </div>
   );

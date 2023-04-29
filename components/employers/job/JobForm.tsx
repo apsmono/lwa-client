@@ -143,7 +143,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
             "How to apply*",
             "apply_link",
             "apply_link",
-            "https://your-link.com"
+            "Type here"
           )}
           labelAppend="Required fields*"
           labelDescription="Link to application page"
@@ -196,6 +196,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
             { label: "Yes", value: true },
             { label: "No", value: false },
           ]}
+          radioSize="md"
           value={isWorldwide}
           onChange={(val) => setIsWordwide(val)}
         />

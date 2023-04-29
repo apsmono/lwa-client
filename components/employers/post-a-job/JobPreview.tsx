@@ -28,7 +28,7 @@ function JobPreview(props: IJobPreviewProps) {
 
   return (
     <div className="flex flex-col gap-4 mb-48">
-      <div className="border-2 border-black with-shadow py-6 px-12 rounded-xl">
+      <div className="border border-neutral-600 py-6 px-12 rounded-xl">
         <JobDisplay
           job={{
             company_offer,
@@ -49,12 +49,8 @@ function JobPreview(props: IJobPreviewProps) {
         />
       </div>
       <div className="flex justify-between">
-        <Button onClick={onBack} variant="black">
-          Back
-        </Button>
-        <Button onClick={onSubmit} variant="black">
-          Confirm & Pay
-        </Button>
+        <Button onClick={onBack}>Back</Button>
+        <Button onClick={onSubmit}>Confirm & Pay</Button>
       </div>
     </div>
   );

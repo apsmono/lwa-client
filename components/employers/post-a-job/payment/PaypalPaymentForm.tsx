@@ -1,14 +1,7 @@
-// @refresh reset
-
-import {
-  PayPalHostedField,
-  PayPalHostedFieldsProvider,
-} from "@paypal/react-paypal-js";
-import { InputLabel, TextField, Typography } from "components/common";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
-import PaymentService from "service/payment_service";
-import { getCookie } from "cookies-next";
-import SubmitPayment, { TSubmitPaymentRef } from "./SubmitPayment";
+import { PayPalHostedField } from "@paypal/react-paypal-js";
+import { InputLabel, TextField, Typography } from "components/common";
+import { TSubmitPaymentRef } from "./SubmitPayment";
 import PaypalPaymentButton, {
   TPaypalPaymmentButtonOnClick,
 } from "./PaypalPaymentButton";
@@ -49,110 +42,87 @@ const PaypalPaymentForm = forwardRef<
   );
 
   return (
-    <PayPalHostedFieldsProvider
-      createOrder={async () => {
-        const packageItem = JSON.parse(getCookie("packageItem")!.toString());
-        const { data } = await PaymentService.createOrder(packageItem!.id);
+    <div className="grid grid-cols-1 gap-4">
+      <div className="flex flex-col gap-4">
+        <div className="border p-6 rounded-lg border-primary-500">
+          <PaypalPaymentButton
+            onApprove={onApprove}
+            onClick={validatePaypalButton}
+            registerEmployers={registerEmployers}
+            setLoading={submitPaymentRef.current?.setLoading}
+            showErrorMsg={submitPaymentRef.current?.showErrorAlert}
+          />
 
-        return data.id;
-      }}
-      styles={{
-        input: {
-          "font-family": "Poppins, sans-serif",
-          "font-size": "16px",
-        },
-      }}
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-4">
-          <div className="border-2 p-4 rounded-lg border-black">
-            <PaypalPaymentButton
-              onApprove={onApprove}
-              onClick={validatePaypalButton}
-              registerEmployers={registerEmployers}
-              setLoading={submitPaymentRef.current?.setLoading}
-              showErrorMsg={submitPaymentRef.current?.showErrorAlert}
-            />
+          <Typography className="font-medium text-center my-2" variant="h4">
+            OR
+          </Typography>
+          <Typography variant="small">
+            Safe money transfer using your bank account Visa, Maestro, Discover
+            American Express, etc.
+          </Typography>
 
-            <Typography className="font-medium text-center my-2" variant="h4">
-              OR
-            </Typography>
-            <Typography variant="small">
-              Safe money transfer using your bank account Visa, Maestro,
-              Discover American Express, etc.
-            </Typography>
+          <TextField label="Name on Card" placeholder="Type Here" />
 
-            <TextField label="Name on Card" placeholder="Type Here" />
-
+          <div className="mb-3">
+            <InputLabel htmlFor="card-number">Card Number</InputLabel>
+            <div className="relative">
+              <PayPalHostedField
+                id="card-number"
+                className="border rounded-lg border-neutral-500 px-4 h-11"
+                hostedFieldType="number"
+                options={{
+                  selector: "#card-number",
+                  placeholder: "xxxx xxxx xxxx xxxx",
+                }}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
             <div className="mb-3">
-              <InputLabel htmlFor="card-number">Card Number</InputLabel>
-              <div className="relative">
-                <PayPalHostedField
-                  id="card-number"
-                  className="border-2 rounded-lg border-black px-4 h-11"
-                  hostedFieldType="number"
-                  options={{
-                    selector: "#card-number",
-                    placeholder: "xxxx xxxx xxxx xxxx",
-                  }}
-                />
-              </div>
+              <InputLabel htmlFor="expiration-date">Expiry Date</InputLabel>
+              <PayPalHostedField
+                id="expiration-date"
+                className="border rounded-lg border-neutral-500 px-4 h-11"
+                hostedFieldType="expirationDate"
+                options={{
+                  selector: "#expiration-date",
+                  placeholder: "MM/YYYY",
+                }}
+              />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
-              <div className="mb-3">
-                <InputLabel htmlFor="expiration-date">Expiry Date</InputLabel>
-                <PayPalHostedField
-                  id="expiration-date"
-                  className="border-2 rounded-lg border-black px-4 h-11"
-                  hostedFieldType="expirationDate"
-                  options={{
-                    selector: "#expiration-date",
-                    placeholder: "MM/YYYY",
-                  }}
-                />
-              </div>
-              <div className="mb-3">
-                <InputLabel htmlFor="cvv">CVV</InputLabel>
-                <PayPalHostedField
-                  id="cvv"
-                  className="border-2 rounded-lg border-black px-4 h-11"
-                  hostedFieldType="cvv"
-                  options={{
-                    selector: "#cvv",
-                    placeholder: "123",
-                    maskInput: true,
-                  }}
-                />
-              </div>
+            <div className="mb-3">
+              <InputLabel htmlFor="cvv">CVV</InputLabel>
+              <PayPalHostedField
+                id="cvv"
+                className="border rounded-lg border-neutral-500 px-4 h-11"
+                hostedFieldType="cvv"
+                options={{
+                  selector: "#cvv",
+                  placeholder: "123",
+                  maskInput: true,
+                }}
+              />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
-              <div className="mb-3">
-                <TextField label="Country" />
-              </div>
-              <div className="mb-3">
-                <InputLabel htmlFor="expiration-date">Postcode</InputLabel>
-                <PayPalHostedField
-                  id="postal-code"
-                  className="border-2 rounded-lg border-black px-4 h-11"
-                  hostedFieldType="postalCode"
-                  options={{
-                    selector: "#postal-code",
-                  }}
-                />
-              </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
+            <div className="mb-3">
+              <TextField label="Country" />
+            </div>
+            <div className="mb-3">
+              <InputLabel htmlFor="expiration-date">Postcode</InputLabel>
+              <PayPalHostedField
+                id="postal-code"
+                className="border rounded-lg border-neutral-500 px-4 h-11"
+                hostedFieldType="postalCode"
+                options={{
+                  selector: "#postal-code",
+                }}
+              />
             </div>
           </div>
         </div>
-        <div>
-          <SubmitPayment
-            registerEmployers={registerEmployers}
-            ref={submitPaymentRef}
-            onClick={onApprove}
-            validateAccountForm={validateHostedField}
-          />
-        </div>
       </div>
-    </PayPalHostedFieldsProvider>
+    </div>
   );
 });
 

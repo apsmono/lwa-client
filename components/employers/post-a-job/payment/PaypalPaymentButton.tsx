@@ -80,6 +80,7 @@ function PaypalPaymentButton(props: IPaypalPaymentButtonProps) {
           onApprove(data.orderID, +captured!.purchase_units[0]!.custom_id!);
         });
       }}
+      className="text-center"
     />
   );
 }

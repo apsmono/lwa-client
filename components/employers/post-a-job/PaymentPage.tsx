@@ -1,4 +1,5 @@
 import {
+  PayPalHostedFieldsProvider,
   PayPalScriptProvider,
   destroySDKScript,
   getScriptID,
@@ -19,8 +20,10 @@ import AccountFormSection, {
 import useJobStore from "./store/useJobStore";
 import PaypalPaymentForm from "./payment/PaypalPaymentForm";
 import { TPaypalPaymmentButtonOnClick } from "./payment/PaypalPaymentButton";
-import { TSubmitPaymentRef } from "./payment/SubmitPayment";
+import SubmitPayment, { TSubmitPaymentRef } from "./payment/SubmitPayment";
 import PackageList from "./PackageList";
+import { getCookie } from "cookies-next";
+import PaymentService from "service/payment_service";
 
 interface PaymentPageProps {
   clientToken: string;
@@ -169,37 +172,59 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
             vault: false,
           }}
         >
-          <div className="grid grid-cols-1 gap-6 mt-4">
-            <div className="flex flex-col gap-4">
-              <Typography
-                variant="h3"
-                className="font-bold font-palo uppercase"
-              >
-                Gain more visibility!
-              </Typography>
-              <PackageList packages={packages} />
-            </div>
-            <Typography className="text-center font-bold">
-              Want to post more than 10+ jobs?{" "}
-              <a href="mailto:youremail@test.com">Contact us</a> for customised
-              packages!
-            </Typography>
+          <PayPalHostedFieldsProvider
+            createOrder={async () => {
+              const packageItem = JSON.parse(
+                getCookie("packageItem")!.toString()
+              );
+              const { data } = await PaymentService.createOrder(
+                packageItem!.id
+              );
 
-            <PaypalPaymentForm
-              ref={submitPaymentRef}
-              onApprove={handlePaymentClick}
-              registerEmployers={registerEmployers}
-              validateHostedField={validateAccountForm}
-              validatePaypalButton={onPaypalPaymentButtonClick}
-            />
-          </div>
-          <AccountFormSection ref={accountFormSectionRef} />
+              return data.id;
+            }}
+            styles={{
+              input: {
+                "font-family": "Poppins, sans-serif",
+                "font-size": "16px",
+              },
+            }}
+          >
+            <div className="grid grid-cols-1 gap-6 mt-4">
+              <div className="flex flex-col gap-4">
+                <Typography variant="h4" className="font-bold mb-4">
+                  Gain more visibility
+                </Typography>
+                <PackageList packages={packages} />
+              </div>
+              <Typography className="font-bold" variant="h4">
+                Want to post more than 10+ jobs?{" "}
+                <a href="mailto:youremail@test.com">Contact us</a> for
+                customised packages!
+              </Typography>
+
+              <PaypalPaymentForm
+                ref={submitPaymentRef}
+                onApprove={handlePaymentClick}
+                registerEmployers={registerEmployers}
+                validateHostedField={validateAccountForm}
+                validatePaypalButton={onPaypalPaymentButtonClick}
+              />
+            </div>
+            <AccountFormSection ref={accountFormSectionRef} />
+            <div className="mt-4">
+              <SubmitPayment
+                registerEmployers={registerEmployers}
+                ref={submitPaymentRef}
+                onClick={handlePaymentClick}
+                validateAccountForm={validateAccountForm}
+              />
+            </div>
+          </PayPalHostedFieldsProvider>
         </PayPalScriptProvider>
 
         <div className="mt-4">
-          <Button onClick={onBack} variant="black">
-            Back
-          </Button>
+          <Button onClick={onBack}>Back</Button>
         </div>
       </>
     );
