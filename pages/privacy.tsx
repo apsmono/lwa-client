@@ -1,4 +1,4 @@
-import { Typography } from "components/common";
+import { PageTitle, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
@@ -53,12 +53,7 @@ function PrivacyPage(props: IPrivacyPageProps) {
   return (
     <GuestLayout title="Privacy Policy">
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
-        <Typography
-          variant="h1"
-          className="font-palo font-bold tracking-wide text-center mb-4"
-        >
-          PRIVACY POLICY
-        </Typography>
+        <PageTitle>PRIVACY POLICY</PageTitle>
 
         <Typography>
           This Privacy Policy describes how we collect, use, and protect the

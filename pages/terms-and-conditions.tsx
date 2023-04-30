@@ -1,4 +1,4 @@
-import { Typography } from "components/common";
+import { PageTitle, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
@@ -94,12 +94,7 @@ function TermsAndConditionPage(props: ITermsAndConditionProps) {
   return (
     <GuestLayout title="Terms and Conditions">
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
-        <Typography
-          variant="h1"
-          className="font-palo font-bold tracking-wide text-center mb-4"
-        >
-          TERMS & CONDITIONS
-        </Typography>
+        <PageTitle>TERMS & CONDITIONS</PageTitle>
 
         <Typography>
           Welcome to our job board! These terms and conditions

@@ -1,4 +1,4 @@
-import { Typography } from "components/common";
+import { PageTitle, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React, { useMemo } from "react";
@@ -54,12 +54,7 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
   return (
     <GuestLayout title="Community Guideline">
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
-        <Typography
-          variant="h1"
-          className="font-palo font-bold tracking-wide text-center mb-4"
-        >
-          COMMUNITY GUIDELINES
-        </Typography>
+        <PageTitle>COMMUNITY GUIDELINES</PageTitle>
 
         <Typography>
           Our remote job board is a community of job seekers and employers who
@@ -71,10 +66,7 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
 
         {items.map((item, i) => (
           <div key={i}>
-            <Typography
-              variant="h3"
-              className="uppercase font-bold font-palo mb-2"
-            >
+            <Typography variant="h5" className="uppercase font-bold mb-2">
               {i + 1}. {item.title}
             </Typography>
             <div className="flex flex-col gap-2">

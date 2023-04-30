@@ -42,6 +42,14 @@ function BlogDetailPage(props: IBlogDetailPageProps) {
           {blog.title}
         </Typography>
 
+        <picture>
+          <img
+            src={`${process.env.NEXT_PUBLIC_API_URL}${blog.thumbnail}`}
+            alt=""
+            className="w-full my-6"
+          />
+        </picture>
+
         <div
           dangerouslySetInnerHTML={{ __html: blog.content }}
           className="mb-4"

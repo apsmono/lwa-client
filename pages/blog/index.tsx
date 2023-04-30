@@ -1,4 +1,4 @@
-import { Button, Typography } from "components/common";
+import { Button, PageTitle, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
@@ -42,12 +42,7 @@ function BlogPage(props: IBlogPageProps) {
   return (
     <GuestLayout title="Blog">
       <div className="w-full max-w-5xl mx-auto p-6 pb-48">
-        <Typography
-          variant="h1"
-          className="font-palo font-bold tracking-wide text-center mb-4"
-        >
-          BLOG
-        </Typography>
+        <PageTitle>BLOG</PageTitle>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {blogs.map((item) => (
@@ -56,19 +51,18 @@ function BlogPage(props: IBlogPageProps) {
                 <img
                   src={`${process.env.NEXT_PUBLIC_API_URL}${item.thumbnail}`}
                   alt=""
-                  className="rounded-lg mb-2"
+                  className="rounded-t-lg mb-2"
                 />
               </picture>
               <Link href={`/blog/${item.slug}`}>
                 <Typography
-                  variant="h4"
-                  className="font-palo tracking-wide font-bold uppercase"
-                  style={{ lineHeight: "1.75rem" }}
+                  variant="small"
+                  className="font-bold uppercase mb-2"
                 >
                   {item.title}
                 </Typography>
               </Link>
-              <Typography variant="small">
+              <Typography variant="xs">
                 {dateFormat(
                   item.created_at,
                   {

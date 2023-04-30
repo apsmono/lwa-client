@@ -1,4 +1,4 @@
-import { Typography } from "components/common";
+import { PageTitle, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
@@ -41,12 +41,7 @@ function WhyLWAPage(props: IWhyLWAPageProps) {
   return (
     <GuestLayout title="Why Lets Work Anywhere">
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
-        <Typography
-          variant="h1"
-          className="font-palo font-bold tracking-wide text-center mb-4"
-        >
-          WHY LET’S WORK ANYWHERE?
-        </Typography>
+        <PageTitle>WHY LET’S WORK ANYWHERE?</PageTitle>
 
         <Typography>
           Our remote job board is a powerful tool for employers who are looking
@@ -54,10 +49,10 @@ function WhyLWAPage(props: IWhyLWAPageProps) {
           few reasons why you should consider using our platform:
         </Typography>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           {items.map((item, i) => (
             <React.Fragment key={i}>
-              <Typography variant="h3" className="font-palo font-bol">
+              <Typography variant="h5" className="font-bold">
                 {item.title}
               </Typography>
               {item.items.map((p, j) => (

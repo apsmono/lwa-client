@@ -19,6 +19,7 @@ import MyPopOver from "./MyPopOver";
 import ConfirmationModal from "./ConfirmationModal";
 import Card from "./Card";
 import CardTitle from "./CardTitle";
+import PageTitle from "./PageTitle";
 
 export {
   Loader,
@@ -40,4 +41,5 @@ export {
   MyPopOver,
   ConfirmationModal,
   CardTitle,
+  PageTitle,
 };

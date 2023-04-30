@@ -1,10 +1,11 @@
 import { Disclosure } from "@headlessui/react";
 import clsx from "clsx";
-import { Typography } from "components/common";
+import { PageTitle, Typography } from "components/common";
 import PackageCard from "components/employers/post-a-job/PackageCard";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React, { useMemo } from "react";
+import { Minus, Plus } from "react-feather";
 
 import PackageService from "service/package_service";
 import { Package } from "service/types";
@@ -81,23 +82,17 @@ function FaqPage(props: IFaqPageProps) {
   }, [packages]);
   return (
     <GuestLayout title="Faq">
-      <Typography
-        variant="h1"
-        className="font-palo font-bold tracking-wide text-center mb-4"
-      >
-        FAQ
-      </Typography>
+      <PageTitle>FAQ</PageTitle>
 
       <div className="flex flex-col gap-4 max-w-6xl mx-auto p-6">
         {faqItems.map((faq, i) => (
-          <div key={i} className="bg-white rounded-lg border border-black p-4">
+          <div key={i} className="bg-white border-b border-neutral-500 p-4">
             <Disclosure>
               {({ open }) => (
                 <>
-                  <Disclosure.Button
-                    className={clsx([open && "font-medium underline"])}
-                  >
+                  <Disclosure.Button className="flex font-bold justify-between w-full">
                     {faq.title}
+                    {!open ? <Plus /> : <Minus />}
                   </Disclosure.Button>
                   <Disclosure.Panel className="mt-2">
                     {faq.content}
