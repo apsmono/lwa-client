@@ -65,6 +65,7 @@ function Home(props: HomePropsInterface) {
             rounded
           />
           <Select
+            rounded
             options={categories}
             renderOption={(opt) => opt.name}
             placeholder="Categories"
