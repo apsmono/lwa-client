@@ -79,7 +79,7 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
   return (
     <EmployersLayout employers={user} title="Dashboard">
       <PageTitle>Dashboard</PageTitle>
-      <div className="flex flex-col md:flex-row gap-2 justify-end mb-4">
+      <div className="flex flex-col md:flex-row gap-2 justify-end items-center mb-4">
         <div className="flex flex-col md:flex-row gap-2 items-center">
           <Typography variant="h6" className="font-bold">
             Showing data from
@@ -104,12 +104,12 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
             />
           </div>
         </div>
-        <Button onClick={() => handleExport()} rounded={false} variant="white">
-          Export
-        </Button>
+        <div>
+          <Button onClick={() => handleExport()}>Export</Button>
+        </div>
       </div>
       <div className="grid grid-cols-3 mb-4">
-        <div className="py-6 border-2 border-black bg-secondary-300 rounded-lg text-center">
+        <div className="py-6 border border-neutral-500 rounded-lg text-center">
           <Typography className="font-bold" variant="h4">
             {new Intl.NumberFormat().format(totalClick)}
           </Typography>
@@ -118,7 +118,7 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
       </div>
       <div>
         <Card className="border-black">
-          <CardTitle className="text-center">CTR Charts</CardTitle>
+          <CardTitle>CTR Charts</CardTitle>
           <ResponsiveContainer width="100%" height={350}>
             <BarChart ref={ref} data={clickData}>
               <CartesianGrid strokeDasharray="3 3" />

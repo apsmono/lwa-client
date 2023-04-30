@@ -10,7 +10,7 @@ function Backdrop(props: Partial<BackdropProps>) {
   return (
     <div
       className={clsx(
-        "fixed inset-0 bg-black opacity-70 transition-opacity",
+        "fixed inset-0 bg-black bg-opacity-70 transition-opacity",
         [show && "visible"],
         [!show && "invisible opacity-0"],
         className
