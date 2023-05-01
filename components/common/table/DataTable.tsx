@@ -19,6 +19,7 @@ import Typography from "../Typography";
 import PaginationButton from "./PaginationButton";
 import TableCellSearch from "./TableCellSearch";
 import Button from "../Button";
+import PageButton from "./PageButton";
 
 interface DataTablePropsInterface {
   fetchItems: (...args: any) => Promise<any>;
@@ -158,9 +159,6 @@ function DataTable(props: Partial<DataTablePropsInterface>) {
                           : null}
                       </Typography>
                     </div>
-                    {/* {header.column.getCanFilter() && (
-                      <TableCellSearch column={header.column} />
-                    )} */}
                   </th>
                 ))}
               </tr>
@@ -189,73 +187,57 @@ function DataTable(props: Partial<DataTablePropsInterface>) {
           </tbody>
         </table>
       </div>
-      <div className="mt-4 flex justify-center">
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            filled={false}
-            className="border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white"
-            onClick={() =>
-              setPageData((val) => ({ ...val, page: val.page - 1 }))
-            }
-          >
-            Prev
-          </Button>
-          {pageData.page > 1 ? (
-            <>
-              <button
-                className={clsx(
-                  "border border-primary-500 w-9 rounded-full transition-all",
-                  "hover:bg-primary-500 hover:text-white",
-                  { "bg-primary-500 text-white": pageData.page === totalPages },
-                  { "text-primary-500": pageData.page !== totalPages }
-                )}
-                onClick={() =>
-                  setPageData((val) => ({ ...val, page: totalPages }))
-                }
-              >
-                1
-              </button>
-              <span>...</span>
-            </>
-          ) : null}
-          {pageList.map((p) => (
-            <button
-              className={clsx(
-                "border border-primary-500 w-9 rounded-full transition-all",
-                "hover:bg-primary-500 hover:text-white",
-                { "bg-primary-500 text-white": pageData.page === p },
-                { "text-primary-500": pageData.page !== p }
-              )}
-              key={p}
+      {totalPages > 0 ? (
+        <div className="mt-4 flex justify-center">
+          <div className="flex gap-2">
+            <PaginationButton
+              disabled={pageData.page === 1}
+              onClick={() =>
+                setPageData((val) => ({ ...val, page: val.page - 1 }))
+              }
             >
-              {p}
-            </button>
-          ))}
-          {totalPages > 3 && pageData.page < totalPages - 2 ? "..." : null}
-          <button
-            className={clsx(
-              "border border-primary-500 w-9 rounded-full transition-all",
-              "hover:bg-primary-500 hover:text-white",
-              { "bg-primary-500 text-white": pageData.page === totalPages },
-              { "text-primary-500": pageData.page !== totalPages }
-            )}
-            onClick={() => setPageData((val) => ({ ...val, page: totalPages }))}
-          >
-            {totalPages}
-          </button>
-          <Button
-            size="sm"
-            filled={false}
-            className="border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white"
-            onClick={() =>
-              setPageData((val) => ({ ...val, page: val.page + 1 }))
-            }
-          >
-            Next
-          </Button>
+              Prev
+            </PaginationButton>
+            {pageData.page > 1 ? (
+              <>
+                <PageButton
+                  active={1 === pageData.page}
+                  onClick={() => setPageData((val) => ({ ...val, page: 1 }))}
+                >
+                  1
+                </PageButton>
+                <span>...</span>
+              </>
+            ) : null}
+            {pageList.map((p) => (
+              <PageButton
+                key={p}
+                active={p === pageData.page}
+                onClick={() => setPageData((val) => ({ ...val, page: p }))}
+              >
+                {p}
+              </PageButton>
+            ))}
+            {totalPages > 3 && pageData.page < totalPages - 2 ? "..." : null}
+            <PageButton
+              active={totalPages === pageData.page}
+              onClick={() =>
+                setPageData((val) => ({ ...val, page: totalPages }))
+              }
+            >
+              {totalPages}
+            </PageButton>
+            <PaginationButton
+              disabled={pageData.page === totalPages}
+              onClick={() =>
+                setPageData((val) => ({ ...val, page: val.page + 1 }))
+              }
+            >
+              Next
+            </PaginationButton>
+          </div>
         </div>
-      </div>
+      ) : null}
       <div className="mt-4 flex items-center justify-between flex-wrap">
         {showLimitOption ? (
           <div className="lg:w-auto w-full">

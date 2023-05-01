@@ -1,5 +1,6 @@
 import React, { ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
+import Button from "../Button";
 
 interface PaginationButtonPropsInterface
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -10,14 +11,17 @@ interface PaginationButtonPropsInterface
 function PaginationButton(props: Partial<PaginationButtonPropsInterface>) {
   const { children, disabled, onClick } = props;
   return (
-    <button
-      className={clsx("border rounded p-1 hover:bg-gray-100", {
-        "bg-gray-200 opacity-70 pointer-events-none": disabled,
+    <Button
+      size="sm"
+      filled={false}
+      className={clsx("border border-primary-500 hover:text-white", {
+        "hover:bg-primary-500 text-primary-500": !disabled,
       })}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 
