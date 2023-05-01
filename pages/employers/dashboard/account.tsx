@@ -50,7 +50,7 @@ function AccountSettingPage(props: IAccountSettingPage) {
       <Typography className="font-medium capitalize">
         Edit your account information
       </Typography>
-      <div className="border-2 border-black rounded-lg p-4">
+      <div className="py-4">
         <AccountForm user={user} onSubmit={onSubmit} />
       </div>
     </EmployersLayout>

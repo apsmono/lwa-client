@@ -82,9 +82,7 @@ function AccountForm(props: IAccountFormProps) {
         )}
       />
       <div className="flex justify-end">
-        <Button type="submit" variant="secondary">
-          Update
-        </Button>
+        <Button type="submit">Update</Button>
       </div>
     </form>
   );

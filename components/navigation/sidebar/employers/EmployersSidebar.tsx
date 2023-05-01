@@ -142,7 +142,7 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
     <MySidebar
       open={open}
       backdropProps={{ onClick: onClose, className: "lg:invisible" }}
-      className="bg-primary-500 lg:translate-x-0 rounded-2xl top-5 left-5 p-0"
+      className="bg-primary-500 lg:translate-x-0 rounded-2xl top-5 left-5 p-0 mb-4"
       withBackdrop
     >
       <div className="flex flex-col gap-6 py-6">
