@@ -31,6 +31,7 @@ function AccountSettingPage(props: IAccountSettingPage) {
   const onSubmit = async (val: any) => {
     try {
       setLoading(true);
+      delete val.is_free_post_used;
       const response = await wrappedUpdateUser(val);
       showSuccessAlert(response.message);
       setTimeout(() => {

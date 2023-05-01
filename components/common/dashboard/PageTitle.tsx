@@ -11,11 +11,8 @@ function PageTitle(props: IPageTitleProps) {
   const { children, className } = props;
   return (
     <Typography
-      variant="h2"
-      className={clsx(
-        "font-palo font-bold tracking-wide uppercase mb-3",
-        className
-      )}
+      variant="h3"
+      className={clsx("font-bold tracking-wide uppercase mb-3", className)}
     >
       {children}
     </Typography>

@@ -83,6 +83,7 @@ function DataTable(props: Partial<DataTablePropsInterface>) {
         if (!active) return;
         const { data, page } = response;
         setData(data ?? []);
+        console.log({ page, response, params });
         setPageData(page);
       } catch (error) {
         console.log(error);
@@ -125,6 +126,7 @@ function DataTable(props: Partial<DataTablePropsInterface>) {
   });
 
   const pageList = useMemo(() => {
+    if (totalPages === 1) return [pageData.page];
     if (pageData.page + 2 >= totalPages)
       return [totalPages - 2, totalPages - 1];
     return [pageData.page, pageData.page + 1];
@@ -219,14 +221,16 @@ function DataTable(props: Partial<DataTablePropsInterface>) {
               </PageButton>
             ))}
             {totalPages > 3 && pageData.page < totalPages - 2 ? "..." : null}
-            <PageButton
-              active={totalPages === pageData.page}
-              onClick={() =>
-                setPageData((val) => ({ ...val, page: totalPages }))
-              }
-            >
-              {totalPages}
-            </PageButton>
+            {totalPages > 1 ? (
+              <PageButton
+                active={totalPages === pageData.page}
+                onClick={() =>
+                  setPageData((val) => ({ ...val, page: totalPages }))
+                }
+              >
+                {totalPages}
+              </PageButton>
+            ) : null}
             <PaginationButton
               disabled={pageData.page === totalPages}
               onClick={() =>
