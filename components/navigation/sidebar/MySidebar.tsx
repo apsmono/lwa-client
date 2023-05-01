@@ -30,7 +30,7 @@ function MySidebar(props: IMySidebarProps) {
         <Backdrop
           show={open}
           onClick={backdropProps?.onClick}
-          className={clsx(backdropProps?.className, "z-5")}
+          className={clsx(backdropProps?.className, "z-[5]")}
         />
       ) : null}
     </>

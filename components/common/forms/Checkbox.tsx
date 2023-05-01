@@ -11,6 +11,7 @@ interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText: any;
   onClick: (val: any) => void;
   checkboxSize?: "sm" | "md" | "lg";
+  variant: "black" | "primary";
 }
 
 function Checkbox(props: Partial<CheckboxProps>) {
@@ -27,8 +28,14 @@ function Checkbox(props: Partial<CheckboxProps>) {
     onClick = () => {},
     checkboxSize = "md",
     defaultChecked,
+    variant = "primary",
   } = props;
   const registerAttr = register ? register(props.name ?? "") : {};
+
+  const variantStyles = {
+    primary: "text-primary-500 border-primary-500",
+    black: "text-black border-black",
+  };
 
   return (
     <div className="mb-3">
@@ -38,10 +45,11 @@ function Checkbox(props: Partial<CheckboxProps>) {
           name={name}
           id={id}
           className={clsx(
-            "border border-black text-black form-checkbox",
+            "border form-checkbox",
             ["w-4 h-4" && checkboxSize === "sm"],
             ["w-6 h-6" && checkboxSize === "md"],
             ["w-8 h-8" && checkboxSize === "lg"],
+            variantStyles[variant],
             className
           )}
           value={value}

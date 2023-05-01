@@ -132,7 +132,7 @@ const Select = forwardRef<SelectRefType, Partial<SelectPropsInterface>>(
     };
 
     return (
-      <div className={clsx("min-w-[8rem] mb-3 z-[-1]", className)}>
+      <div className={clsx("min-w-[8rem] mb-3", className)}>
         {!multiple ? (
           <input id={id} hidden {...registerAttr} name={name} readOnly />
         ) : (

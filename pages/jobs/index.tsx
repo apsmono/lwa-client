@@ -1,8 +1,9 @@
 import { Button, Chip, TextField, Typography } from "components/common";
+import AdvanceSelect, {
+  TAdvanceSelectRef,
+} from "components/common/forms/AdvanceSelect";
 import { Subscribe } from "components/home";
 import JobCard from "components/home/job/JobCard";
-import { JobFilter } from "components/jobs";
-import { TJobFilterRef } from "components/jobs/JobFilter";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -147,12 +148,12 @@ function JobListPage(props: JobListPageProps) {
     setJobList(res);
   };
 
-  const employmentTypeRef = useRef<TJobFilterRef>(null);
-  const locationRef = useRef<TJobFilterRef>(null);
-  const categoriesListRef = useRef<TJobFilterRef>(null);
-  const salaryListRef = useRef<TJobFilterRef>(null);
-  const datePostedRef = useRef<TJobFilterRef>(null);
-  const sortingRef = useRef<TJobFilterRef>(null);
+  const employmentTypeRef = useRef<TAdvanceSelectRef>(null);
+  const locationRef = useRef<TAdvanceSelectRef>(null);
+  const categoriesListRef = useRef<TAdvanceSelectRef>(null);
+  const salaryListRef = useRef<TAdvanceSelectRef>(null);
+  const datePostedRef = useRef<TAdvanceSelectRef>(null);
+  const sortingRef = useRef<TAdvanceSelectRef>(null);
   const handleResetClick = () => {
     employmentTypeRef.current?.removeValue();
     locationRef.current?.removeValue();
@@ -194,18 +195,20 @@ function JobListPage(props: JobListPageProps) {
           />
         </form>
         <div className="flex gap-x-4 flex-wrap items-center">
-          <JobFilter
+          <AdvanceSelect
             ref={sortingRef}
             label="Sort by"
             options={[
               { val: "created_at", label: "Most Recent" },
               { val: "click_counts", label: "Most Relevant" },
             ]}
+            className="md:w-auto min-w-[12rem]"
+            showAction
             renderOption={(val) => val?.label}
             onChange={(val) => setSorting(val)}
             getOptionValue={(val) => val?.val}
           />
-          <JobFilter
+          <AdvanceSelect
             ref={datePostedRef}
             label="Date posted"
             options={[
@@ -214,11 +217,13 @@ function JobListPage(props: JobListPageProps) {
               { val: 1, label: "Past 24 hours" },
               { val: 30, label: "Past month" },
             ]}
+            className="md:w-auto min-w-[12rem]"
+            showAction
             renderOption={(val) => val.label}
             onChange={(val) => setDatePosted(val)}
             getOptionValue={(val) => val?.val}
           />
-          <JobFilter
+          <AdvanceSelect
             label="Job Type"
             options={employmentTypes}
             renderOption={(val) => val?.name}
@@ -226,8 +231,12 @@ function JobListPage(props: JobListPageProps) {
             onChange={(val) => setEmploymentType(val)}
             getOptionValue={(val) => val?.id}
             ref={employmentTypeRef}
+            className="md:w-auto min-w-[12rem]"
+            showAction
           />
-          <JobFilter
+          <AdvanceSelect
+            className="md:w-auto min-w-[12rem]"
+            showAction
             multiple
             label="Locations"
             options={[...locations]}
@@ -236,7 +245,9 @@ function JobListPage(props: JobListPageProps) {
             getOptionValue={(val) => val?.id}
             ref={locationRef}
           />
-          <JobFilter
+          <AdvanceSelect
+            className="md:w-auto min-w-[12rem]"
+            showAction
             multiple
             label="Category"
             options={[...categories]}
@@ -245,7 +256,9 @@ function JobListPage(props: JobListPageProps) {
             onChange={(val) => setCategoriesList(val)}
             getOptionValue={(val) => val?.id}
           />
-          <JobFilter
+          <AdvanceSelect
+            className="md:w-auto min-w-[12rem]"
+            showAction
             label="Salary"
             options={salaries}
             renderOption={(opt) => opt.label}

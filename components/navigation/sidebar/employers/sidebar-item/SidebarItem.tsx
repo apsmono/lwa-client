@@ -32,7 +32,7 @@ function SidebarItem(props: ISidebarItemProps) {
         {link.icon ? (
           <div className={clsx(styles["icon"])}>{link.icon}</div>
         ) : null}
-        <Typography variant="h6">{link.title}</Typography>
+        <Typography variant="body">{link.title}</Typography>
       </Link>
     </li>
   );

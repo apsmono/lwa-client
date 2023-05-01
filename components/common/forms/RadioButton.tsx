@@ -4,6 +4,8 @@ import { UseFormRegister } from "react-hook-form";
 import Typography from "../Typography";
 import InputLabel from "./InputLabel";
 
+export type TRadioButtonVariant = "black" | "primary";
+
 interface RadioButtonProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   register: UseFormRegister<any>;
@@ -11,6 +13,7 @@ interface RadioButtonProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText: any;
   onClick: (val: any) => void;
   radioSize?: "sm" | "md" | "lg";
+  variant: TRadioButtonVariant;
 }
 
 function RadioButton(props: Partial<RadioButtonProps>) {
@@ -27,8 +30,14 @@ function RadioButton(props: Partial<RadioButtonProps>) {
     onClick = () => {},
     radioSize = "md",
     defaultChecked,
+    variant = "primary",
   } = props;
   const registerAttr = register ? register(props.name ?? "") : {};
+
+  const variantStyles = {
+    primary: "text-primary-500 border-primary-500",
+    black: "text-black border-black",
+  };
 
   return (
     <div className="mb-3">
@@ -38,10 +47,11 @@ function RadioButton(props: Partial<RadioButtonProps>) {
           name={name}
           id={id}
           className={clsx(
-            "border border-black text-black rounded-full form-checkbox",
+            "border rounded-full form-checkbox",
             { "w-4 h-4": radioSize === "sm" },
             { "w-6 h-6": radioSize === "md" },
             { "w-8 h-8": radioSize === "lg" },
+            variantStyles[variant],
             className
           )}
           value={value}

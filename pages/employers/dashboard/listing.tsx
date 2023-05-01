@@ -1,25 +1,22 @@
+import { createColumnHelper } from "@tanstack/react-table";
+import clsx from "clsx";
 import {
   Button,
   ConfirmationModal,
   Modal,
+  MyPopOver,
   Select,
   TextField,
-  Typography,
 } from "components/common";
 import { PageTitle } from "components/common/dashboard";
+import AdvanceSelect from "components/common/forms/AdvanceSelect";
+import { DataTable } from "components/common/table";
 import { JobForm } from "components/employers/job";
-import { ListingItem } from "components/employers/listing";
 import { EmployersLayout } from "components/layout";
 import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { ChevronRight } from "react-feather";
+import React, { useCallback, useContext, useState } from "react";
+import { MoreHorizontal } from "react-feather";
 import { AuthService } from "service/auth_service";
 import CompanyService from "service/company_service";
 import EmploymentTypeService from "service/employment_type_service";
@@ -28,6 +25,7 @@ import LocationService from "service/location_service";
 import { EmploymentType, Job, LocationType, User } from "service/types";
 import useAppStore from "store/useAppStore";
 import { parseErrorMessage } from "utils/api";
+import { dateFormat } from "utils/date";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 
@@ -40,16 +38,10 @@ interface IManageListingPageProps {
 }
 
 function ManageListingPage(props: IManageListingPageProps) {
-  const {
-    user,
-    jobs: defaultJobs,
-    pagination,
-    employmentTypes,
-    locations,
-  } = props;
+  const { user, jobs: defaultJobs, employmentTypes, locations } = props;
   const [refetch, setRefetch] = useState(false);
   const [status, setStatus] = useState<any>({ val: "", label: "All" });
-  const [jobs, setJobs] = useState(defaultJobs);
+
   const [title, setTitle] = useState("");
   const [sorting, setSorting] = useState<any>({
     val: "created_at",
@@ -68,63 +60,7 @@ function ManageListingPage(props: IManageListingPageProps) {
     JobService.pauseJob(id)
   );
 
-  const [pageData, setPageData] = useState({
-    totalItems: pagination.totalItems,
-    page: pagination.page,
-  });
-
   const { categories } = useAppStore();
-
-  const totalPages = useMemo(
-    () => Math.ceil((pageData?.totalItems || 1) / 5),
-    [pageData?.totalItems]
-  );
-
-  const fetchData = useCallback(async () => {
-    try {
-      const params: any = {
-        limit: 5,
-        offset: pageData.page,
-      };
-      if (title) params.title = title;
-      if (status) params.status = status.val;
-      if (sorting?.val) {
-        params.sort_by = sorting.val;
-        params.sort_direction = "DESC";
-      }
-      if ((+pageData.page || 0) <= 0 || +pageData.page > totalPages)
-        throw new Error("Page is invalid");
-      const response = await CompanyService.getCompanyJobs(
-        user.company!.id,
-        params
-      );
-      return response;
-    } catch (error) {
-      if (error instanceof Error) {
-        showErrorAlert(error.message);
-      } else {
-        showErrorAlert(parseErrorMessage(error));
-      }
-      return { data: [], page: { page: 1, totalItems: 1 } };
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, pageData.page, totalPages, sorting, status]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      (async () => {
-        const response = await fetchData();
-        setJobs(response.data as Job[]);
-        setPageData({
-          ...pageData,
-          totalItems: response.page.totalItems as number,
-        });
-      })();
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchData, refetch]);
 
   const handleDialogClose = async ({ confirmed }: { confirmed: boolean }) => {
     setOpen(false);
@@ -170,37 +106,158 @@ function ManageListingPage(props: IManageListingPageProps) {
     }
   };
 
+  const columnHelper = createColumnHelper<Job>();
+  const columns = [
+    columnHelper.accessor("title", {
+      cell: (info) => info.getValue(),
+      header: () => <span>Job Name</span>,
+    }),
+    columnHelper.accessor("created_at", {
+      cell: (info) => dateFormat(info.getValue()),
+      header: () => <span>Posted</span>,
+    }),
+    columnHelper.accessor("click_counts", {
+      cell: (info) => info.getValue(),
+      header: () => <span>Click</span>,
+    }),
+    columnHelper.accessor("status", {
+      cell: (info) => {
+        const jobStatus = info.getValue();
+        return (
+          <span
+            className={clsx(
+              "inline-block py-1 px-4 text-white rounded-full",
+              {
+                "bg-info-500": jobStatus === "paused",
+              },
+              {
+                "bg-success-500": jobStatus === "open",
+              },
+              {
+                "bg-danger-500": jobStatus === "closed",
+              },
+              {
+                "bg-warning-500": jobStatus === "pending",
+              }
+            )}
+          >
+            {info.getValue()}
+          </span>
+        );
+      },
+      header: () => <span>Status</span>,
+    }),
+    columnHelper.accessor("post_ended_at", {
+      cell: (info) => {
+        const val = info.getValue();
+        if (!val) return "Not specified";
+        return dateFormat(val);
+      },
+      header: () => <span>Closed at</span>,
+    }),
+    columnHelper.display({
+      header: () => "Action",
+      id: "action",
+      cell: (info) => {
+        const item = info.row.original;
+        return (
+          <MyPopOver
+            buttonComponent={<MoreHorizontal />}
+            className="border-2 border-black"
+          >
+            <div className="flex flex-col items-center gap-1">
+              <Button
+                onClick={() => {
+                  setCurrentJob(item);
+                  setOpenEditModal(true);
+                }}
+                variant="link"
+                block
+                className="text-center text-black hover:bg-primary-500 hover:text-white"
+              >
+                Edit
+              </Button>
+              {item.status === "open" ? (
+                <Button
+                  onClick={() => onPauseClick(item)}
+                  variant="link"
+                  block
+                  className="text-center text-black hover:bg-primary-500 hover:text-white"
+                >
+                  Pause
+                </Button>
+              ) : null}
+              {item.status === "paused" ? (
+                <Button
+                  onClick={() => onPauseClick(item)}
+                  variant="link"
+                  block
+                  className="text-center text-black hover:bg-primary-500 hover:text-white"
+                >
+                  Resume
+                </Button>
+              ) : null}
+              {item.status !== "closed" ? (
+                <Button
+                  variant="link"
+                  block
+                  className="text-center text-black hover:bg-primary-500 hover:text-white"
+                  onClick={() => {
+                    setCurrentJob(item);
+                    setOpen(true);
+                  }}
+                >
+                  Delete
+                </Button>
+              ) : null}
+            </div>
+          </MyPopOver>
+        );
+      },
+    }),
+  ];
+
+  const getParams = useCallback(() => {
+    const params: any = {};
+
+    if (status) params.status = status.val;
+    if (title) params.title = title;
+    if (sorting?.val) {
+      params.sort_by = sorting.val;
+      params.sort_direction = "DESC";
+    }
+
+    return params;
+  }, [status, title, sorting]);
+
+  const wrappedFetchCompanyJobs = useWrapHandleInvalidToken((params) =>
+    CompanyService.getCompanyJobs(user.company!.id, params)
+  );
+
   return (
     <>
       <EmployersLayout title="Manage Listing" employers={user}>
-        <PageTitle>Posted Jobs</PageTitle>
-        <div className="flex flex-col md:flex-row gap-y-2 justify-between items-center mb-3">
-          <Select
-            label="Sort by"
-            rounded={false}
-            options={[
-              { val: "", label: "All" },
-              { val: "pending", label: "Pending" },
-              { val: "open", label: "Open" },
-              { val: "closed", label: "Closed" },
-              { val: "paused", label: "Paused" },
-            ]}
-            defaultValue={status}
-            onChange={(val) => setStatus(val)}
-            renderOption={(opt) => opt.label}
-            className="md:w-40 w-full"
-          />
-
-          <div className="flex flex-col md:flex-row gap-x-2 items-end">
-            <TextField
-              rounded={false}
-              placeholder="Search job"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+        <div className="flex md:flex-row flex-col justify-between mb-4">
+          <PageTitle>Posted Jobs</PageTitle>
+          <div className="flex flex-col md:flex-row gap-x-2">
+            <AdvanceSelect
+              key={status.label}
+              label="Status"
+              options={[
+                { val: "", label: "All" },
+                { val: "pending", label: "Pending" },
+                { val: "open", label: "Open" },
+                { val: "closed", label: "Closed" },
+                { val: "paused", label: "Paused" },
+              ]}
+              defaultValue={status}
+              onChange={(val) => setStatus(val)}
+              renderOption={(opt) => opt.label}
+              showAction
+              getOptionValue={(val) => val?.val}
             />
-            <Select
+            <AdvanceSelect
               label="Sort by"
-              rounded={false}
               options={[
                 { val: "created_at", label: "Most Recent" },
                 { val: "click_counts", label: "Most Relevant" },
@@ -209,62 +266,28 @@ function ManageListingPage(props: IManageListingPageProps) {
               onChange={(val) => setSorting(val)}
               renderOption={(opt) => opt.label}
               className="md:w-40 w-full"
+              showAction
+              getOptionValue={(val) => val?.val}
+            />
+            <TextField
+              rounded
+              placeholder="Search job"
+              className="py-1"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              inputSuffix={<span>🔍</span>}
             />
           </div>
         </div>
 
-        <div className="border-2 p-4 rounded-lg border-black flex flex-col gap-4">
-          {!jobs.length ? (
-            <Typography className="text-center font-bold">
-              No data available
-            </Typography>
-          ) : null}
-          {jobs.map((job) => (
-            <ListingItem
-              onDeleteClick={() => {
-                setCurrentJob(job);
-                setOpen(true);
-              }}
-              onEditClick={() => {
-                setCurrentJob(job);
-                setOpenEditModal(true);
-              }}
-              key={job.id}
-              job={job as Job}
-              onPauseClick={() => {
-                onPauseClick(job);
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="flex justify-center items-center mt-4 gap-4">
-          <TextField
-            containerProps={{ className: "mb-0" }}
-            className="w-24"
-            rounded={false}
-            value={pageData.page}
-            onChange={(e) =>
-              setPageData({
-                ...pageData,
-                page: e.target.value,
-              })
-            }
-            type="number"
-          />{" "}
-          <Typography>/ {totalPages}</Typography>
-          <button
-            disabled={+pageData.page >= totalPages}
-            onClick={() =>
-              setPageData({
-                ...pageData,
-                page: (+pageData.page + 1).toString(),
-              })
-            }
-          >
-            <ChevronRight />
-          </button>
-        </div>
+        <DataTable
+          fetchItems={wrappedFetchCompanyJobs}
+          columns={columns}
+          refetch={refetch}
+          getParams={getParams}
+          limit={5}
+          // defaultValue={defaultJobs}
+        />
       </EmployersLayout>
       <ConfirmationModal onClose={handleDialogClose} open={open} />
       <Modal

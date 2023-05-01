@@ -192,6 +192,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           register={register}
           name="is_worldwide"
           id="is_worldwide"
+          variant="black"
           options={[
             { label: "Yes", value: true },
             { label: "No", value: false },

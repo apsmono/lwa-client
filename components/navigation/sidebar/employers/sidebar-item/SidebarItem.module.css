@@ -3,7 +3,7 @@
 }
 
 .list .list-item .icon svg {
-  @apply fill-white;
+  @apply fill-white w-5;
 }
 
 .list.active .list-item .icon svg {

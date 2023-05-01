@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { UseFormRegister } from "react-hook-form";
-import RadioButton from "./RadioButton";
+import RadioButton, { TRadioButtonVariant } from "./RadioButton";
 
 interface IRadioProps {
   value?: any;
@@ -12,6 +12,7 @@ interface IRadioProps {
   register: UseFormRegister<any>;
   onChange?: (val: any) => void;
   radioSize?: "sm" | "md" | "lg";
+  variant?: TRadioButtonVariant;
 }
 
 function Radio(props: IRadioProps) {
@@ -25,6 +26,7 @@ function Radio(props: IRadioProps) {
     id,
     onChange,
     radioSize,
+    variant = "primary",
   } = props;
   const [val, setVal] = useState(value);
 
@@ -51,6 +53,7 @@ function Radio(props: IRadioProps) {
           }}
           radioSize={radioSize}
           checked={opt.value === val}
+          variant={variant}
         />
       ))}
     </div>

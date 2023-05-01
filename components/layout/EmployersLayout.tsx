@@ -34,8 +34,8 @@ function EmployersLayout(props: IEmployersLayoutProps) {
           onClose={onSidebarClose}
           open={open}
         />
-        <div className="lg:ml-72 p-6 pl-12 min-h-[100vh] pb-64">
-          <div className="flex justify-between lg:justify-end">
+        <div className="lg:ml-72 p-6 lg:pl-12 min-h-[100vh] pb-64">
+          <div className="flex justify-between lg:justify-end mb-12">
             <button onClick={() => setOpen(true)} className="block lg:hidden">
               <Menu />
             </button>
