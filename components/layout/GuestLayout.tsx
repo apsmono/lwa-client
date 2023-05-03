@@ -10,7 +10,6 @@ import React, {
   FormEvent,
   ReactNode,
   useContext,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -18,7 +17,6 @@ import React, {
 import { Menu } from "react-feather";
 import { AuthService } from "service/auth_service";
 import { User } from "service/types";
-import { Category } from "service/types/category_type";
 import useAuthStore from "store/useAuthStore";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";

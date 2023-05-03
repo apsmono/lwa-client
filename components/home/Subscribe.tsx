@@ -1,11 +1,6 @@
 import clsx from "clsx";
-import { Button, Select, TextField, Typography } from "components/common";
-import React, {
-  forwardRef,
-  useContext,
-  useImperativeHandle,
-  useRef,
-} from "react";
+import { Button, TextField, Typography } from "components/common";
+import React, { forwardRef, useContext, useImperativeHandle } from "react";
 import { Category } from "service/types";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -14,16 +9,11 @@ import { AppContext } from "context/appContext";
 import useAlert from "utils/hooks/useAlert";
 import SubscriberService from "service/susbcriber_service";
 import { parseErrorMessage } from "utils/api";
-import { SelectRefType } from "components/common/forms/Select";
 
 const schema = yup.object({
   email: yup
     .string()
     .email("Must be a valid email")
-    .required("This field is required"),
-  category_id: yup
-    .number()
-    .typeError("This field is required")
     .required("This field is required"),
 });
 
@@ -32,17 +22,16 @@ export type TSubscribeRef = {
 };
 
 interface ISubscribeProps {
-  categories: Category[];
+  categories?: Category[];
   className?: string;
   variant?: "secondary" | "black";
 }
 
 const Subscribe = forwardRef<TSubscribeRef, ISubscribeProps>((props, ref) => {
-  const { categories, className, variant = "black" } = props;
+  const { className, variant = "black" } = props;
 
   const {
     reset,
-    setValue,
     formState: { errors },
     register,
     handleSubmit,
@@ -52,15 +41,12 @@ const Subscribe = forwardRef<TSubscribeRef, ISubscribeProps>((props, ref) => {
 
   const { setLoading } = useContext(AppContext);
   const { showErrorAlert, showSuccessAlert } = useAlert();
-  const selectRef = useRef<SelectRefType>(null);
-
   const onSubmit = async (val: any) => {
     try {
       setLoading(true);
       const response = await SubscriberService.create(val);
-      showSuccessAlert(response.message);
+      showSuccessAlert("Thanks for subscribing");
       reset();
-      selectRef.current?.removeValue();
     } catch (error) {
       showErrorAlert(parseErrorMessage(error));
     } finally {
@@ -97,19 +83,6 @@ const Subscribe = forwardRef<TSubscribeRef, ISubscribeProps>((props, ref) => {
           <div className="w-full mx-auto">
             <form onSubmit={handleSubmit(onSubmit, (err) => console.log(err))}>
               <div className="flex md:flex-row flex-col gap-4 items-center">
-                <Select
-                  ref={selectRef}
-                  options={categories}
-                  renderOption={(opt) => opt.name}
-                  placeholder="Job Category"
-                  className="w-full md:w-48"
-                  register={register}
-                  name="category_id"
-                  error={!!errors?.category_id}
-                  helperText={errors?.category_id?.message}
-                  getInputValue={(val: any) => val?.id || ""}
-                  setFormValue={setValue}
-                />
                 <TextField
                   placeholder="Type your email here"
                   containerProps={{ className: "md:flex-1 w-full" }}
@@ -117,6 +90,8 @@ const Subscribe = forwardRef<TSubscribeRef, ISubscribeProps>((props, ref) => {
                   name="email"
                   error={!!errors?.email}
                   helperText={errors?.email?.message}
+                  className="text-black"
+                  rounded
                 />
                 <div>
                   <Button

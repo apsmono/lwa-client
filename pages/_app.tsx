@@ -74,7 +74,7 @@ export default function App({ Component, pageProps }: AppProps) {
     if (loading) {
       document.querySelector("body")!.style.overflowY = "hidden";
     } else {
-      document.querySelector("body")!.style.overflowY = "scroll";
+      document.querySelector("body")!.style.overflowY = "auto";
     }
   }, [loading]);
   return (

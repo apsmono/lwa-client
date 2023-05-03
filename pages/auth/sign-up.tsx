@@ -15,6 +15,7 @@ import { Eye, EyeOff } from "react-feather";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import JobService from "service/job_service";
 import { removeCookies } from "cookies-next";
+import BlankLayout from "components/layout/BlankLayout";
 
 interface SignUpPageProps {
   sourceRef: string;
@@ -30,7 +31,7 @@ const schema = yup.object().shape({
   confirm_password: yup
     .string()
     .min(6, "Must be at least 6 characters")
-    .oneOf([yup.ref("password"), null], "Password not match"),
+    .oneOf([yup.ref("password"), null], "Password do not match"),
 });
 
 function SignUpPage(props: SignUpPageProps) {
@@ -119,7 +120,7 @@ function SignUpPage(props: SignUpPageProps) {
     router.push("/auth/sign-in");
   };
   return (
-    <GuestLayout title="Sign Up">
+    <BlankLayout title="Sign Up">
       <div className="max-w-5xl mx-auto p-6">
         <p className="text-center font-bold mb-4 font-palo uppercase text-5xl lg:text-6xl tracking-wide">
           Create an Employer Account
@@ -191,7 +192,7 @@ function SignUpPage(props: SignUpPageProps) {
           </form>
         </div>
       </div>
-    </GuestLayout>
+    </BlankLayout>
   );
 }
 

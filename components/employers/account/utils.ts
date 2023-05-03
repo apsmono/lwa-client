@@ -14,7 +14,7 @@ export const schema = yup.object().shape(
       }),
     new_password_confirm: yup
       .string()
-      .oneOf([yup.ref("new_password")], "Password not match"),
+      .oneOf([yup.ref("new_password")], "Password do not match"),
     current_password: yup.string().required("This field is required").min(6),
   },
   [["new_password", "new_password"]]

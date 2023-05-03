@@ -1,12 +1,12 @@
 import { Typography } from "components/common";
-import { GuestLayout } from "components/layout";
+import BlankLayout from "components/layout/BlankLayout";
 import { GetServerSideProps } from "next";
 import React from "react";
 interface ISignUpSuccess {}
 
 function SignUpSuccess(props: ISignUpSuccess) {
   return (
-    <GuestLayout title="Sign Up Success">
+    <BlankLayout title="Sign Up Success">
       <div className="flex flex-col items-center">
         <picture className="my-4">
           <img src="/sign-up-success.png" alt="" className="w-28" />
@@ -22,7 +22,7 @@ function SignUpSuccess(props: ISignUpSuccess) {
           </Typography>
         </div>
       </div>
-    </GuestLayout>
+    </BlankLayout>
   );
 }
 

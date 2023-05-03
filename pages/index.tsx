@@ -1,4 +1,4 @@
-import { Select, TextField, Typography } from "components/common";
+import { Button, Select, TextField, Typography } from "components/common";
 import { GetServerSideProps } from "next";
 import CategoryService from "service/category_service";
 import { GuestLayout } from "components/layout";
@@ -58,25 +58,17 @@ function Home(props: HomePropsInterface) {
         <form onSubmit={handleSubmit(onSubmit)} className="flex w-full gap-4">
           <TextField
             containerProps={{ className: "flex-1" }}
-            inputSuffix={<button type="submit">🔍</button>}
+            inputSuffix={<button type="button">🔍</button>}
             placeholder="Search..."
             register={register}
             name="title"
             rounded
           />
-          <Select
-            rounded
-            options={categories}
-            renderOption={(opt) => opt.name}
-            placeholder="Categories"
-            defaultValue={selectedCategory}
-            onChange={(val) => setSelectedCategory(val)}
-            setFormValue={setValue}
-            name="category_id"
-            register={register}
-            getInputValue={(val) => val?.id}
-            buttonProps={{ className: "bg-primary-500 text-white" }}
-          />
+          <div>
+            <Button type="submit" size="md">
+              Submit
+            </Button>
+          </div>
         </form>
       </div>
       <div className="mb-6">
