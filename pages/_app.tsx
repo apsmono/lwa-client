@@ -10,6 +10,7 @@ import useAuthStore from "store/useAuthStore";
 import { AuthService } from "service/auth_service";
 import CategoryService from "service/category_service";
 import useAppStore from "store/useAppStore";
+import { Category } from "service/types";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [showAlert, setShowAlert] = useState(false);
@@ -26,7 +27,15 @@ export default function App({ Component, pageProps }: AppProps) {
     (async () => {
       const response = await CategoryService.gets();
       if (!active) return;
-      setAppState({ categories: response.data });
+      const categoriesCopy = [...response.data];
+      const otherCategory = categoriesCopy.filter(
+        (item: Category) => item.name === "Other"
+      )[0];
+      const categoriesWithoutOther = categoriesCopy.filter(
+        (item: Category) => item.name !== "Other"
+      );
+      if (otherCategory) categoriesWithoutOther.push(otherCategory);
+      setAppState({ categories: categoriesWithoutOther });
     })();
 
     return () => {
