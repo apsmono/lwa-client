@@ -23,15 +23,19 @@ function NavBarDropdown(props: NavBarDropdownPropsInterface) {
       <ul
         className={clsx(
           styles["dropdown-content"],
-          "shadow-md p-2 rounded-md w-52"
+          "shadow-lg p-2 rounded-md w-52"
         )}
       >
         {list.map((item, index) => (
-          <li className="mb-2 text-center hover:underline" key={index}>
+          <li className="my-2 px-2" key={index}>
             {item.onClick ? (
-              <button onClick={item.onClick}>{item.title}</button>
+              <button onClick={item.onClick}>
+                <Typography>{item.title}</Typography>
+              </button>
             ) : (
-              <Link href={item.route}>{item.title}</Link>
+              <Link href={item.route}>
+                <Typography variant="small">{item.title}</Typography>
+              </Link>
             )}
           </li>
         ))}
