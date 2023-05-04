@@ -1,12 +1,13 @@
 import { Button, Typography } from "components/common";
-import { GuestLayout } from "components/layout";
+
+import BlankLayout from "components/layout/BlankLayout";
 import { useRouter } from "next/router";
 import React from "react";
 
 function NotFoundPage() {
   const router = useRouter();
   return (
-    <GuestLayout title="Page not found">
+    <BlankLayout title="Page not found">
       <div className="p-6">
         <div className="p-6 max-w-4xl mx-auto text-center">
           <p className="font-palo font-bold text-6xl">OOPS, SORRY!</p>
@@ -20,7 +21,7 @@ function NotFoundPage() {
           </div>
         </div>
       </div>
-    </GuestLayout>
+    </BlankLayout>
   );
 }
 

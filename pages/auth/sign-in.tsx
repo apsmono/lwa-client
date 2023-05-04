@@ -17,6 +17,8 @@ import { parseErrorMessage } from "utils/api";
 import useAuthStore from "store/useAuthStore";
 import { Eye, EyeOff } from "react-feather";
 import BlankLayout from "components/layout/BlankLayout";
+import { Checkbox } from "components/common/forms";
+import Link from "next/link";
 
 interface SignInPageProps {}
 
@@ -109,6 +111,14 @@ function SignInPage(props: SignInPageProps) {
                   </button>
                 }
               />
+              <div className="flex justify-between">
+                <Checkbox label="Remember Me" id="remember-me" />
+                <Link href="/forgot-password">
+                  <Typography className="font-medium text-primary-500">
+                    Forgot Password?
+                  </Typography>
+                </Link>
+              </div>
             </div>
             <div className="flex flex-col items-center mt-4 gap-2">
               <div className="w-full max-w-xl px-4">
