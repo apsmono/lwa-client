@@ -113,7 +113,7 @@ function SignInPage(props: SignInPageProps) {
               />
               <div className="flex justify-between">
                 <Checkbox label="Remember Me" id="remember-me" />
-                <Link href="/forgot-password">
+                <Link href="/auth/forgot-password">
                   <Typography className="font-medium text-primary-500">
                     Forgot Password?
                   </Typography>

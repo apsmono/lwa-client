@@ -18,6 +18,19 @@ export class AuthService {
     });
   }
 
+  static async forgotPassword(email: string) {
+    return sendAndHandleRequest("/authentications/forgot-password", "post", {
+      email,
+    });
+  }
+
+  static async verifyResetPasswordToken(token: string) {
+    return sendAndHandleRequest(
+      `/authentications/forgot-password/${token}/verify`,
+      "post"
+    );
+  }
+
   static async logout(refreshToken: string) {
     return sendAndHandleRequest("/authentications", "delete", {
       refresh_token: refreshToken,

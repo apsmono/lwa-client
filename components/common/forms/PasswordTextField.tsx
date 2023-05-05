@@ -13,7 +13,11 @@ function PasswordTextField(props: Partial<PasswordTextFieldProps>) {
       {...props}
       inputSuffix={
         <button type="button" onClick={() => setOpen(!open)}>
-          {open ? <EyeOff /> : <Eye />}
+          {open ? (
+            <EyeOff className="text-neutral-500" />
+          ) : (
+            <Eye className="text-neutral-500" />
+          )}
         </button>
       }
     />
