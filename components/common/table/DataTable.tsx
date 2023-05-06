@@ -134,7 +134,7 @@ function DataTable(props: Partial<DataTablePropsInterface>) {
 
   return (
     <>
-      <div className="overflow-auto">
+      <div>
         <table className="w-full">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
