@@ -149,6 +149,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       ).data?.user || null;
 
     props.user = user;
+    console.log({ user, company: user.company });
 
     const res = await Promise.all([
       handleInvalidTokenServerSide(
