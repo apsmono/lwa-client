@@ -37,20 +37,19 @@ function ResetPasswordPage(props: IResetPasswordPageProps) {
     register,
     handleSubmit,
   } = useForm({ resolver: yupResolver(schema) });
-  const { showErrorAlert } = useAlert();
+  const { showErrorAlert, showSuccessAlert } = useAlert();
 
   const formAttribute = (label: string, name: string, id: string) => {
     return getFormAttribute(label, name, id, register, errors);
   };
 
   const onSubmit = async (val: any) => {
-    return;
     try {
       setLoading(true);
-      await AuthService.forgotPassword(val.email);
+      await AuthService.resetPassword({ password: val.password, token });
       setLoading(false);
-
-      router.push("/auth/forgot-password-success");
+      showSuccessAlert("Success reset password");
+      router.push("/auth/sign-in");
     } catch (error) {
       setLoading(false);
       showErrorAlert(parseErrorMessage(error));

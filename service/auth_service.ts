@@ -31,6 +31,14 @@ export class AuthService {
     );
   }
 
+  static async resetPassword(payload: any) {
+    return sendAndHandleRequest(
+      "/authentications/reset-password",
+      "post",
+      payload
+    );
+  }
+
   static async logout(refreshToken: string) {
     return sendAndHandleRequest("/authentications", "delete", {
       refresh_token: refreshToken,
