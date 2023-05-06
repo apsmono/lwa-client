@@ -4,6 +4,8 @@ export type Job = {
   apply_link: string;
   category_id: number;
   package_id: number;
+  job_industry_id?: number;
+  industry_name?: string;
   skill: string;
   employment_type: string;
   employment_type_id: number;
@@ -29,4 +31,6 @@ export type Job = {
   click_counts: number;
   price: number;
   post_ended_at?: string;
+  company_size?: string;
+  company_size_id?: number;
 };

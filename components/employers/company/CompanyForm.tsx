@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
 import { TextAreaField, TextField } from "components/common";
-import { Dropzone } from "components/common/forms";
+import { Dropzone, Select } from "components/common/forms";
 import {
   DropzoneRefType,
   DropzoneValue,
@@ -16,11 +16,13 @@ import { useForm } from "react-hook-form";
 import { Company } from "service/types";
 import { getFormAttribute, purgeInitialFormData } from "utils/form";
 import { BASE_BLANK_FORM, schema } from "./constants";
+import { CompanySize } from "service/types/company_type";
 
 interface CompanyFormProps {
   defaultValue: Partial<Company>;
   onLogoDrop: (file: File) => void;
   className: string;
+  companySizes: CompanySize[];
 }
 
 export interface CompanyFormRef {
@@ -30,7 +32,12 @@ export interface CompanyFormRef {
 
 const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
   (props, ref) => {
-    const { defaultValue = {}, onLogoDrop, className } = props;
+    const {
+      defaultValue = {},
+      onLogoDrop,
+      className,
+      companySizes = [],
+    } = props;
 
     const [initialValue] = useState(() => {
       return purgeInitialFormData(defaultValue, BASE_BLANK_FORM);
@@ -43,16 +50,24 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
       getValues,
       handleSubmit,
       setError,
+      setValue,
     } = useForm({
       defaultValues: initialValue,
       resolver: yupResolver(schema),
     });
+    const [selectedCompanySize, setSelectedCompanySize] = useState<CompanySize>(
+      () => {
+        return companySizes.filter(
+          (item) => item.id === defaultValue.company_size_id
+        )[0];
+      }
+    );
 
     const getFieldAttribute = (
       label: string,
       name: string,
       id: string,
-      placeholder: string
+      placeholder?: string
     ) => {
       return {
         ...getFormAttribute(label, name, id, register, errors, initialValue),
@@ -125,6 +140,21 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
             "Type here"
           )}
           labelDescription="Where your company is officialy headquartered"
+        />
+
+        <Select
+          options={companySizes}
+          renderOption={(opt) => opt.size}
+          {...getFieldAttribute(
+            "Company Size",
+            "company_size_id",
+            "company_size_id",
+            undefined
+          )}
+          getInputValue={(val: any) => val?.id || ""}
+          setFormValue={setValue}
+          defaultValue={selectedCompanySize}
+          onChange={(val) => setSelectedCompanySize(val)}
         />
 
         <Dropzone

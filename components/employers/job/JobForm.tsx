@@ -14,11 +14,13 @@ import {
   Category,
   EmploymentType,
   Job,
+  JobIndustry,
   LanguageType,
   LocationType,
 } from "service/types";
 import { getFormAttribute, purgeInitialFormData } from "utils/form";
 import { BASE_BLANK_FORM, schema } from "./constants";
+import { CompanySize } from "service/types/company_type";
 
 interface JobFormProps {
   categories: Category[];
@@ -29,6 +31,7 @@ interface JobFormProps {
   className: string;
   onSubmit?: (val: any) => void;
   showSubmit: boolean;
+  jobIndustries: JobIndustry[];
 }
 
 export interface JobFormRef {
@@ -45,6 +48,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     className,
     onSubmit = (val) => console.log(val),
     showSubmit = true,
+    jobIndustries = [],
   } = props;
 
   const [initialValue] = useState(() =>
@@ -55,24 +59,22 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     initialValue?.is_worldwide || undefined
   );
 
-  const [selectedCategory, setSelectedCategory] = useState<
-    Category | undefined
-  >(() => {
-    if (defaultValue.category_id)
-      return categories.filter(
-        (item) => item.id === defaultValue.category_id
-      )[0];
-    return undefined;
+  const [selectedCategory, setSelectedCategory] = useState<Category>(() => {
+    return categories.filter((item) => item.id === defaultValue.category_id)[0];
   });
-  const [selectedEmploymentType, setSelectedEmploymentType] = useState<
-    EmploymentType | undefined
-  >(() => {
-    if (defaultValue.employment_type_id)
+  const [selectedEmploymentType, setSelectedEmploymentType] =
+    useState<EmploymentType>(() => {
       return employmentTypes.filter(
         (item) => item.id === defaultValue.employment_type_id
       )[0];
-    return undefined;
-  });
+    });
+  const [selectedJobIndustry, setSelectedJobIndustry] = useState<JobIndustry>(
+    () => {
+      return jobIndustries.filter(
+        (item) => item.id === defaultValue.job_industry_id
+      )[0];
+    }
+  );
   const [selectedLocation, setSelectedLocation] = useState<LocationType>();
 
   const {
@@ -108,6 +110,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           category_name: selectedCategory?.name || "",
           location: isWorldwide ? "Worldwide" : selectedLocation?.name || "",
           employment_type: selectedEmploymentType?.name || "",
+          industry_name: selectedJobIndustry?.name || "",
         };
         if (!job.salary) {
           job.salary = 0;
@@ -126,12 +129,14 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
       selectedCategory?.name,
       selectedEmploymentType?.name,
       selectedLocation?.name,
+      selectedJobIndustry,
     ]
   );
 
   const submitForm = (val: any) => {
     delete val.language_id;
     delete val.timezone;
+    if (!val.location_id) delete val.location_id;
     onSubmit(val);
   };
 
@@ -166,6 +171,20 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           onChange={(val) => setSelectedCategory(val)}
           getInputValue={(val: any) => val?.id || ""}
           setFormValue={setValue}
+        />
+
+        <Select
+          options={jobIndustries}
+          renderOption={(opt) => opt.name}
+          {...getFieldAttribute(
+            "Job Industry",
+            "job_industry_id",
+            "job_industry_id"
+          )}
+          getInputValue={(val: any) => val?.id || ""}
+          setFormValue={setValue}
+          defaultValue={selectedJobIndustry}
+          onChange={(val) => setSelectedJobIndustry(val)}
         />
 
         <Select
@@ -236,11 +255,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           labelDescription="You can always edit after posting your job"
         />
       </div>
-      {showSubmit && (
-        <Button type="submit" variant="secondary">
-          Submit
-        </Button>
-      )}
+      {showSubmit && <Button type="submit">Submit</Button>}
     </form>
   );
 });

@@ -5,7 +5,6 @@ import {
   ConfirmationModal,
   Modal,
   MyPopOver,
-  Select,
   TextField,
 } from "components/common";
 import { PageTitle } from "components/common/dashboard";
@@ -20,9 +19,16 @@ import { MoreHorizontal } from "react-feather";
 import { AuthService } from "service/auth_service";
 import CompanyService from "service/company_service";
 import EmploymentTypeService from "service/employment_type_service";
+import JobIndustryService from "service/job_industry_service";
 import JobService from "service/job_service";
 import LocationService from "service/location_service";
-import { EmploymentType, Job, LocationType, User } from "service/types";
+import {
+  EmploymentType,
+  Job,
+  JobIndustry,
+  LocationType,
+  User,
+} from "service/types";
 import useAppStore from "store/useAppStore";
 import { parseErrorMessage } from "utils/api";
 import { dateFormat } from "utils/date";
@@ -35,10 +41,17 @@ interface IManageListingPageProps {
   pagination: { totalItems: number; page: string };
   locations: LocationType[];
   employmentTypes: EmploymentType[];
+  jobIndustries: JobIndustry[];
 }
 
 function ManageListingPage(props: IManageListingPageProps) {
-  const { user, jobs: defaultJobs, employmentTypes, locations } = props;
+  const {
+    user,
+    jobs: defaultJobs,
+    employmentTypes,
+    locations,
+    jobIndustries,
+  } = props;
   const [refetch, setRefetch] = useState(false);
   const [status, setStatus] = useState<any>({ val: "", label: "All" });
 
@@ -300,6 +313,7 @@ function ManageListingPage(props: IManageListingPageProps) {
           locations={locations}
           categories={categories}
           onSubmit={onJobsUpdate}
+          jobIndustries={jobIndustries}
           defaultValue={currentJob}
         />
       </Modal>
@@ -314,9 +328,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await Promise.all([
     EmploymentTypeService.gets(),
     LocationService.gets(),
+    JobIndustryService.gets(),
   ]);
   props.employmentTypes = res[0].data;
   props.locations = res[1].data;
+  props.jobIndustries = res[2].data;
 
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;

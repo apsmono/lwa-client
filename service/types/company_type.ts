@@ -1,5 +1,10 @@
 import { Job } from "./job_type";
 
+export type CompanySize = {
+  id: number;
+  size: string;
+};
+
 export type Company = {
   id: number;
   company_headquarter: string;
@@ -9,5 +14,7 @@ export type Company = {
   company_logo: string;
   company_about: string;
   company_offer?: string;
+  company_size_id?: number;
+  company_size?: string;
   jobs: Job[];
 };

@@ -50,7 +50,7 @@ function JobPreview(props: IJobPreviewProps) {
       </div>
       <div className="flex justify-between">
         <Button onClick={onBack}>Back</Button>
-        <Button onClick={onSubmit}>Confirm & Pay</Button>
+        <Button onClick={onSubmit}>Checkout</Button>
       </div>
     </div>
   );

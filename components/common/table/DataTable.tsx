@@ -83,7 +83,6 @@ function DataTable(props: Partial<DataTablePropsInterface>) {
         if (!active) return;
         const { data, page } = response;
         setData(data ?? []);
-        console.log({ page, response, params });
         setPageData(page);
       } catch (error) {
         console.log(error);

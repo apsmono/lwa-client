@@ -39,13 +39,14 @@ function JobDisplay(props: Partial<JobDisplayProps>) {
         <div className="min-w-[140px]">
           <Button
             filled={false}
-            className="md:w-auto w-full bg-primary-800 hover:bg-primary-900"
+            className="bg-primary-800 hover:bg-primary-900"
+            block
           >
             Apply
           </Button>
         </div>
       </div>
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4 flex-wrap">
         <Feature
           className="border border-primary-500"
           icon={<Typography>🌏</Typography>}

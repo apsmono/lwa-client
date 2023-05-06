@@ -18,6 +18,7 @@ import PaymentService from "service/payment_service";
 import {
   EmploymentType,
   Job,
+  JobIndustry,
   LocationType,
   Package,
   User,
@@ -26,17 +27,30 @@ import useAppStore from "store/useAppStore";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
 import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
+import JobIndustryService from "service/job_industry_service";
+import { CompanySize } from "service/types/company_type";
+import CompanySizeService from "service/company_size_service";
 
 interface IPostJobPageProps {
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   packages: Package[];
+  jobIndustries: JobIndustry[];
   user: User;
+  companySizes: CompanySize[];
   clientToken: string;
 }
 
 function PostJobPage(props: IPostJobPageProps) {
-  const { employmentTypes, locations, clientToken, packages, user } = props;
+  const {
+    employmentTypes,
+    locations,
+    clientToken,
+    packages,
+    user,
+    jobIndustries = [],
+    companySizes,
+  } = props;
   const { categories } = useAppStore();
   const [defaultValue] = useState((): Partial<Job> => {
     const { company } = user;
@@ -75,6 +89,7 @@ function PostJobPage(props: IPostJobPageProps) {
     <EmployersLayout title="Post a Job" employers={user}>
       <PageTitle>Post a Job</PageTitle>
       <CreateJobWizard
+        jobIndustries={jobIndustries}
         clientToken={clientToken}
         ref={formWizardRef}
         onSubmit={handleSubmit}
@@ -83,6 +98,7 @@ function PostJobPage(props: IPostJobPageProps) {
         categories={categories}
         defaultValue={defaultValue}
         employmentTypes={employmentTypes}
+        companySizes={companySizes}
       />
     </EmployersLayout>
   );
@@ -96,10 +112,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     LocationService.gets(),
     EmploymentTypeService.gets(),
     PackageService.gets(),
+    JobIndustryService.gets(),
+    CompanySizeService.gets(),
   ]);
   props.locations = res[0].data;
   props.employmentTypes = res[1].data;
   props.packages = res[2].data;
+  props.jobIndustries = res[3].data;
+  props.companySizes = res[4].data;
 
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;

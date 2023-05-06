@@ -9,6 +9,7 @@ import {
   Category,
   EmploymentType,
   Job,
+  JobIndustry,
   LocationType,
   Package,
 } from "service/types";
@@ -18,6 +19,7 @@ import { TSubmitPaymentRef } from "../payment/SubmitPayment";
 import PaymentPage from "../PaymentPage";
 import useJobStore from "../store/useJobStore";
 import JobWizardStep from "./JobWizardStep";
+import { CompanySize } from "service/types/company_type";
 
 export type TCreateJobWizardRef = {
   setWizardStep: (step: number) => void;
@@ -35,6 +37,8 @@ interface ICreateJobWizardProps {
   defaultValue?: Partial<Job>;
   onContinueToPayment?: (val: Partial<Job>) => void;
   showStep?: boolean;
+  jobIndustries: JobIndustry[];
+  companySizes: CompanySize[];
 }
 
 const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
@@ -51,6 +55,8 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
       onContinueToPayment,
       clientToken,
       showStep,
+      jobIndustries,
+      companySizes,
     } = props;
 
     const [step, setStep] = useState(initialStep);
@@ -103,7 +109,9 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
             employmentTypes={employmentTypes}
             languages={[]}
             locations={locations}
+            jobIndustries={jobIndustries}
             key={company_name}
+            companySizes={companySizes}
             onSubmit={(val) => {
               if (onContinueToPayment) {
                 onContinueToPayment(val);

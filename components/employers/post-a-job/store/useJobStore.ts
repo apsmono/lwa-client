@@ -35,6 +35,10 @@ const initialState = {
   location_id: 0,
   order_id: "",
   click_counts: 0,
+  job_industry_id: undefined,
+  industry_name: "",
+  company_size: undefined,
+  company_size_id: undefined,
 };
 
 const useJobStore = create<JobState>((set) => {

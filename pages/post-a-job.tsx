@@ -1,5 +1,3 @@
-import clsx from "clsx";
-import { Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React, { useRef, useState } from "react";
@@ -13,6 +11,7 @@ import {
   Package,
   User,
   Job,
+  JobIndustry,
 } from "service/types";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { CreateJobWizard } from "components/employers/post-a-job";
@@ -26,15 +25,20 @@ import { getCookie, hasCookie, removeCookies, setCookie } from "cookies-next";
 import usePaymentStore from "components/employers/post-a-job/payment/store/usePaymentStore";
 import useAppStore from "store/useAppStore";
 import { ROUTE_POST_SUCCESS } from "config/routes";
+import JobIndustryService from "service/job_industry_service";
+import { CompanySize } from "service/types/company_type";
+import CompanySizeService from "service/company_size_service";
 
 interface PostJobPageProps {
   locations: LocationType[];
   employmentTypes: EmploymentType[];
+  jobIndustries: JobIndustry[];
   packages: Package[];
   user?: User;
   currentStep?: string;
   defaultValue?: Partial<Job>;
   clientToken: string;
+  companySizes: CompanySize[];
 }
 
 function PostJobPage(props: PostJobPageProps) {
@@ -47,6 +51,8 @@ function PostJobPage(props: PostJobPageProps) {
     packages,
     employmentTypes,
     clientToken,
+    jobIndustries = [],
+    companySizes,
   } = props;
   const [step] = useState(currentStep === "PAYMENT" ? 2 : 1);
 
@@ -156,6 +162,8 @@ function PostJobPage(props: PostJobPageProps) {
           defaultValue={defaultValue}
           employmentTypes={employmentTypes}
           clientToken={clientToken}
+          jobIndustries={jobIndustries}
+          companySizes={companySizes}
           showStep
         />
       </div>
@@ -171,10 +179,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     LocationService.gets(),
     EmploymentTypeService.gets(),
     PackageService.gets(),
+    JobIndustryService.gets(),
+    CompanySizeService.gets(),
   ]);
   props.locations = res[0].data;
   props.employmentTypes = res[1].data;
   props.packages = res[2].data;
+  props.jobIndustries = res[3].data;
+  props.companySizes = res[4].data;
 
   if (!hasCookie("paypalClientToken", context)) {
     const { data } = await PaymentService.getClientToken();

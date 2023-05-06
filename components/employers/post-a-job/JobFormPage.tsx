@@ -1,11 +1,12 @@
 import { Button, Typography } from "components/common";
 import { AppContext } from "context/appContext";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useMemo, useRef } from "react";
 import CompanyService from "service/company_service";
 import {
   Category,
   EmploymentType,
   Job,
+  JobIndustry,
   LanguageType,
   LocationType,
   Package,
@@ -17,6 +18,7 @@ import { CompanyFormRef } from "../company/CompanyForm";
 import { JobForm } from "../job";
 import { JobFormRef } from "../job/JobForm";
 import useJobStore from "./store/useJobStore";
+import { CompanySize } from "service/types/company_type";
 
 interface JobFormPageProps {
   locations: LocationType[];
@@ -24,6 +26,8 @@ interface JobFormPageProps {
   languages: LanguageType[];
   categories: Category[];
   onSubmit?: (val: Partial<Job>) => void;
+  jobIndustries: JobIndustry[];
+  companySizes: CompanySize[];
 }
 
 function JobFormPage(props: JobFormPageProps) {
@@ -33,7 +37,17 @@ function JobFormPage(props: JobFormPageProps) {
     languages,
     locations,
     onSubmit = (val) => {},
+    jobIndustries,
+    companySizes,
   } = props;
+
+  const industries = useMemo(() => {
+    const copy = [...jobIndustries];
+    const other = copy.filter((c) => c.name === "Other")[0];
+    const copyWithoutOther = copy.filter((c) => c.name !== "Other");
+    if (other) copyWithoutOther.push(other);
+    return copyWithoutOther;
+  }, [jobIndustries]);
 
   const {
     company_name,
@@ -53,7 +67,9 @@ function JobFormPage(props: JobFormPageProps) {
     category_id,
     skill,
     employment_type_id,
+    job_industry_id,
     location_id,
+    company_size_id,
   } = useJobStore();
 
   const jobFormRef = useRef<JobFormRef>(null);
@@ -108,6 +124,7 @@ function JobFormPage(props: JobFormPageProps) {
             categories={categories}
             ref={jobFormRef}
             showSubmit={false}
+            jobIndustries={industries}
             defaultValue={{
               apply_link,
               category_id,
@@ -118,6 +135,7 @@ function JobFormPage(props: JobFormPageProps) {
               title,
               employment_type_id,
               description,
+              job_industry_id,
             }}
           />
 
@@ -127,6 +145,7 @@ function JobFormPage(props: JobFormPageProps) {
           <CompanyForm
             ref={companyFormRef}
             key={company_id}
+            companySizes={companySizes}
             defaultValue={{
               company_name,
               company_headquarter,
@@ -135,12 +154,13 @@ function JobFormPage(props: JobFormPageProps) {
               company_about,
               company_url,
               company_logo,
+              company_size_id,
             }}
             onLogoDrop={handleCompanyLogoDrop}
           />
 
           <div className="flex justify-end">
-            <Button onClick={handleContinueToPayment}>Next to preview</Button>
+            <Button onClick={handleContinueToPayment}>Preview</Button>
           </div>
         </div>
       </div>

@@ -67,6 +67,8 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
       employment_type_id,
       location_id,
       company_logo,
+      company_size_id,
+      job_industry_id,
     } = useJobStore();
 
     const validateAccountForm = React.useCallback(() => {
@@ -130,7 +132,10 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
         if (!is_worldwide) {
           job.location_id = location_id;
         }
-        const company = {
+        if (job_industry_id) {
+          job.job_industry_id = job_industry_id;
+        }
+        const company: any = {
           company_name,
           company_headquarter,
           company_url,
@@ -139,6 +144,9 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
           company_offer,
           company_logo,
         };
+        if (company_size_id) {
+          company.company_size_id = company_size_id;
+        }
         onSubmit({ ...job, ...company, order_id });
       },
       [
@@ -159,6 +167,8 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
         salary,
         skill,
         title,
+        company_size_id,
+        job_industry_id,
       ]
     );
     return (

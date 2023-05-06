@@ -47,6 +47,13 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
             icon="📧"
             title={company.company_email}
           />
+          {company.company_size ? (
+            <Feature
+              className="border border-primary-500"
+              icon="👩"
+              title={`${company.company_size} employees`}
+            />
+          ) : null}
           <Feature
             className="border border-primary-500"
             icon="📍"
