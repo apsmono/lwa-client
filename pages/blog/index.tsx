@@ -79,9 +79,7 @@ function BlogPage(props: IBlogPageProps) {
 
         {totalItems > blogs.length && (
           <div className="flex justify-center">
-            <Button onClick={handleShowMoreJobs} variant="black">
-              View More
-            </Button>
+            <Button onClick={handleShowMoreJobs}>View More</Button>
           </div>
         )}
       </div>

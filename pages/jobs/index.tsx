@@ -16,10 +16,19 @@ import React, {
   useState,
 } from "react";
 import CategoryService from "service/category_service";
+import CompanySizeService from "service/company_size_service";
 import EmploymentTypeService from "service/employment_type_service";
+import JobIndustryService from "service/job_industry_service";
 import JobService from "service/job_service";
 import LocationService from "service/location_service";
-import { Category, EmploymentType, Job, LocationType } from "service/types";
+import {
+  Category,
+  EmploymentType,
+  Job,
+  JobIndustry,
+  LocationType,
+} from "service/types";
+import { CompanySize } from "service/types/company_type";
 import useAppStore from "store/useAppStore";
 
 interface JobListPageProps {
@@ -28,6 +37,8 @@ interface JobListPageProps {
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   jobTitle?: string;
+  jobIndustries: JobIndustry[];
+  companySizes: CompanySize[];
 }
 
 function JobListPage(props: JobListPageProps) {
@@ -37,6 +48,8 @@ function JobListPage(props: JobListPageProps) {
     employmentTypes,
     locations,
     jobTitle: userJobTitle,
+    jobIndustries = [],
+    companySizes = [],
   } = props;
   const router = useRouter();
   const { categories } = useAppStore();
@@ -48,6 +61,8 @@ function JobListPage(props: JobListPageProps) {
   const [jobList, setJobList] = useState(jobs);
   const [salary, setSalary] = useState<any>(null);
   const [jobTitle, setJobTitle] = useState(userJobTitle);
+  const [cpSize, setCpSize] = useState<CompanySize[]>();
+  const [selectedIndustries, setSelectedIndustries] = useState<JobIndustry[]>();
   const salaries = useMemo(() => {
     return [
       {
@@ -75,6 +90,14 @@ function JobListPage(props: JobListPageProps) {
       { label: ">$200k", start: 200000 },
     ];
   }, []);
+
+  const industries = useMemo(() => {
+    const copy = [...jobIndustries];
+    const other = copy.filter((c) => c.name === "Other")[0];
+    const copyWithoutOther = copy.filter((c) => c.name !== "Other");
+    if (other) copyWithoutOther.push(other);
+    return copyWithoutOther;
+  }, [jobIndustries]);
   const handleClick = (job: Job) => {
     router.push(`/jobs/${job.id}`);
   };
@@ -95,6 +118,14 @@ function JobListPage(props: JobListPageProps) {
     const categoryIds = [];
     if (employmentType.length) {
       params.employment_type_id = employmentType.map((l) => l.id);
+    }
+    if (cpSize) {
+      if (cpSize.length) params.company_size_id = cpSize.map((cp) => cp.id);
+    }
+    if (selectedIndustries) {
+      if (selectedIndustries.length) {
+        params.job_industry_id = selectedIndustries.map((i) => i.id);
+      }
     }
     if (location.length) params.location_id = location.map((l) => l.id);
     if (categoriesList.length)
@@ -132,6 +163,8 @@ function JobListPage(props: JobListPageProps) {
     datePosted,
     categoriesList,
     salary,
+    cpSize,
+    selectedIndustries,
   ]);
 
   useEffect(() => {
@@ -140,7 +173,7 @@ function JobListPage(props: JobListPageProps) {
       setJobList(res);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [employmentType, location, sorting, datePosted, categoriesList, salary]);
+  }, [fetchJobs]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -154,6 +187,9 @@ function JobListPage(props: JobListPageProps) {
   const salaryListRef = useRef<TAdvanceSelectRef>(null);
   const datePostedRef = useRef<TAdvanceSelectRef>(null);
   const sortingRef = useRef<TAdvanceSelectRef>(null);
+  const cpSizeRef = useRef<TAdvanceSelectRef>(null);
+  const jobIndustryRef = useRef<TAdvanceSelectRef>(null);
+
   const handleResetClick = () => {
     employmentTypeRef.current?.removeValue();
     locationRef.current?.removeValue();
@@ -161,6 +197,8 @@ function JobListPage(props: JobListPageProps) {
     salaryListRef.current?.removeValue();
     datePostedRef.current?.removeValue();
     sortingRef.current?.removeValue();
+    cpSizeRef.current?.removeValue();
+    jobIndustryRef.current?.removeValue();
     setDatePosted(null);
     setSorting(null);
   };
@@ -249,6 +287,28 @@ function JobListPage(props: JobListPageProps) {
             className="md:w-auto min-w-[12rem]"
             showAction
             multiple
+            label="Industry"
+            options={industries}
+            renderOption={(val) => val?.name}
+            onChange={(val) => setSelectedIndustries(val)}
+            getOptionValue={(val) => val?.id}
+            ref={jobIndustryRef}
+          />
+          <AdvanceSelect
+            className="md:w-auto min-w-[12rem]"
+            showAction
+            multiple
+            label="Company Size"
+            options={companySizes}
+            renderOption={(val) => val?.size}
+            onChange={(val) => setCpSize(val)}
+            getOptionValue={(val) => val?.id}
+            ref={cpSizeRef}
+          />
+          <AdvanceSelect
+            className="md:w-auto min-w-[12rem]"
+            showAction
+            multiple
             label="Category"
             options={[...categories]}
             renderOption={(val) => val?.name}
@@ -297,6 +357,30 @@ function JobListPage(props: JobListPageProps) {
                 <Typography variant="small">{l.name}</Typography>
               </Chip>
             ))}
+            {selectedIndustries
+              ? selectedIndustries.map((si, i) => (
+                  <Chip
+                    key={si.id}
+                    onClose={() => {
+                      jobIndustryRef.current!.removeValue(i);
+                    }}
+                  >
+                    <Typography variant="small">{si.name}</Typography>
+                  </Chip>
+                ))
+              : null}
+            {cpSize
+              ? cpSize.map((cp, i) => (
+                  <Chip
+                    key={cp.id}
+                    onClose={() => {
+                      cpSizeRef.current!.removeValue(i);
+                    }}
+                  >
+                    <Typography variant="small">{cp.size}</Typography>
+                  </Chip>
+                ))
+              : null}
             {categoriesList.map((l, i) => (
               <Chip
                 key={l.id}
@@ -347,10 +431,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     JobService.gets(jobParams),
     EmploymentTypeService.gets(),
     LocationService.gets(),
+    JobIndustryService.gets(),
+    CompanySizeService.gets(),
   ]);
   props.jobs = res[0].data;
   props.employmentTypes = res[1].data;
   props.locations = res[2].data;
+  props.jobIndustries = res[3].data;
+  props.companySizes = res[4].data;
   if (title) props.jobTitle = title;
 
   return {
