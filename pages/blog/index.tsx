@@ -51,7 +51,7 @@ function BlogPage(props: IBlogPageProps) {
                 <img
                   src={`${process.env.NEXT_PUBLIC_API_URL}${item.thumbnail}`}
                   alt=""
-                  className="rounded-t-lg mb-2"
+                  className="rounded-t-xl mb-2"
                 />
               </picture>
               <Link href={`/blog/${item.slug}`}>

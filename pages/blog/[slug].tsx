@@ -46,7 +46,7 @@ function BlogDetailPage(props: IBlogDetailPageProps) {
           <img
             src={`${process.env.NEXT_PUBLIC_API_URL}${blog.thumbnail}`}
             alt=""
-            className="w-full my-6"
+            className="w-full rounded-xl my-6"
           />
         </picture>
 
