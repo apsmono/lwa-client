@@ -111,6 +111,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
             locations={locations}
             jobIndustries={jobIndustries}
             key={company_name}
+            packages={packages}
             companySizes={companySizes}
             onSubmit={(val) => {
               if (onContinueToPayment) {
@@ -129,7 +130,6 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
             clientToken={clientToken}
             onSubmit={onSubmit}
             ref={paymentPageRef}
-            packages={packages}
             onBack={() => setStep(2)}
           />
         ) : null}

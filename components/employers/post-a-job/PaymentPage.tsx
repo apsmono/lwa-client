@@ -21,20 +21,18 @@ import useJobStore from "./store/useJobStore";
 import PaypalPaymentForm from "./payment/PaypalPaymentForm";
 import { TPaypalPaymmentButtonOnClick } from "./payment/PaypalPaymentButton";
 import SubmitPayment, { TSubmitPaymentRef } from "./payment/SubmitPayment";
-import PackageList from "./PackageList";
 import { getCookie } from "cookies-next";
 import PaymentService from "service/payment_service";
 
 interface PaymentPageProps {
   clientToken: string;
   onSubmit: (val: Partial<Job>) => void;
-  packages: Package[];
   onBack?: () => void;
 }
 
 const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
   (props, ref) => {
-    const { onSubmit, clientToken, packages, onBack } = props;
+    const { onSubmit, clientToken, onBack } = props;
 
     const submitPaymentRef = useRef<TSubmitPaymentRef>(null);
     const accountFormSectionRef = useRef<TAccountFormSectionRef>(null);
@@ -201,12 +199,6 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
             }}
           >
             <div className="grid grid-cols-1 gap-6 mt-4">
-              <div className="flex flex-col gap-4">
-                <Typography variant="h4" className="font-bold mb-4">
-                  Gain more visibility
-                </Typography>
-                <PackageList packages={packages} />
-              </div>
               <Typography className="font-bold" variant="h4">
                 Want to post more than 10+ jobs?{" "}
                 <a href="mailto:youremail@test.com">Contact us</a> for

@@ -19,6 +19,7 @@ import { JobForm } from "../job";
 import { JobFormRef } from "../job/JobForm";
 import useJobStore from "./store/useJobStore";
 import { CompanySize } from "service/types/company_type";
+import PackageList from "./PackageList";
 
 interface JobFormPageProps {
   locations: LocationType[];
@@ -28,6 +29,7 @@ interface JobFormPageProps {
   onSubmit?: (val: Partial<Job>) => void;
   jobIndustries: JobIndustry[];
   companySizes: CompanySize[];
+  packages: Package[];
 }
 
 function JobFormPage(props: JobFormPageProps) {
@@ -39,6 +41,7 @@ function JobFormPage(props: JobFormPageProps) {
     onSubmit = (val) => {},
     jobIndustries,
     companySizes,
+    packages,
   } = props;
 
   const industries = useMemo(() => {
@@ -114,8 +117,17 @@ function JobFormPage(props: JobFormPageProps) {
     <>
       <div className="grid grid-cols-1 gap:6 lg:gap-12 mt-4 mb-48">
         <div className="flex flex-col gap-4">
-          <Typography variant="h4" className="font-bold mt-8">
-            Tell us about your Job
+          <Typography
+            variant="h4"
+            className="font-bold mb-4 capitalize text-center"
+          >
+            Gain more visibility
+          </Typography>
+          <PackageList packages={packages} />
+        </div>
+        <div className="flex flex-col gap-4">
+          <Typography variant="h4" className="font-bold mt-8 text-center">
+            Tell us About Your Job
           </Typography>
           <JobForm
             locations={locations}
@@ -140,7 +152,7 @@ function JobFormPage(props: JobFormPageProps) {
           />
 
           <Typography variant="h4" className="font-bold mt-8">
-            Tell us about your Company
+            Tell us About Your Company
           </Typography>
           <CompanyForm
             ref={companyFormRef}
