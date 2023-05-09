@@ -1,3 +1,4 @@
 import JobSnippet from "./JobSnippet";
+import JobFilter from "./job-filter/JobFilter";
 
-export { JobSnippet };
+export { JobSnippet, JobFilter };

@@ -29,6 +29,7 @@ function Checkbox(props: Partial<CheckboxProps>) {
     checkboxSize = "md",
     defaultChecked,
     variant = "primary",
+    readOnly,
   } = props;
   const registerAttr = register ? register(props.name ?? "") : {};
 
@@ -59,6 +60,7 @@ function Checkbox(props: Partial<CheckboxProps>) {
             onClick(value);
           }}
           defaultChecked={defaultChecked}
+          readOnly={readOnly}
         />
         <InputLabel htmlFor={id} error={error} className="ml-2 mb-0">
           {label}

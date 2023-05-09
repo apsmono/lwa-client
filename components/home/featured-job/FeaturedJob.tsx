@@ -64,11 +64,6 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
             <ArrowRight />
           </button>
         </div>
-        <button>
-          <Typography variant="h5" className="underline">
-            View More
-          </Typography>
-        </button>
       </div>
       <div className="relative pl-6 lg:pl-24 overflow-hidden">
         <div

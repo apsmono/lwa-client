@@ -4,6 +4,7 @@ import AdvanceSelect, {
 } from "components/common/forms/AdvanceSelect";
 import { Subscribe } from "components/home";
 import JobCard from "components/home/job/JobCard";
+import { JobFilter } from "components/jobs";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -233,7 +234,7 @@ function JobListPage(props: JobListPageProps) {
           />
         </form>
         <div className="flex gap-x-4 flex-wrap items-center">
-          <AdvanceSelect
+          <JobFilter
             ref={sortingRef}
             label="Sort by"
             options={[
@@ -246,7 +247,7 @@ function JobListPage(props: JobListPageProps) {
             onChange={(val) => setSorting(val)}
             getOptionValue={(val) => val?.val}
           />
-          <AdvanceSelect
+          <JobFilter
             ref={datePostedRef}
             label="Date posted"
             options={[
@@ -261,7 +262,7 @@ function JobListPage(props: JobListPageProps) {
             onChange={(val) => setDatePosted(val)}
             getOptionValue={(val) => val?.val}
           />
-          <AdvanceSelect
+          <JobFilter
             label="Job Type"
             options={employmentTypes}
             renderOption={(val) => val?.name}
@@ -272,7 +273,7 @@ function JobListPage(props: JobListPageProps) {
             className="md:w-auto min-w-[12rem]"
             showAction
           />
-          <AdvanceSelect
+          <JobFilter
             className="md:w-auto min-w-[12rem]"
             showAction
             multiple
@@ -283,7 +284,7 @@ function JobListPage(props: JobListPageProps) {
             getOptionValue={(val) => val?.id}
             ref={locationRef}
           />
-          <AdvanceSelect
+          <JobFilter
             className="md:w-auto min-w-[12rem]"
             showAction
             multiple
@@ -294,7 +295,7 @@ function JobListPage(props: JobListPageProps) {
             getOptionValue={(val) => val?.id}
             ref={jobIndustryRef}
           />
-          <AdvanceSelect
+          <JobFilter
             className="md:w-auto min-w-[12rem]"
             showAction
             multiple
@@ -305,7 +306,7 @@ function JobListPage(props: JobListPageProps) {
             getOptionValue={(val) => val?.id}
             ref={cpSizeRef}
           />
-          <AdvanceSelect
+          <JobFilter
             className="md:w-auto min-w-[12rem]"
             showAction
             multiple
@@ -316,7 +317,7 @@ function JobListPage(props: JobListPageProps) {
             onChange={(val) => setCategoriesList(val)}
             getOptionValue={(val) => val?.id}
           />
-          <AdvanceSelect
+          <JobFilter
             className="md:w-auto min-w-[12rem]"
             showAction
             label="Salary"

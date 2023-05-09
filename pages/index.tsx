@@ -55,26 +55,21 @@ function Home(props: HomePropsInterface) {
           </Typography>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex w-full gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex w-full">
           <TextField
-            containerProps={{ className: "flex-1" }}
+            containerProps={{ className: "w-full" }}
             inputSuffix={<button type="button">🔍</button>}
             placeholder="Search..."
             register={register}
             name="title"
             rounded
           />
-          <div>
-            <Button type="submit" size="md">
-              Submit
-            </Button>
-          </div>
         </form>
       </div>
       <div className="mb-6">
         <FeaturedJob jobs={featuredJobs} />
       </div>
-      <div className="md:px-6 p-6 max-w-7xl mx-auto">
+      <div className="md:px-6 p-6 max-w-5xl mx-auto">
         <Jobs categories={categories} jobs={jobs} totalItems={totalJobs} />
       </div>
     </GuestLayout>
