@@ -107,13 +107,15 @@ function Anaytics(props: IPurchaseHistoryProps) {
         <div className="flex flex-col gap-2">
           <Typography>Need to post more than 10+ jobs?</Typography>
           <Typography>
-            Contact us to get our <strong>Bundle</strong> prices 🌈
+            Contact us at{" "}
+            <a
+              className="text-blue-500 underline"
+              href="mailto:contact@letsworkanywhere.com"
+            >
+              contact@letsworkanywhere.com
+            </a>{" "}
+            to get our bundle prices
           </Typography>
-          <div className="mt-4">
-            <Button size="md" className="min-w-[12rem]">
-              Contact Us
-            </Button>
-          </div>
         </div>
       </div>
 
