@@ -72,6 +72,19 @@ function GuestFooter(props: GuestFooterProps) {
               <Image src="/linkedin.png" fill alt="Linkedin" />
             </div>
           </IconButton>
+          <IconButton
+            contained
+            color="primary"
+            onClick={() => {
+              if (window) {
+                window.open("http://discord.gg/nqCm5Rbagb");
+              }
+            }}
+          >
+            <div className="relative w-[24px] h-[24px]">
+              <Image src="/discord.png" fill alt="Discord" />
+            </div>
+          </IconButton>
         </div>
       </div>
       <FooterList
