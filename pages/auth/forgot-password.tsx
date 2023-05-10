@@ -50,8 +50,9 @@ function ForgotPasswordPage(props: ForgotPasswordPageProps) {
           RESET PASSWORD
         </p>
         <Typography className="text-center mb-8">
-          Enter the email with your account we’il send an email with <br />
-          instructions to reset your password
+          Enter the email address associated with your account and click send.
+          <br /> An email with instructions to reset your password will be sent
+          to your inbox
         </Typography>
 
         <div className="relative">
@@ -66,7 +67,7 @@ function ForgotPasswordPage(props: ForgotPasswordPageProps) {
             <div className="flex flex-col items-center gap-2">
               <div className="w-full max-w-xl px-4">
                 <Button size="md" type="submit" block>
-                  Send Instructions
+                  Send
                 </Button>
               </div>
             </div>
