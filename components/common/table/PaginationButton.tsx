@@ -14,9 +14,13 @@ function PaginationButton(props: Partial<PaginationButtonPropsInterface>) {
     <Button
       size="sm"
       filled={false}
-      className={clsx("border border-primary-500 hover:text-white", {
-        "hover:bg-primary-500 text-primary-500": !disabled,
-      })}
+      className={clsx(
+        "border border-primary-500 text-primary-500 hover:text-white",
+        {
+          "hover:bg-primary-500": !disabled,
+        },
+        { "text-white": disabled }
+      )}
       onClick={onClick}
       disabled={disabled}
     >

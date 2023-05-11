@@ -1,0 +1,14 @@
+.ribbon {
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% 100%,
+    50% calc(100% - 25px),
+    0% 100%,
+    0% 0%
+  );
+}
+
+.ribbon-container {
+  filter: drop-shadow(4px 4px 12px rgba(0, 0, 0, 0.16));
+}

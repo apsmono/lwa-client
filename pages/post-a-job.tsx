@@ -155,7 +155,7 @@ function PostJobPage(props: PostJobPageProps) {
 
   return (
     <GuestLayout title="Post a Job">
-      <div className="max-w-6xl mx-auto flex flex-col gap-2 p-4">
+      <div className="max-w-5xl mx-auto flex flex-col gap-2 p-4">
         <CreateJobWizard
           ref={formWizardRef}
           initialStep={step}
@@ -170,6 +170,11 @@ function PostJobPage(props: PostJobPageProps) {
           companySizes={companySizes}
           jobSalaries={jobSalaries}
           showStep
+          jobFormPageProps={{
+            titleProps: {
+              className: "text-3xl text-center",
+            },
+          }}
         />
       </div>
     </GuestLayout>

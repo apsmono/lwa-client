@@ -46,13 +46,15 @@ function AccountSettingPage(props: IAccountSettingPage) {
 
   return (
     <EmployersLayout title="Account Settings" employers={user}>
-      <PageTitle>Account Settings</PageTitle>
+      <div className="max-w-3xl mx-auto">
+        <PageTitle>Account Settings</PageTitle>
 
-      <Typography className="font-medium capitalize">
-        Edit your account information
-      </Typography>
-      <div className="py-4">
-        <AccountForm user={user} onSubmit={onSubmit} />
+        <Typography className="font-medium capitalize">
+          Edit your account information
+        </Typography>
+        <div className="py-4">
+          <AccountForm user={user} onSubmit={onSubmit} />
+        </div>
       </div>
     </EmployersLayout>
   );

@@ -36,10 +36,7 @@ function JobSnippet(props: Partial<JobSnippetProps>) {
           <Feature
             className="border border-primary-500"
             icon={<Typography>💰</Typography>}
-            title={currencyFormat(job?.salary || 0, {
-              ...CURRENCY_FORMAT_DEFAULT_CONFIG,
-              notation: "compact",
-            })}
+            title={job?.salary || ""}
           />
           <Feature
             className="border border-primary-500"

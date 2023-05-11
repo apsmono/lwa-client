@@ -87,7 +87,7 @@ function Button(props: Partial<ButtonProps>) {
     <button
       onClick={onClick}
       className={clsx(
-        "text-center px-6 font-medium transition-all cursor-pointer block text-white",
+        "text-center px-6 font-medium transition-all cursor-pointer block",
         arrClassNames,
         className,
         [
@@ -95,7 +95,8 @@ function Button(props: Partial<ButtonProps>) {
             "bg-gray-400 hover:bg-gray-400 cursor-not-allowed",
         ],
         [block && "w-full"],
-        [withShadow && variant !== "link" && "with-shadow"]
+        [withShadow && variant !== "link" && "with-shadow"],
+        [filled && "text-white"]
       )}
       {...otherProps}
     >

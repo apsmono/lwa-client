@@ -8,9 +8,9 @@ import {
   TextField,
 } from "components/common";
 import { PageTitle } from "components/common/dashboard";
-import AdvanceSelect from "components/common/forms/AdvanceSelect";
 import { DataTable } from "components/common/table";
 import { JobForm } from "components/employers/job";
+import { JobFilter } from "components/jobs";
 import { EmployersLayout } from "components/layout";
 import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
@@ -253,7 +253,7 @@ function ManageListingPage(props: IManageListingPageProps) {
         <div className="flex md:flex-row flex-col justify-between mb-4">
           <PageTitle>Posted Jobs</PageTitle>
           <div className="flex flex-col md:flex-row gap-x-2">
-            <AdvanceSelect
+            <JobFilter
               key={status.label}
               label="Status"
               options={[
@@ -269,7 +269,7 @@ function ManageListingPage(props: IManageListingPageProps) {
               showAction
               getOptionValue={(val) => val?.val}
             />
-            <AdvanceSelect
+            <JobFilter
               label="Sort by"
               options={[
                 { val: "created_at", label: "Most Recent" },

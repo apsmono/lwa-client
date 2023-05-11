@@ -3,6 +3,7 @@ import { Button, Typography } from "components/common";
 
 import React from "react";
 import { Package } from "service/types";
+import PromoRibbon from "./PromoRibbon";
 
 interface PackageCardProps {
   item: Package;
@@ -13,17 +14,11 @@ interface PackageCardProps {
 }
 
 function PackageCard(props: PackageCardProps) {
-  const {
-    item,
-    onClick = (item) => {},
-    lastItem,
-    isSelected,
-    disabled,
-  } = props;
+  const { item, onClick = (item) => {}, isSelected, disabled } = props;
   return (
     <div
       className={clsx(
-        "border p-6 rounded-2xl flex flex-col gap-3 justify-between",
+        "border p-6 rounded-2xl flex flex-col gap-3 justify-between relative",
         { "border-primary-500": isSelected },
         { "bg-neutral-100": disabled },
         { "border-neutral-300": !isSelected }
@@ -73,6 +68,8 @@ function PackageCard(props: PackageCardProps) {
       >
         {isSelected ? "Current plan" : "Select plan"}
       </Button>
+
+      {item.promo ? <PromoRibbon text={item.promo} /> : null}
     </div>
   );
 }

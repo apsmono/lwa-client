@@ -12,10 +12,11 @@ interface JobDisplayProps {
   job: Partial<Job>;
   className: string;
   showLearnMore: boolean;
+  showShareButton: boolean;
 }
 
 function JobDisplay(props: Partial<JobDisplayProps>) {
-  const { job, className, showLearnMore = true } = props;
+  const { job, className, showLearnMore = true, showShareButton } = props;
 
   const router = useRouter();
   return (
@@ -36,14 +37,23 @@ function JobDisplay(props: Partial<JobDisplayProps>) {
             </Typography>
           </div>
         </div>
-        <div className="min-w-[140px]">
-          <Button
-            filled={false}
-            className="bg-primary-800 hover:bg-primary-900"
-            block
-          >
-            Apply
-          </Button>
+        <div className={clsx("flex", { "gap-4": showShareButton })}>
+          <div className="min-w-[140px]">
+            <Button
+              filled={false}
+              className="bg-primary-800 hover:bg-primary-900 text-white"
+              block
+            >
+              Apply
+            </Button>
+          </div>
+          {showShareButton ? (
+            <button>
+              <picture>
+                <img src="/ic-share.png" alt="" className="w-5" />
+              </picture>
+            </button>
+          ) : null}
         </div>
       </div>
       <div className="flex gap-2 mb-4 flex-wrap">

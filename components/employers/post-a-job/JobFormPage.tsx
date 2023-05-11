@@ -1,6 +1,6 @@
 import { Button, Typography } from "components/common";
 import { AppContext } from "context/appContext";
-import React, { useContext, useMemo, useRef } from "react";
+import React, { HTMLAttributes, useContext, useMemo, useRef } from "react";
 import CompanyService from "service/company_service";
 import {
   Category,
@@ -14,13 +14,16 @@ import {
 } from "service/types";
 import { parseErrorMessage } from "utils/api";
 import useAlert from "utils/hooks/useAlert";
+import { CompanySize } from "service/types/company_type";
 import { CompanyForm } from "../company";
 import { CompanyFormRef } from "../company/CompanyForm";
 import { JobForm } from "../job";
 import { JobFormRef } from "../job/JobForm";
 import useJobStore from "./store/useJobStore";
-import { CompanySize } from "service/types/company_type";
 import PackageList from "./PackageList";
+import clsx from "clsx";
+
+export interface IPageTitle extends HTMLAttributes<HTMLParagraphElement> {}
 
 interface JobFormPageProps {
   locations: LocationType[];
@@ -32,6 +35,7 @@ interface JobFormPageProps {
   companySizes: CompanySize[];
   packages: Package[];
   salaries: JobSalary[];
+  titleProps?: IPageTitle;
 }
 
 function JobFormPage(props: JobFormPageProps) {
@@ -45,6 +49,7 @@ function JobFormPage(props: JobFormPageProps) {
     companySizes,
     packages,
     salaries,
+    titleProps,
   } = props;
 
   const industries = useMemo(() => {
@@ -128,21 +133,18 @@ function JobFormPage(props: JobFormPageProps) {
     <>
       <div
         ref={containerRef}
-        className="grid grid-cols-1 gap:6 lg:gap-12 mt-4 mb-48 max-w-4xl mx-auto"
+        className="grid grid-cols-1 gap:6 lg:gap-12 mt-4 mb-48 mx-auto"
       >
         <div className="flex flex-col gap-4">
-          <Typography
-            variant="h3"
-            className="font-bold mb-4 capitalize text-center"
-          >
-            Gain more visibility
-          </Typography>
+          <p className={clsx("font-bold mb-4", titleProps?.className)}>
+            Gain More Visibility
+          </p>
           <PackageList packages={packages} />
         </div>
         <div className="flex flex-col gap-4">
-          <Typography variant="h3" className="font-bold mt-8 text-center">
+          <p className={clsx("font-bold mt-8", titleProps?.className)}>
             Tell us About Your Job
-          </Typography>
+          </p>
           <JobForm
             locations={locations}
             employmentTypes={employmentTypes}

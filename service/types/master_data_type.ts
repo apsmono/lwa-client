@@ -30,6 +30,8 @@ export type Package = {
   name: string;
   price: number;
   description?: string;
+  promo?: string;
+  cta_text?: string;
   perks: TPackagePerks[];
 };
 

@@ -26,6 +26,7 @@ function JobDetailPage(props: JobDetailPageProps) {
           job={job}
           className="px-6 max-w-5xl mx-auto"
           showLearnMore={false}
+          showShareButton
         />
       </div>
     </GuestLayout>

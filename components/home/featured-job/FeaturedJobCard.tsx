@@ -45,10 +45,7 @@ function FeaturedJobCard(props: FeaturedJobCard) {
         />
         <Feature
           icon={<Typography variant="body">💰</Typography>}
-          title={currencyFormat(job?.salary || 0, {
-            ...CURRENCY_FORMAT_DEFAULT_CONFIG,
-            notation: "compact",
-          })}
+          title={job.salary || ""}
         />
         <Feature
           icon={<Typography variant="body">🕛</Typography>}

@@ -91,20 +91,22 @@ function PostJobPage(props: IPostJobPageProps) {
   };
   return (
     <EmployersLayout title="Post a Job" employers={user}>
-      <PageTitle>Post a Job</PageTitle>
-      <CreateJobWizard
-        jobIndustries={jobIndustries}
-        clientToken={clientToken}
-        ref={formWizardRef}
-        onSubmit={handleSubmit}
-        locations={locations}
-        packages={packages}
-        categories={categories}
-        defaultValue={defaultValue}
-        employmentTypes={employmentTypes}
-        jobSalaries={jobSalaries}
-        companySizes={companySizes}
-      />
+      <div className="max-w-3xl mx-auto">
+        <PageTitle>Post a Job</PageTitle>
+        <CreateJobWizard
+          jobIndustries={jobIndustries}
+          clientToken={clientToken}
+          ref={formWizardRef}
+          onSubmit={handleSubmit}
+          locations={locations}
+          packages={packages}
+          categories={categories}
+          defaultValue={defaultValue}
+          employmentTypes={employmentTypes}
+          jobSalaries={jobSalaries}
+          companySizes={companySizes}
+        />
+      </div>
     </EmployersLayout>
   );
 }

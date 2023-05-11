@@ -14,7 +14,7 @@ import {
   LocationType,
   Package,
 } from "service/types";
-import JobFormPage from "../JobFormPage";
+import JobFormPage, { IPageTitle } from "../JobFormPage";
 import JobPreview from "../JobPreview";
 import { TSubmitPaymentRef } from "../payment/SubmitPayment";
 import PaymentPage from "../PaymentPage";
@@ -41,6 +41,9 @@ interface ICreateJobWizardProps {
   jobIndustries: JobIndustry[];
   companySizes: CompanySize[];
   jobSalaries: JobSalary[];
+  jobFormPageProps?: {
+    titleProps: IPageTitle;
+  };
 }
 
 const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
@@ -60,6 +63,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
       jobIndustries,
       companySizes,
       jobSalaries,
+      jobFormPageProps,
     } = props;
 
     const [step, setStep] = useState(initialStep);
@@ -117,6 +121,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
             packages={packages}
             salaries={jobSalaries}
             companySizes={companySizes}
+            titleProps={jobFormPageProps?.titleProps}
             onSubmit={(val) => {
               if (onContinueToPayment) {
                 onContinueToPayment(val);
