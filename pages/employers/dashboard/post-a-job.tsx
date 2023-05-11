@@ -19,6 +19,7 @@ import {
   EmploymentType,
   Job,
   JobIndustry,
+  JobSalary,
   LocationType,
   Package,
   User,
@@ -30,6 +31,7 @@ import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import JobIndustryService from "service/job_industry_service";
 import { CompanySize } from "service/types/company_type";
 import CompanySizeService from "service/company_size_service";
+import JobSalaryService from "service/job_salary_service";
 
 interface IPostJobPageProps {
   locations: LocationType[];
@@ -38,6 +40,7 @@ interface IPostJobPageProps {
   jobIndustries: JobIndustry[];
   user: User;
   companySizes: CompanySize[];
+  jobSalaries: JobSalary[];
   clientToken: string;
 }
 
@@ -49,6 +52,7 @@ function PostJobPage(props: IPostJobPageProps) {
     packages,
     user,
     jobIndustries = [],
+    jobSalaries,
     companySizes,
   } = props;
   const { categories } = useAppStore();
@@ -98,6 +102,7 @@ function PostJobPage(props: IPostJobPageProps) {
         categories={categories}
         defaultValue={defaultValue}
         employmentTypes={employmentTypes}
+        jobSalaries={jobSalaries}
         companySizes={companySizes}
       />
     </EmployersLayout>
@@ -114,12 +119,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     PackageService.gets(),
     JobIndustryService.gets(),
     CompanySizeService.gets(),
+    JobSalaryService.gets(),
   ]);
   props.locations = res[0].data;
   props.employmentTypes = res[1].data;
   props.packages = res[2].data;
   props.jobIndustries = res[3].data;
   props.companySizes = res[4].data;
+  props.jobSalaries = res[5].data;
 
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;
