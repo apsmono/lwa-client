@@ -32,3 +32,8 @@ export type Package = {
   description?: string;
   perks: TPackagePerks[];
 };
+
+export type JobSalary = {
+  id: number;
+  salary: string;
+};

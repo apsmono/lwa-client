@@ -7,6 +7,7 @@ import {
   EmploymentType,
   Job,
   JobIndustry,
+  JobSalary,
   LanguageType,
   LocationType,
   Package,
@@ -30,6 +31,7 @@ interface JobFormPageProps {
   jobIndustries: JobIndustry[];
   companySizes: CompanySize[];
   packages: Package[];
+  salaries: JobSalary[];
 }
 
 function JobFormPage(props: JobFormPageProps) {
@@ -42,6 +44,7 @@ function JobFormPage(props: JobFormPageProps) {
     jobIndustries,
     companySizes,
     packages,
+    salaries,
   } = props;
 
   const industries = useMemo(() => {
@@ -73,6 +76,7 @@ function JobFormPage(props: JobFormPageProps) {
     job_industry_id,
     location_id,
     company_size_id,
+    package_id,
   } = useJobStore();
 
   const jobFormRef = useRef<JobFormRef>(null);
@@ -81,7 +85,14 @@ function JobFormPage(props: JobFormPageProps) {
   const { showErrorAlert } = useAlert();
   const { setLoading } = useContext(AppContext);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const handleContinueToPayment = async () => {
+    if (!package_id) {
+      showErrorAlert("Please choose one package");
+      containerRef.current!.scrollTop = 0;
+      return;
+    }
     await Promise.all([
       jobFormRef.current?.submitForm(),
       companyFormRef.current?.submitForm(),
@@ -115,10 +126,13 @@ function JobFormPage(props: JobFormPageProps) {
   };
   return (
     <>
-      <div className="grid grid-cols-1 gap:6 lg:gap-12 mt-4 mb-48">
+      <div
+        ref={containerRef}
+        className="grid grid-cols-1 gap:6 lg:gap-12 mt-4 mb-48 max-w-4xl mx-auto"
+      >
         <div className="flex flex-col gap-4">
           <Typography
-            variant="h4"
+            variant="h3"
             className="font-bold mb-4 capitalize text-center"
           >
             Gain more visibility
@@ -126,7 +140,7 @@ function JobFormPage(props: JobFormPageProps) {
           <PackageList packages={packages} />
         </div>
         <div className="flex flex-col gap-4">
-          <Typography variant="h4" className="font-bold mt-8 text-center">
+          <Typography variant="h3" className="font-bold mt-8 text-center">
             Tell us About Your Job
           </Typography>
           <JobForm
@@ -136,6 +150,7 @@ function JobFormPage(props: JobFormPageProps) {
             categories={categories}
             ref={jobFormRef}
             showSubmit={false}
+            salaries={salaries}
             jobIndustries={industries}
             defaultValue={{
               apply_link,

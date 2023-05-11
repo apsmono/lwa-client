@@ -46,7 +46,7 @@ ul.dropdown-content > li:hover {
 .dropdown-container:hover:after {
   content: "";
   position: absolute;
-  top: 25px; /*may require prefix for old browser support*/
+
   height: 20px;
   width: 100%;
   display: block;

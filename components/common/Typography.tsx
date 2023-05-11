@@ -8,13 +8,13 @@ interface TypographyProps extends HTMLAttributes<HTMLParagraphElement> {
 function Typography(props: Partial<TypographyProps>) {
   const { children, style, className, variant = "body" } = props;
   const styles = {
-    h1: "text-4xl md:text-5xl",
-    h2: "text-3xl md:text-4xl",
-    h3: "text-2xl md:text-3xl",
-    h4: "text-xl md:text-2xl",
-    h5: "text-lg md:text-xl",
-    h6: "text-base md:text-lg",
-    body: "text-sm md:text-base",
+    h1: "text-4xl",
+    h2: "text-3xl",
+    h3: "text-2xl",
+    h4: "text-xl",
+    h5: "text-lg",
+    h6: "text-base",
+    body: "text-sm",
     small: "text-sm",
     xs: "text-xs",
   };

@@ -7,7 +7,7 @@ import {
   TextAreaField,
   TextField,
 } from "components/common";
-import { CurrencyField, Radio } from "components/common/forms";
+import { Radio } from "components/common/forms";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -15,12 +15,12 @@ import {
   EmploymentType,
   Job,
   JobIndustry,
+  JobSalary,
   LanguageType,
   LocationType,
 } from "service/types";
 import { getFormAttribute, purgeInitialFormData } from "utils/form";
 import { BASE_BLANK_FORM, schema } from "./constants";
-import { CompanySize } from "service/types/company_type";
 
 interface JobFormProps {
   categories: Category[];
@@ -32,6 +32,7 @@ interface JobFormProps {
   onSubmit?: (val: any) => void;
   showSubmit: boolean;
   jobIndustries: JobIndustry[];
+  salaries: JobSalary[];
 }
 
 export interface JobFormRef {
@@ -49,6 +50,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     onSubmit = (val) => console.log(val),
     showSubmit = true,
     jobIndustries = [],
+    salaries,
   } = props;
 
   const [initialValue] = useState(() =>
@@ -75,6 +77,11 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
       )[0];
     }
   );
+  const [selectedSalary, setSelectedSalary] = useState<JobSalary>(() => {
+    return (salaries || []).filter(
+      (item) => item.id === defaultValue.job_salary_id
+    )[0];
+  });
   const [selectedLocation, setSelectedLocation] = useState<LocationType>();
 
   const {
@@ -111,10 +118,8 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           location: isWorldwide ? "Worldwide" : selectedLocation?.name || "",
           employment_type: selectedEmploymentType?.name || "",
           industry_name: selectedJobIndustry?.name || "",
+          salary: selectedSalary.salary,
         };
-        if (!job.salary) {
-          job.salary = 0;
-        }
         if (job.is_worldwide) {
           job.location_id = 1;
         }
@@ -130,6 +135,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
       selectedEmploymentType?.name,
       selectedLocation?.name,
       selectedJobIndustry,
+      selectedSalary,
     ]
   );
 
@@ -233,15 +239,24 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           />
         ) : null}
 
-        <CurrencyField
-          labelDescription="Highly recommended! Providing salary will five your job more visibility"
-          {...getFieldAttribute(
-            "Salary",
-            "salary",
-            "salary",
-            "Best format is $USD per year, such as: '$50k-60k'"
-          )}
-          onValueChange={(val) => setValue("salary", val)}
+        <InputLabel
+          error={!!errors.job_salary_id}
+          description="Highly recommended! Providing salary will five your job more visibility"
+        >
+          Salary*
+        </InputLabel>
+        <Select
+          options={salaries}
+          renderOption={(opt) => opt.salary}
+          error={!!errors.job_salary_id}
+          register={register}
+          setFormValue={setValue}
+          helperText={errors.job_salary_id?.message}
+          name="job_salary_id"
+          id="job_salary_id"
+          defaultValue={selectedSalary}
+          onChange={(val) => setSelectedSalary(val)}
+          getInputValue={(val) => val?.id || ""}
         />
 
         <TextAreaField

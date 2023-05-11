@@ -10,6 +10,7 @@ import {
   EmploymentType,
   Job,
   JobIndustry,
+  JobSalary,
   LocationType,
   Package,
 } from "service/types";
@@ -39,6 +40,7 @@ interface ICreateJobWizardProps {
   showStep?: boolean;
   jobIndustries: JobIndustry[];
   companySizes: CompanySize[];
+  jobSalaries: JobSalary[];
 }
 
 const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
@@ -57,6 +59,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
       showStep,
       jobIndustries,
       companySizes,
+      jobSalaries,
     } = props;
 
     const [step, setStep] = useState(initialStep);
@@ -112,6 +115,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
             jobIndustries={jobIndustries}
             key={company_name}
             packages={packages}
+            salaries={jobSalaries}
             companySizes={companySizes}
             onSubmit={(val) => {
               if (onContinueToPayment) {

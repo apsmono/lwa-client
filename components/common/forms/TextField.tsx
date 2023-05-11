@@ -71,7 +71,7 @@ const TextField = forwardRef<HTMLInputElement, Partial<TextFieldProps>>(
             autoComplete="off"
             id={id}
             className={clsx(
-              "w-full py-2 px-4 border-[1.5px] border-neutral-500 transition-all",
+              "w-full py-2 px-4 border border-neutral-500 transition-all",
               className,
               [error && "border-danger-500 focus:border-danger-500"],
               [!error && "focus:outline-neutral-500"],

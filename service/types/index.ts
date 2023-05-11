@@ -7,6 +7,7 @@ import {
   LocationType,
   JobIndustry,
   Package,
+  JobSalary,
 } from "./master_data_type";
 import { User } from "./user_types";
 import { Blog } from "./blog_type";
@@ -22,4 +23,5 @@ export type {
   JobIndustry,
   Package,
   Blog,
+  JobSalary,
 };

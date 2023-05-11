@@ -12,6 +12,7 @@ import {
   User,
   Job,
   JobIndustry,
+  JobSalary,
 } from "service/types";
 import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import { CreateJobWizard } from "components/employers/post-a-job";
@@ -28,6 +29,7 @@ import { ROUTE_POST_SUCCESS } from "config/routes";
 import JobIndustryService from "service/job_industry_service";
 import { CompanySize } from "service/types/company_type";
 import CompanySizeService from "service/company_size_service";
+import JobSalaryService from "service/job_salary_service";
 
 interface PostJobPageProps {
   locations: LocationType[];
@@ -39,6 +41,7 @@ interface PostJobPageProps {
   defaultValue?: Partial<Job>;
   clientToken: string;
   companySizes: CompanySize[];
+  jobSalaries: JobSalary[];
 }
 
 function PostJobPage(props: PostJobPageProps) {
@@ -53,6 +56,7 @@ function PostJobPage(props: PostJobPageProps) {
     clientToken,
     jobIndustries = [],
     companySizes,
+    jobSalaries,
   } = props;
   const [step] = useState(currentStep === "PAYMENT" ? 2 : 1);
 
@@ -164,6 +168,7 @@ function PostJobPage(props: PostJobPageProps) {
           clientToken={clientToken}
           jobIndustries={jobIndustries}
           companySizes={companySizes}
+          jobSalaries={jobSalaries}
           showStep
         />
       </div>
@@ -181,12 +186,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     PackageService.gets(),
     JobIndustryService.gets(),
     CompanySizeService.gets(),
+    JobSalaryService.gets(),
   ]);
   props.locations = res[0].data;
   props.employmentTypes = res[1].data;
   props.packages = res[2].data;
   props.jobIndustries = res[3].data;
   props.companySizes = res[4].data;
+  props.jobSalaries = res[5].data;
 
   if (!hasCookie("paypalClientToken", context)) {
     const { data } = await PaymentService.getClientToken();

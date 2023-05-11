@@ -26,7 +26,7 @@ function PackageCard(props: PackageCardProps) {
         "border p-6 rounded-2xl flex flex-col gap-3 justify-between",
         { "border-primary-500": isSelected },
         { "bg-neutral-100": disabled },
-        { "border-neutral-500": !isSelected }
+        { "border-neutral-300": !isSelected }
       )}
     >
       <div className="flex flex-col gap-1">

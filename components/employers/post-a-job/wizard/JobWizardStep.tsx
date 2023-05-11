@@ -9,7 +9,6 @@ interface IJobWizardStepProps {
 
 function JobWizardStep(props: IJobWizardStepProps) {
   const { activeStep } = props;
-  console.log({ activeStep });
   return (
     <div className="flex w-full justify-between relative">
       <div className="absolute left-0 w-full top-7 z-[-1] grid grid-cols-2">
