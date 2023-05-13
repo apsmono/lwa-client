@@ -61,25 +61,13 @@ function GuestLayout(props: GuestLayoutProps) {
   const { categories } = useAppStore();
 
   const handleLogout = async () => {
-    const refreshToken = getCookie("refreshToken")!;
-
-    try {
-      setLoading(true);
-      await wrappedLogout(refreshToken);
-      reset();
-    } catch (error) {
-      showErrorAlert(parseErrorMessage(error));
-      return;
-    } finally {
-      setLoading(false);
-    }
-
+    setAuth({
+      accessToken: "",
+      refreshToken: "",
+    });
     removeCookies("accessToken");
     removeCookies("refreshToken");
-    setTimeout(() => {
-      showSuccessAlert("Logout success");
-      router.replace("/auth/sign-in");
-    }, 300);
+    router.replace("/auth/sign-in");
   };
   const employersList = useMemo(() => {
     if (!user) {
