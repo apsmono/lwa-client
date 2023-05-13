@@ -148,18 +148,16 @@ function GuestLayout(props: GuestLayoutProps) {
             )}
           >
             <div className="flex justify-between items-center">
-              {!customLogo ? (
+              <Link href="/" className="flex gap-2 items-center">
                 <picture>
                   <img
-                    src="/lwa-logo.png"
+                    src="/icon.svg"
                     alt="Logo"
-                    className="h-12 cursor-pointer"
-                    onClick={() => router.push("/")}
+                    className="h-6 cursor-pointer"
                   />
                 </picture>
-              ) : (
-                customLogo
-              )}
+                <Typography variant="h5">Let&apos;s Work Anywhere</Typography>
+              </Link>
               <div className="hidden lg:flex gap-8 items-center">
                 <NavBarDropdown
                   title="🚀 Categories"

@@ -23,9 +23,12 @@ function GuestFooter(props: GuestFooterProps) {
   return (
     <div className="flex flex-col md:flex-row justify-between p-6 gap-8 relative z-10 text-black py-12">
       <div>
-        <Typography className="font-bold mb-3 capitalize" variant="h4">
-          let&apos;s work anywhere
-        </Typography>
+        <div className="flex gap-2 items-center mb-3">
+          <picture>
+            <img src="/icon.svg" alt="Logo" className="h-6 cursor-pointer" />
+          </picture>
+          <Typography variant="h5">Let&apos;s Work Anywhere</Typography>
+        </div>
         <div className="flex gap-2">
           <IconButton
             contained

@@ -24,6 +24,7 @@ function AccountForm(props: IAccountFormProps) {
       job_token_temp,
       status,
       registration_token,
+      available_vouchers,
       ...otherItem
     } = user;
     return otherItem;
