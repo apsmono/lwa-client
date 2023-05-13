@@ -108,7 +108,7 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
           <Button onClick={() => handleExport()}>Export</Button>
         </div>
       </div>
-      <div className="grid grid-cols-3 mb-4">
+      <div className="grid grid-cols-4 mb-4">
         <div className="py-6 border border-neutral-500 rounded-lg text-center">
           <Typography className="font-bold" variant="h4">
             {new Intl.NumberFormat().format(totalClick)}
@@ -116,7 +116,7 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
           <Typography>Total CTR</Typography>
         </div>
       </div>
-      <div>
+      <div className="max-w-3xl">
         <Card className="border-black">
           <CardTitle>CTR Charts</CardTitle>
           <ResponsiveContainer width="100%" height={350}>
