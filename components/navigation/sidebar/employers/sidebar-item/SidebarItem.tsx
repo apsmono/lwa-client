@@ -5,7 +5,13 @@ import styles from "./SidebarItem.module.css";
 import { Typography } from "components/common";
 
 interface ISidebarItemProps {
-  link: { title: string; href: string; icon?: ReactNode };
+  link: {
+    title: string;
+    href: string;
+    icon?: ReactNode;
+    image?: string;
+    imageActive?: string;
+  };
   active?: boolean;
 }
 
@@ -31,6 +37,15 @@ function SidebarItem(props: ISidebarItemProps) {
       >
         {link.icon ? (
           <div className={clsx(styles["icon"])}>{link.icon}</div>
+        ) : null}
+        {link.image || link.imageActive ? (
+          <picture>
+            <img
+              className="w-5"
+              src={active ? link.imageActive : link.image}
+              alt=""
+            />
+          </picture>
         ) : null}
         <Typography variant="body">{link.title}</Typography>
       </Link>
