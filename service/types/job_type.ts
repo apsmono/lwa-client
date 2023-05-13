@@ -35,3 +35,8 @@ export type Job = {
   company_size?: string;
   company_size_id?: number;
 };
+
+export type TJobVoucher = {
+  package_id: number;
+  voucher: string;
+};

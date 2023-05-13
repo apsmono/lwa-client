@@ -13,15 +13,15 @@ function JobWizardStepItem(props: IJobWizardStepItemProps) {
     <div className="flex flex-col justify-center items-center">
       <div
         className={clsx(
-          "rounded-full w-16 h-16 bg-white border border-primary-500 flex justify-center items-center transition-all",
+          "rounded-full w-10 h-10 bg-white border border-primary-500 flex justify-center items-center transition-all",
           { "bg-primary-500 text-white": active }
         )}
       >
-        <Typography className="font-bold" variant="h5">
+        <Typography className="font-bold" variant="body">
           {step}
         </Typography>
       </div>
-      <Typography className="mt-4 font-medium">{title}</Typography>
+      <Typography className="mt-2 font-medium">{title}</Typography>
     </div>
   );
 }

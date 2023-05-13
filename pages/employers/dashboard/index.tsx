@@ -152,17 +152,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const res = await Promise.all([
       handleInvalidTokenServerSide(
-        () => CompanyService.getOrderSummary(user.company.id, context),
-        context
-      ),
-      handleInvalidTokenServerSide(
         () => CompanyService.getJobActivities(user.company.id, {}, context),
         context
       ),
     ]);
-
-    props.order_summary = res[0].data;
-    props.activities = res[1].data.activities;
+    props.activities = res[0].data.activities;
   } catch (error) {
     props.user = null;
     return {

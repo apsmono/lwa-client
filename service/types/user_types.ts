@@ -1,4 +1,5 @@
 import { Company } from "./company_type";
+import { TJobVoucher } from "./job_type";
 
 export type User = {
   id: number;
@@ -12,4 +13,5 @@ export type User = {
   status: number;
   registration_token: string;
   is_free_post_used: boolean;
+  available_vouchers: TJobVoucher[];
 };

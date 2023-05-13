@@ -35,8 +35,8 @@ interface PostJobPageProps {
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   jobIndustries: JobIndustry[];
-  packages: Package[];
   user?: User;
+  packages: Package[];
   currentStep?: string;
   defaultValue?: Partial<Job>;
   clientToken: string;
@@ -48,7 +48,6 @@ function PostJobPage(props: PostJobPageProps) {
   const { categories } = useAppStore();
   const {
     currentStep,
-    user,
     defaultValue: defaultValueProps = null,
     locations,
     packages,
@@ -57,6 +56,7 @@ function PostJobPage(props: PostJobPageProps) {
     jobIndustries = [],
     companySizes,
     jobSalaries,
+    user,
   } = props;
   const [step] = useState(currentStep === "PAYMENT" ? 2 : 1);
 
@@ -71,6 +71,7 @@ function PostJobPage(props: PostJobPageProps) {
     company_url,
     company_offer,
     company_logo,
+    company_size_id,
     reset,
   } = useJobStore();
 
@@ -94,6 +95,7 @@ function PostJobPage(props: PostJobPageProps) {
         company_name: jobCookies.company_name,
         company_url: jobCookies.company_url,
         description: jobCookies.description,
+        company_size_id: jobCookies.company_size_id,
         employment_type: jobCookies.employment_type,
         company_headquarter: jobCookies.company_headquarter,
         employment_type_id: jobCookies.employment_type_id,
@@ -126,6 +128,9 @@ function PostJobPage(props: PostJobPageProps) {
         : company_headquarter,
       company_id: company.id,
       company_logo: !company_logo ? company.company_logo : company_logo,
+      company_size_id: !company_size_id
+        ? company.company_size_id
+        : company_size_id,
     };
   });
 
@@ -216,12 +221,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       const user = (await AuthService.fetchMe(context)).data?.user || null;
 
       props.user = user;
-
-      if (user?.job_token_temp) {
-        const { data } = await JobService.getJobTemp(user.job_token_temp);
-        console.log({ job: data.job });
-        props.defaultValue = data.job;
-      }
     } catch (error) {
       props.user = null;
     }

@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
+import { setCookie } from "cookies-next";
+import useAuthStore from "store/useAuthStore";
 import { Package } from "service/types";
 import PackageCard from "./package-card/PackageCard";
 import usePaymentStore from "./payment/store/usePaymentStore";
@@ -10,7 +12,11 @@ interface IPackageListProps {
 
 function PackageList(props: IPackageListProps) {
   const { packages } = props;
-  const { setJobPayment } = usePaymentStore();
+  const { setJobPayment, packageItem } = usePaymentStore();
+
+  useEffect(() => {
+    setCookie("packageItem", JSON.stringify(packageItem));
+  }, [packageItem]);
 
   const { setJob, package_id } = useJobStore();
 

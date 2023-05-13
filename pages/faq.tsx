@@ -1,6 +1,5 @@
 import { Disclosure } from "@headlessui/react";
-import clsx from "clsx";
-import { PageTitle, Typography } from "components/common";
+import { PageTitle } from "components/common";
 import PackageCard from "components/employers/post-a-job/package-card/PackageCard";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";

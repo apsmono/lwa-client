@@ -54,7 +54,6 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
       category_id,
       skill,
       is_worldwide,
-      salary,
       description,
       company_name,
       company_headquarter,
@@ -67,6 +66,7 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
       company_logo,
       company_size_id,
       job_industry_id,
+      job_salary_id,
     } = useJobStore();
 
     const validateAccountForm = React.useCallback(() => {
@@ -123,7 +123,7 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
           skill,
           employment_type_id,
           is_worldwide,
-          salary,
+          job_salary_id,
           description,
           package_id: packageId,
         };
@@ -162,7 +162,7 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
         is_worldwide,
         location_id,
         onSubmit,
-        salary,
+        job_salary_id,
         skill,
         title,
         company_size_id,
@@ -170,7 +170,7 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
       ]
     );
     return (
-      <>
+      <div className="mx-auto">
         <PayPalScriptProvider
           options={{
             "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
@@ -228,7 +228,7 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
         <div className="mt-4">
           <Button onClick={onBack}>Back</Button>
         </div>
-      </>
+      </div>
     );
   }
 );

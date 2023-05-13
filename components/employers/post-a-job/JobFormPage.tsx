@@ -1,4 +1,4 @@
-import { Button, Typography } from "components/common";
+import { Button } from "components/common";
 import { AppContext } from "context/appContext";
 import React, { HTMLAttributes, useContext, useMemo, useRef } from "react";
 import CompanyService from "service/company_service";
@@ -168,9 +168,9 @@ function JobFormPage(props: JobFormPageProps) {
             }}
           />
 
-          <Typography variant="h4" className="font-bold mt-8">
+          <p className={clsx("font-bold mt-8", titleProps?.className)}>
             Tell us About Your Company
-          </Typography>
+          </p>
           <CompanyForm
             ref={companyFormRef}
             key={company_id}

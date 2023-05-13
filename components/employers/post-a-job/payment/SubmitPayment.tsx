@@ -1,7 +1,12 @@
 import { usePayPalHostedFields } from "@paypal/react-paypal-js";
 import clsx from "clsx";
 import { Alert, Button, Loader, Typography } from "components/common";
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
 import { parseErrorMessage } from "utils/api";
 import usePaymentStore from "./store/usePaymentStore";
 import { setCookie } from "cookies-next";
@@ -71,6 +76,14 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
       },
     }));
 
+    const { user } = useAuthStore();
+
+    const availableVoucher = useMemo(() => {
+      if (!user) return [];
+
+      return user.available_vouchers.map((av) => av.package_id);
+    }, [user]);
+
     const handleClick = async () => {
       try {
         let orderId = "";
@@ -99,7 +112,7 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
         }
         const packageId = packageItem!.id;
 
-        if (packageId !== 3) {
+        if (!availableVoucher.includes(packageId)) {
           setLoading(true);
           const { fields } = cardFields?.getState() || {};
 

@@ -11,11 +11,11 @@ function JobWizardStep(props: IJobWizardStepProps) {
   const { activeStep } = props;
   return (
     <div className="flex w-full justify-between relative">
-      <div className="absolute left-0 w-full top-7 z-[-1] grid grid-cols-2">
+      <div className="absolute left-0 w-full top-[0.65rem] z-[-1] grid grid-cols-2">
         <div className="pl-12">
           <span
             className={clsx(
-              "inline-block h-4 w-full transition-all",
+              "inline-block h-2 w-full transition-all",
               {
                 "bg-primary-500": activeStep > 1,
               },
@@ -26,7 +26,7 @@ function JobWizardStep(props: IJobWizardStepProps) {
         <div className="pr-12">
           <span
             className={clsx(
-              "inline-block h-4 w-full transition-all",
+              "inline-block h-2 w-full transition-all",
               {
                 "bg-primary-500": activeStep > 2,
               },

@@ -1,5 +1,5 @@
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import React from "react";
+import React, { useMemo } from "react";
 import { getCookie, setCookie } from "cookies-next";
 import useAuthStore from "store/useAuthStore";
 import usePaymentStore from "./store/usePaymentStore";
@@ -31,6 +31,13 @@ function PaypalPaymentButton(props: IPaypalPaymentButtonProps) {
   } = props;
   const { packageItem } = usePaymentStore();
   const { accessToken, setAuth } = useAuthStore();
+  const { user } = useAuthStore();
+
+  const availableVoucher = useMemo(() => {
+    if (!user) return [];
+
+    return user.available_vouchers.map((av) => av.package_id);
+  }, [user]);
   return (
     <PayPalButtons
       createOrder={(data, actions) => {
@@ -72,7 +79,7 @@ function PaypalPaymentButton(props: IPaypalPaymentButtonProps) {
         }
       }}
       style={{ label: "pay" }}
-      disabled={![1, 2].includes(packageItem?.id || 3)}
+      disabled={availableVoucher.includes(packageItem?.id || 0)}
       onApprove={async (data, action) => {
         const captured = await action.order?.capture();
 
