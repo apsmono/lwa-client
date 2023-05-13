@@ -1,4 +1,6 @@
+import { Typography } from "components/common";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
 import { X } from "react-feather";
@@ -24,14 +26,12 @@ function BlankLayout(props: BlankLayoutProps) {
         <title>{title}</title>
       </Head>
       <div className="flex justify-between p-6 items-center">
-        <picture>
-          <img
-            src="/lwa-logo.png"
-            alt="Logo"
-            className="h-10 cursor-pointer"
-            onClick={() => router.push("/")}
-          />
-        </picture>
+        <Link href="/" className="flex gap-2 items-center">
+          <picture>
+            <img src="/icon.svg" alt="Logo" className="h-6 cursor-pointer" />
+          </picture>
+          <Typography variant="h5">Let&apos;s Work Anywhere</Typography>
+        </Link>
 
         <button onClick={onBackButtonClick}>
           <X />

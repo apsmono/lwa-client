@@ -12,9 +12,7 @@ function ForgotPasswordSuccess() {
         <picture className="my-4">
           <img src="/sign-up-success.png" alt="" className="w-28" />
         </picture>
-        <p className="text-6xl lg:text-7xl font-palo font-extrabold uppercase text-center">
-          CHECK YOUR EMAIL
-        </p>
+        <p className="text-6xl text-center">Check Your Email</p>
         <div className="max-w-2xl mt-4 flex justify-center flex-col gap-4">
           <Typography className="text-center">
             We have sent an email with instructions to reset <br /> your

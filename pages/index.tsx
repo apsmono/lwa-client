@@ -42,9 +42,9 @@ function Home(props: HomePropsInterface) {
       }
     >
       <div className="flex flex-col mb-8 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
-        <div className="max-w-2xl">
-          <p className="font-extrabold mb-4 uppercase font-palo text-9xl text-center">
-            Find REMOTE <br /> WORK TODAY
+        <div className="max-w-3xl">
+          <p className="mb-4 capitalize text-6xl text-center">
+            Find Remote Work Today
           </p>
 
           <Typography className="mb-4 text-center">

@@ -35,7 +35,7 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
   return (
     <div className="w-full flex pl-6 lg:pl-24">
       <div>
-        <p className="font-palo font-extrabold text-3xl md:text-7xl uppercase">
+        <p className="text-4xl">
           Featured <br />
           Jobs
         </p>

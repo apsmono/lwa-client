@@ -119,7 +119,7 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
       <div className="max-w-3xl">
         <Card className="border-black">
           <CardTitle>CTR Charts</CardTitle>
-          <ResponsiveContainer width="100%" height={350}>
+          <ResponsiveContainer width="100%" height={300}>
             <BarChart ref={ref} data={clickData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />

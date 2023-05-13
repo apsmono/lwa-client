@@ -10,7 +10,7 @@ function NotFoundPage() {
     <BlankLayout title="Page not found">
       <div className="p-6">
         <div className="p-6 max-w-4xl mx-auto text-center">
-          <p className="font-palo font-bold text-6xl">OOPS, SORRY!</p>
+          <p className="text-6xl">Oops, Sorry!</p>
           <Typography className="mt-3">
             We couldn’t find the page you were looking for. Maybe our FAQ or
             Chat Box can help?

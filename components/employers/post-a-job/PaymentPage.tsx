@@ -23,16 +23,21 @@ import { TPaypalPaymmentButtonOnClick } from "./payment/PaypalPaymentButton";
 import SubmitPayment, { TSubmitPaymentRef } from "./payment/SubmitPayment";
 import { getCookie } from "cookies-next";
 import PaymentService from "service/payment_service";
+import PackageList from "./PackageList";
+import clsx from "clsx";
+import { IPageTitle } from "./JobFormPage";
 
 interface PaymentPageProps {
   clientToken: string;
   onSubmit: (val: Partial<Job>) => void;
   onBack?: () => void;
+  packages: Package[];
+  titleProps?: IPageTitle;
 }
 
 const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
   (props, ref) => {
-    const { onSubmit, clientToken, onBack } = props;
+    const { onSubmit, clientToken, onBack, packages, titleProps } = props;
 
     const submitPaymentRef = useRef<TSubmitPaymentRef>(null);
     const accountFormSectionRef = useRef<TAccountFormSectionRef>(null);
@@ -199,11 +204,18 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
             }}
           >
             <div className="grid grid-cols-1 gap-6 mt-4">
-              <Typography className="font-bold" variant="h4">
-                Want to post more than 10+ jobs?{" "}
+              <div className="flex flex-col gap-4">
+                <p className={clsx("font-bold mb-4", titleProps?.className)}>
+                  Choose Your Plan
+                </p>
+                <PackageList packages={packages} />
+              </div>
+              <p className={clsx("font-bold mb-4", titleProps?.className)}>
+                Want to post more than 10+ jobs?
+                <br />
                 <a href="mailto:youremail@test.com">Contact us</a> for
                 customised packages!
-              </Typography>
+              </p>
 
               <PaypalPaymentForm
                 ref={submitPaymentRef}

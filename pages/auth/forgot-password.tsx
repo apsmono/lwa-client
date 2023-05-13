@@ -46,9 +46,7 @@ function ForgotPasswordPage(props: ForgotPasswordPageProps) {
   return (
     <BlankLayout title="Forgot Password">
       <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
-        <p className="text-center font-bold mb-4 font-palo uppercase text-5xl lg:text-6xl tracking-wide">
-          RESET PASSWORD
-        </p>
+        <p className="text-center mb-4 text-6xl">Reset Password</p>
         <Typography className="text-center mb-8">
           Enter the email address associated with your account and click send.
           <br /> An email with instructions to reset your password will be sent

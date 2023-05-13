@@ -15,8 +15,8 @@ function PostJobSuccess() {
         <picture className="my-4">
           <img src="/sign-up-success.png" alt="" className="w-28" />
         </picture>
-        <p className="text-6xl lg:text-7xl font-palo font-extrabold uppercase text-center">
-          PAYMENT <br /> ACCEPTED
+        <p className="text-6xl text-center">
+          Payment <br /> Accepted
         </p>
         <div className="max-w-2xl mt-4">
           <Typography className="text-center">

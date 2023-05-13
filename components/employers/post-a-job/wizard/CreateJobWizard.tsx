@@ -41,9 +41,7 @@ interface ICreateJobWizardProps {
   jobIndustries: JobIndustry[];
   companySizes: CompanySize[];
   jobSalaries: JobSalary[];
-  jobFormPageProps?: {
-    titleProps: IPageTitle;
-  };
+  titleProps?: IPageTitle;
 }
 
 const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
@@ -63,7 +61,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
       jobIndustries,
       companySizes,
       jobSalaries,
-      jobFormPageProps,
+      titleProps,
     } = props;
 
     const [step, setStep] = useState(initialStep);
@@ -121,7 +119,7 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
             packages={packages}
             salaries={jobSalaries}
             companySizes={companySizes}
-            titleProps={jobFormPageProps?.titleProps}
+            titleProps={titleProps}
             onSubmit={(val) => {
               if (onContinueToPayment) {
                 onContinueToPayment(val);
@@ -137,9 +135,11 @@ const CreateJobWizard = forwardRef<TCreateJobWizardRef, ICreateJobWizardProps>(
         {step === 3 ? (
           <PaymentPage
             clientToken={clientToken}
+            titleProps={titleProps}
             onSubmit={onSubmit}
             ref={paymentPageRef}
             onBack={() => setStep(2)}
+            packages={packages}
           />
         ) : null}
       </>

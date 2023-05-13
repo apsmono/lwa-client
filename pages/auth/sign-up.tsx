@@ -122,9 +122,7 @@ function SignUpPage(props: SignUpPageProps) {
   return (
     <BlankLayout title="Sign Up">
       <div className="max-w-5xl mx-auto p-6">
-        <p className="text-center font-bold mb-4 font-palo uppercase text-5xl lg:text-6xl tracking-wide">
-          Create an Employer Account
-        </p>
+        <p className="text-center mb-4 text-6xl">Create an Employer Account</p>
         <Typography className="text-center mb-8">
           Are you a hiring manager? Manage your job postings and <br /> company
           details in one place.

@@ -175,11 +175,7 @@ function PostJobPage(props: PostJobPageProps) {
           companySizes={companySizes}
           jobSalaries={jobSalaries}
           showStep
-          jobFormPageProps={{
-            titleProps: {
-              className: "text-3xl text-center",
-            },
-          }}
+          titleProps={{ className: "text-3xl text-center" }}
         />
       </div>
     </GuestLayout>

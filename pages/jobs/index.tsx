@@ -214,17 +214,13 @@ function JobListPage(props: JobListPageProps) {
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
         {category ? (
           <>
-            <h1 className="font-black text-center font-palo uppercase text-7xl mb-3">
-              {category.name} Jobs
-            </h1>
+            <h1 className="text-center text-6xl mb-3">{category.name} Jobs</h1>
             <Typography className="text-center">
               {category.description}
             </Typography>
           </>
         ) : (
-          <h1 className="font-black text-center font-palo uppercase text-7xl mb-3">
-            Jobs
-          </h1>
+          <h1 className="text-center text-6xl mb-3">Jobs</h1>
         )}
         <form onSubmit={handleSubmit}>
           <TextField

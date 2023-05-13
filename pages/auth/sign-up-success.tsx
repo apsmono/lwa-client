@@ -11,8 +11,8 @@ function SignUpSuccess(props: ISignUpSuccess) {
         <picture className="my-4">
           <img src="/sign-up-success.png" alt="" className="w-28" />
         </picture>
-        <p className="text-6xl lg:text-7xl font-palo font-extrabold uppercase text-center">
-          THANK YOU FOR <br /> SIGNING UP!
+        <p className="text-6xl text-center">
+          Thank You For <br /> Signin Up!
         </p>
         <div className="max-w-2xl mt-4">
           <Typography className="text-center">
