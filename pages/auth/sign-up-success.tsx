@@ -1,4 +1,4 @@
-import { Typography } from "components/common";
+import { PageTitle, Typography } from "components/common";
 import BlankLayout from "components/layout/BlankLayout";
 import { GetServerSideProps } from "next";
 import React from "react";
@@ -11,9 +11,9 @@ function SignUpSuccess(props: ISignUpSuccess) {
         <picture className="my-4">
           <img src="/sign-up-success.png" alt="" className="w-28" />
         </picture>
-        <p className="text-6xl text-center">
+        <PageTitle>
           Thank You For <br /> Signin Up!
-        </p>
+        </PageTitle>
         <div className="max-w-2xl mt-4">
           <Typography className="text-center">
             Please check your email and click the link on the email for{" "}

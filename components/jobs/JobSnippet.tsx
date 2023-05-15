@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { Typography } from "components/common";
 import { CompanyLogo } from "components/employers/company";
+import { CompanyLogoProps } from "components/employers/company/CompanyLogo";
 import Feature from "components/home/featured-job/Feature";
 import React from "react";
 import { Job } from "service/types";
@@ -9,10 +10,11 @@ import { currencyFormat, CURRENCY_FORMAT_DEFAULT_CONFIG } from "utils/number";
 interface JobSnippetProps {
   job: Partial<Job>;
   className: string;
+  companyLogoProps?: CompanyLogoProps;
 }
 
 function JobSnippet(props: Partial<JobSnippetProps>) {
-  const { job, className } = props;
+  const { job, className, companyLogoProps } = props;
 
   return (
     <div
@@ -21,8 +23,8 @@ function JobSnippet(props: Partial<JobSnippetProps>) {
         className
       )}
     >
-      <CompanyLogo size="lg" src={job?.company_logo} />
-      <div className="flex flex-col gap-2">
+      <CompanyLogo {...companyLogoProps} src={job?.company_logo} />
+      <div className="flex flex-col gap-1">
         <Typography className="font-bold" variant="h5">
           {job?.title || "-"}
         </Typography>

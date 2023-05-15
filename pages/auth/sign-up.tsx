@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "components/common";
+import { Button, PageTitle, TextField, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -122,7 +122,7 @@ function SignUpPage(props: SignUpPageProps) {
   return (
     <BlankLayout title="Sign Up">
       <div className="max-w-5xl mx-auto p-6">
-        <p className="text-center mb-4 text-6xl">Create an Employer Account</p>
+        <PageTitle>Create an Employer Account</PageTitle>
         <Typography className="text-center mb-8">
           Are you a hiring manager? Manage your job postings and <br /> company
           details in one place.

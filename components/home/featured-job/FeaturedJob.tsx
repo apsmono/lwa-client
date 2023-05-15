@@ -35,7 +35,7 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
   return (
     <div className="w-full flex pl-6 lg:pl-24">
       <div>
-        <p className="text-4xl">
+        <p className="text-3xl font-light">
           Featured <br />
           Jobs
         </p>
@@ -43,10 +43,10 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
         <div className="flex gap-2 my-6">
           <button
             className={clsx(
-              "md:w-16 md:h-16 bg-neutral-200 rounded-full flex items-center justify-center opacity-60 transition-all",
+              "md:w-12 md:h-12 bg-neutral-200 rounded-full flex items-center justify-center opacity-60 transition-all",
               "hover:opacity-100",
               "active:opacity-100",
-              "w-10 h-10"
+              "w-8 h-8"
             )}
             onClick={toLeft}
           >
@@ -54,10 +54,10 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
           </button>
           <button
             className={clsx(
-              "md:w-16 md:h-16 bg-neutral-200 rounded-full flex items-center justify-center opacity-60 transition-all",
+              "md:w-12 md:h-12 bg-neutral-200 rounded-full flex items-center justify-center opacity-60 transition-all",
               "hover:opacity-100",
               "active:opacity-100",
-              "w-10 h-10"
+              "w-8 h-8"
             )}
             onClick={toRight}
           >

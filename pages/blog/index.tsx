@@ -42,9 +42,9 @@ function BlogPage(props: IBlogPageProps) {
   return (
     <GuestLayout title="Blog">
       <div className="w-full max-w-5xl mx-auto p-6 pb-48">
-        <PageTitle>BLOG</PageTitle>
+        <PageTitle>Blog</PageTitle>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8">
           {blogs.map((item) => (
             <div key={item.id}>
               <picture>

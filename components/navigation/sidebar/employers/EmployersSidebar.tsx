@@ -17,6 +17,7 @@ import { getCookie, removeCookies } from "cookies-next";
 import SidebarItem from "./sidebar-item/SidebarItem";
 import { Typography } from "components/common";
 import { LogOut } from "react-feather";
+import Link from "next/link";
 
 interface IEmployersSidebarProps {
   open: boolean;
@@ -89,9 +90,11 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
     >
       <div className="flex flex-col gap-6 py-6">
         <div className="flex items-center gap-2 justify-center pt-4">
-          <picture>
-            <img src="/lwa-logo-black.png" alt="" className="w-48" />
-          </picture>
+          <Link href="/">
+            <picture>
+              <img src="/lwa-logo-black.png" alt="" className="w-48" />
+            </picture>
+          </Link>
         </div>
 
         <ul className="flex flex-col gap-4 mt-10 pl-8">
@@ -105,7 +108,7 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
           <li>
             <button
               onClick={handleLogout}
-              className="text-white font-medium w-full flex gap-4 items-center p-4"
+              className="text-white font-medium w-full flex gap-4 items-center px-6 py-3"
             >
               <picture>
                 <img className="w-5" src="/ic-sign-out.png" alt="" />

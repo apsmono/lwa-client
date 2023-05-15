@@ -1,4 +1,10 @@
-import { Button, Chip, TextField, Typography } from "components/common";
+import {
+  Button,
+  Chip,
+  PageTitle,
+  TextField,
+  Typography,
+} from "components/common";
 import AdvanceSelect, {
   TAdvanceSelectRef,
 } from "components/common/forms/AdvanceSelect";
@@ -214,13 +220,15 @@ function JobListPage(props: JobListPageProps) {
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
         {category ? (
           <>
-            <h1 className="text-center text-6xl mb-3">{category.name} Jobs</h1>
+            <PageTitle className="text-center mb-3">
+              {category.name} Jobs
+            </PageTitle>
             <Typography className="text-center">
               {category.description}
             </Typography>
           </>
         ) : (
-          <h1 className="text-center text-6xl mb-3">Jobs</h1>
+          <PageTitle className="text-center mb-3">Jobs</PageTitle>
         )}
         <form onSubmit={handleSubmit}>
           <TextField

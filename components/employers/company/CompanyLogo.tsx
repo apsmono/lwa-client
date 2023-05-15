@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React, { useMemo } from "react";
 
-interface CompanyLogoProps {
+export interface CompanyLogoProps {
   src?: string;
   size?: "sm" | "md" | "lg";
   className?: string;

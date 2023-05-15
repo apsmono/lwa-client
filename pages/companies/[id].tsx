@@ -41,7 +41,7 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
           </div>
         </div>
 
-        <div className="flex mt-4 mb-8 gap-2">
+        <div className="flex mt-4 mb-8 gap-2 flex-wrap">
           <Feature
             className="border border-primary-500"
             icon="📧"

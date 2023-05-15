@@ -1,4 +1,4 @@
-import { Button, Typography } from "components/common";
+import { Button, PageTitle, Typography } from "components/common";
 import { PasswordTextField } from "components/common/forms";
 import { useForm } from "react-hook-form";
 import BlankLayout from "components/layout/BlankLayout";
@@ -58,7 +58,7 @@ function ResetPasswordPage(props: IResetPasswordPageProps) {
   return (
     <BlankLayout title="Reset Password" onBack={() => router.push("/")}>
       <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
-        <p className="text-center mb-4 text-6xl">Create New Password</p>
+        <PageTitle>Create New Password</PageTitle>
         <Typography className="text-center mb-8">
           Your new password must be diferrent from previous <br /> used
           passwords

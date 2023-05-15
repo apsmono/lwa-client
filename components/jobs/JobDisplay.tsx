@@ -43,6 +43,10 @@ function JobDisplay(props: Partial<JobDisplayProps>) {
               filled={false}
               className="bg-primary-800 hover:bg-primary-900 text-white"
               block
+              onClick={() => {
+                if (!job?.apply_link) return;
+                window.open(job.apply_link);
+              }}
             >
               Apply
             </Button>

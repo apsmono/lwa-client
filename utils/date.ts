@@ -56,20 +56,22 @@ export const timeRelative = (
 
   let unit: Intl.RelativeTimeFormatUnit = "seconds";
 
-  if (diff < msPerMinute) {
-    unit = "seconds";
-    return Math.round(diff / 1000) + " seconds ago";
-  } else if (diff < msPerHour) {
-    unit = "minutes";
-  } else if (diff < msPerDay) {
-    unit = "hours";
-  } else if (diff < msPerMonth) {
-    if (Math.round(diff / msPerDay) === 1) unit = "day";
-    else unit = "days";
+  let ms = msPerMinute;
+
+  if (diff < msPerMinute * 60) {
+    unit = "minute";
+  } else if (diff < msPerHour * 24) {
+    unit = "hour";
+    ms = msPerHour;
+  } else if (diff < msPerDay * 30) {
+    unit = "day";
+    ms = msPerDay;
+  } else if (diff < msPerMonth * 12) {
+    unit = "month";
+    ms = msPerMonth;
   } else if (diff < msPerYear) {
-    unit = "months";
-  } else {
-    unit = "years";
+    unit = "year";
+    ms = msPerYear;
   }
-  return formatter.format(Math.floor(-diff / (1000 * 60 * 60 * 24)), unit);
+  return formatter.format(-Math.floor(diff / ms), unit);
 };

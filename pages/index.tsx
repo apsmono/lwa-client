@@ -1,4 +1,10 @@
-import { Button, Select, TextField, Typography } from "components/common";
+import {
+  Button,
+  PageTitle,
+  Select,
+  TextField,
+  Typography,
+} from "components/common";
 import { GetServerSideProps } from "next";
 import CategoryService from "service/category_service";
 import { GuestLayout } from "components/layout";
@@ -41,11 +47,9 @@ function Home(props: HomePropsInterface) {
         <Subscribe className="max-w-7xl mx-auto" categories={categories} />
       }
     >
-      <div className="flex flex-col mb-8 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
+      <div className="flex flex-col md:mb-24 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
         <div className="max-w-3xl">
-          <p className="mb-4 capitalize text-6xl text-center">
-            Find Remote Work Today
-          </p>
+          <PageTitle className="mb-4">Find Remote Work Today</PageTitle>
 
           <Typography className="mb-4 text-center">
             Your gateway to the best remote jobs from trusted companies and

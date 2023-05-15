@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "components/common";
+import { Button, PageTitle, TextField, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
@@ -82,9 +82,9 @@ function SignInPage(props: SignInPageProps) {
   return (
     <BlankLayout title="Sign In">
       <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
-        <p className="text-center mb-4 text-6xl capitalize">
-          Sign in to your <br /> Employers Account
-        </p>
+        <PageTitle>
+          Sign In To Your <br /> Employers Account
+        </PageTitle>
         <Typography className="text-center mb-8">
           Are you a hiring manager? Manage your job postings and <br /> company
           details in one place.

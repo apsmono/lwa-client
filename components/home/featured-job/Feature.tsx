@@ -17,7 +17,7 @@ function Feature({ icon, title, className }: FeatureProps) {
       )}
     >
       {icon}
-      <Typography variant="small" className="font-medium">
+      <Typography variant="xs" className="font-medium">
         {title}
       </Typography>
     </div>

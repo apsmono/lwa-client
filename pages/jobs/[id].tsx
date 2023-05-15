@@ -21,7 +21,7 @@ function JobDetailPage(props: JobDetailPageProps) {
         <Subscribe className="max-w-7xl mx-auto" categories={categories} />
       }
     >
-      <div className="p-6 mb-12">
+      <div className="mb-12">
         <JobDisplay
           job={job}
           className="px-6 max-w-5xl mx-auto"

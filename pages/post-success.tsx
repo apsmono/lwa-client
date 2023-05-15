@@ -1,4 +1,4 @@
-import { Typography } from "components/common";
+import { PageTitle, Typography } from "components/common";
 import BlankLayout from "components/layout/BlankLayout";
 import { ROUTE_EMPLOYERS_LISTING } from "config/routes";
 import { useRouter } from "next/router";
@@ -15,9 +15,9 @@ function PostJobSuccess() {
         <picture className="my-4">
           <img src="/sign-up-success.png" alt="" className="w-28" />
         </picture>
-        <p className="text-6xl text-center">
+        <PageTitle>
           Payment <br /> Accepted
-        </p>
+        </PageTitle>
         <div className="max-w-2xl mt-4">
           <Typography className="text-center">
             We will notify you in less than 24 hours when your job post is LIVE!

@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "components/common";
+import { Button, PageTitle, TextField, Typography } from "components/common";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -46,7 +46,7 @@ function ForgotPasswordPage(props: ForgotPasswordPageProps) {
   return (
     <BlankLayout title="Forgot Password">
       <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
-        <p className="text-center mb-4 text-6xl">Reset Password</p>
+        <PageTitle>Reset Password</PageTitle>
         <Typography className="text-center mb-8">
           Enter the email address associated with your account and click send.
           <br /> An email with instructions to reset your password will be sent

@@ -90,7 +90,6 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="border-gray-200"
             />
             <Typography className="font-bold" variant="h6">
               -
@@ -100,7 +99,6 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="border-gray-200"
             />
           </div>
         </div>

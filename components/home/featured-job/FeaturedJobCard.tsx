@@ -18,13 +18,13 @@ function FeaturedJobCard(props: FeaturedJobCard) {
   return (
     <div
       className={clsx(
-        "w-72 py-9 rounded-2xl flex flex-col gap-4 cursor-pointer mb-2 transition-all px-6",
+        "w-64 py-9 rounded-2xl flex flex-col gap-4 cursor-pointer mb-2 transition-all px-6",
         { "bg-primary-500": variant === "primary" },
         { "bg-secondary-500": variant === "secondary" }
       )}
       onClick={onClick}
     >
-      <div className="w-14 h-14 relative rounded-full object-cover mb-3">
+      <div className="w-12 h-12 relative rounded-full object-cover">
         <Image
           src={`${process.env.NEXT_PUBLIC_API_URL}${job.company_logo}`}
           fill
@@ -33,7 +33,7 @@ function FeaturedJobCard(props: FeaturedJobCard) {
         />
       </div>
       <div>
-        <Typography variant="h4" className="font-bold mb-2">
+        <Typography variant="h5" className="font-bold mb-2">
           {job.title}
         </Typography>
         <Typography>{job.company_name}</Typography>
@@ -54,7 +54,7 @@ function FeaturedJobCard(props: FeaturedJobCard) {
       </div>
       <div>
         <span
-          className={clsx("px-4 py-1 rounded-full mt-4 text-white", {
+          className={clsx("px-4 py-1 rounded-full mt-4 text-white text-xs", {
             "bg-primary-800": variant === "primary",
             "bg-secondary-700": variant === "secondary",
           })}

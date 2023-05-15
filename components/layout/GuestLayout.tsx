@@ -206,7 +206,7 @@ function GuestLayout(props: GuestLayoutProps) {
             </div>
           </div>
 
-          <div className={className}>{children}</div>
+          <div className={clsx("md:mt-24", className)}>{children}</div>
         </div>
       </div>
       <div className="px-6">{bottomComponent}</div>

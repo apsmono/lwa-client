@@ -27,7 +27,7 @@ function SidebarItem(props: ISidebarItemProps) {
         href={link.href}
         passHref
         className={clsx(
-          "w-full p-4 rounded-l-full transition-all font-medium flex gap-4 items-center",
+          "w-full px-6 py-3 rounded-l-full transition-all font-medium flex gap-4 items-center",
           {
             "bg-white text-primary-500": active,
           },

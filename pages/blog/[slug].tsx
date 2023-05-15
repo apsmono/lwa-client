@@ -1,4 +1,4 @@
-import { Typography } from "components/common";
+import { PageTitle, Typography } from "components/common";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React from "react";
@@ -35,18 +35,13 @@ function BlogDetailPage(props: IBlogDetailPageProps) {
       }
     >
       <div className="max-w-5xl mx-auto p-6">
-        <Typography
-          variant="h1"
-          className="font-palo font-bold tracking-wide uppercase text-center mb-4"
-        >
-          {blog.title}
-        </Typography>
+        <PageTitle>{blog.title}</PageTitle>
 
         <picture>
           <img
             src={`${process.env.NEXT_PUBLIC_API_URL}${blog.thumbnail}`}
             alt=""
-            className="w-full rounded-xl my-6"
+            className="w-full rounded-xl my-6 mt-12"
           />
         </picture>
 
