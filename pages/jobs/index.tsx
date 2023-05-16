@@ -240,7 +240,7 @@ function JobListPage(props: JobListPageProps) {
         <div className="flex gap-x-4 flex-wrap items-center">
           <JobFilter
             ref={sortingRef}
-            label="Sort by"
+            label="🌶️ Sort By"
             options={[
               { val: "created_at", label: "Most Recent" },
               { val: "click_counts", label: "Most Relevant" },
@@ -253,7 +253,7 @@ function JobListPage(props: JobListPageProps) {
           />
           <JobFilter
             ref={datePostedRef}
-            label="Date posted"
+            label="🗓️ Date Posted"
             options={[
               { val: "", label: "Anytime" },
               { val: 7, label: "Past week" },
@@ -267,7 +267,7 @@ function JobListPage(props: JobListPageProps) {
             getOptionValue={(val) => val?.val}
           />
           <JobFilter
-            label="Job Type"
+            label="💻 Job Type"
             options={employmentTypes}
             renderOption={(val) => val?.name}
             multiple
@@ -281,7 +281,7 @@ function JobListPage(props: JobListPageProps) {
             className="md:w-auto min-w-[12rem]"
             showAction
             multiple
-            label="Locations"
+            label="🌎 Location"
             options={[...locations]}
             renderOption={(val) => val?.name}
             onChange={(val) => setLocation(val)}
@@ -292,7 +292,7 @@ function JobListPage(props: JobListPageProps) {
             className="md:w-auto min-w-[12rem]"
             showAction
             multiple
-            label="Industry"
+            label="🏢 Industry"
             options={industries}
             renderOption={(val) => val?.name}
             onChange={(val) => setSelectedIndustries(val)}
@@ -303,7 +303,7 @@ function JobListPage(props: JobListPageProps) {
             className="md:w-auto min-w-[12rem]"
             showAction
             multiple
-            label="Company Size"
+            label="🤩 Company Size"
             options={companySizes}
             renderOption={(val) => val?.size}
             onChange={(val) => setCpSize(val)}
@@ -314,7 +314,7 @@ function JobListPage(props: JobListPageProps) {
             className="md:w-auto min-w-[12rem]"
             showAction
             multiple
-            label="Category"
+            label="💼 Category"
             options={[...categories]}
             renderOption={(val) => val?.name}
             ref={categoriesListRef}
@@ -324,7 +324,7 @@ function JobListPage(props: JobListPageProps) {
           <JobFilter
             className="md:w-auto min-w-[12rem]"
             showAction
-            label="Salary"
+            label="🔥 Salary"
             options={salaries}
             renderOption={(opt) => opt.label}
             ref={salaryListRef}

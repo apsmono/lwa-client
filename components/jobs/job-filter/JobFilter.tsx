@@ -82,7 +82,8 @@ const JobFilter = forwardRef<TAdvanceSelectRef, Partial<IJobFilterProps>>(
       if (!newVal) return;
 
       if (!multiple) {
-        setValue(newVal);
+        if (getOptionValue(newVal) === getOptionValue(value)) setValue(null);
+        else setValue(newVal);
         return;
       }
 
