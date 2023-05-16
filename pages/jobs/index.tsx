@@ -333,9 +333,9 @@ function JobListPage(props: JobListPageProps) {
           />
           <div className="mb-3">
             <Button
-              variant="white"
+              filled={false}
+              className="bg-primary-800 hover:bg-primary-900 text-white px-2"
               size="sm"
-              className="px-2"
               onClick={handleResetClick}
             >
               Reset
