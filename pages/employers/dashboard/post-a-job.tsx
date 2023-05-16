@@ -91,7 +91,7 @@ function PostJobPage(props: IPostJobPageProps) {
   };
   return (
     <EmployersLayout title="Post a Job" employers={user}>
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto px-6">
         <PageTitle>Post a Job</PageTitle>
         <CreateJobWizard
           jobIndustries={jobIndustries}

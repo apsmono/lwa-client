@@ -38,25 +38,30 @@ function PackageCard(props: PackageCardProps) {
             {item.description}
           </Typography>
         ) : null}
+
+        <ul className="flex flex-col gap-1 mt-3">
+          {item.perks
+            .filter((perk) => perk.is_active)
+            .map((perk) => {
+              return (
+                <li key={perk.id} className="flex gap-2 items-center">
+                  <picture className="w-4">
+                    <img
+                      alt="Check"
+                      src={
+                        perk.is_active
+                          ? "/check-active.svg"
+                          : "/check-inactive.svg"
+                      }
+                      className="w-4 h-4"
+                    />
+                  </picture>
+                  <Typography variant="small">{perk.perks}</Typography>
+                </li>
+              );
+            })}
+        </ul>
       </div>
-      <ul className="flex flex-col gap-1">
-        {item.perks.map((perk) => {
-          return (
-            <li key={perk.id} className="flex gap-2 items-center">
-              <picture className="w-4">
-                <img
-                  alt="Check"
-                  src={
-                    perk.is_active ? "/check-active.svg" : "/check-inactive.svg"
-                  }
-                  className="w-4 h-4"
-                />
-              </picture>
-              <Typography variant="small">{perk.perks}</Typography>
-            </li>
-          );
-        })}
-      </ul>
       <Button
         onClick={() => onClick(item)}
         disabled={disabled}

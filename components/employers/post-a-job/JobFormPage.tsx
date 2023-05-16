@@ -137,7 +137,7 @@ function JobFormPage(props: JobFormPageProps) {
       >
         <div className="flex flex-col gap-4">
           <p className={clsx("font-bold mb-4", titleProps?.className)}>
-            Gain More Visibility
+            Choose Your Plan
           </p>
           <PackageList packages={packages} />
         </div>
