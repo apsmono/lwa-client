@@ -141,7 +141,7 @@ const JobFilter = forwardRef<TAdvanceSelectRef, Partial<IJobFilterProps>>(
             </>
           }
           className={clsx(
-            "translate-x-0 w-full pt-8 md:w-auto min-w-[12rem] shadow-lg",
+            "translate-x-0 w-full pt-8 md:w-auto min-w-[12.5rem] shadow-lg",
             styles["filter-content"],
             className
           )}
@@ -181,7 +181,7 @@ const JobFilter = forwardRef<TAdvanceSelectRef, Partial<IJobFilterProps>>(
             );
           })}
           {showAction ? (
-            <>
+            <div className="flex flex-col justify-center">
               <Button block onClick={onShowResultClick}>
                 Show Result
               </Button>
@@ -193,7 +193,7 @@ const JobFilter = forwardRef<TAdvanceSelectRef, Partial<IJobFilterProps>>(
               >
                 Cancel
               </Button>
-            </>
+            </div>
           ) : null}
         </MyPopOver>
       </div>
