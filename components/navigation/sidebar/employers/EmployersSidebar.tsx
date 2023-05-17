@@ -89,13 +89,18 @@ function EmployersSidebar(props: IEmployersSidebarProps) {
       withBackdrop
     >
       <div className="flex flex-col gap-6 py-6">
-        <div className="flex items-center gap-2 justify-center pt-4">
-          <Link href="/">
-            <picture>
-              <img src="/lwa-logo-black.png" alt="" className="w-48" />
-            </picture>
-          </Link>
-        </div>
+        <Link href="/" className="flex gap-2  justify-center items-center pt-4">
+          <picture>
+            <img
+              src="/icon-white.svg"
+              alt="Logo"
+              className="h-6 cursor-pointer"
+            />
+          </picture>
+          <Typography variant="h5" className="text-white">
+            Let&apos;s Work Anywhere
+          </Typography>
+        </Link>
 
         <ul className="flex flex-col gap-4 mt-10 pl-8">
           {links.map((link, i) => (
