@@ -125,10 +125,11 @@ const JobFilter = forwardRef<TAdvanceSelectRef, Partial<IJobFilterProps>>(
         <MyPopOver
           buttonProps={{
             className: clsx(
-              "border border-neutral-500 relative rounded-full py-1 px-4 w-full transition-all",
+              "border relative rounded-full py-1 px-4 w-full transition-all",
               {
                 "bg-primary-500 text-white": isHaveValue,
-              }
+              },
+              { "bg-[#F5F5F5]": !isHaveValue }
             ),
           }}
           containerProps={{

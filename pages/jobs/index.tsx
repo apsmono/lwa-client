@@ -26,6 +26,7 @@ import CategoryService from "service/category_service";
 import CompanySizeService from "service/company_size_service";
 import EmploymentTypeService from "service/employment_type_service";
 import JobIndustryService from "service/job_industry_service";
+import JobSalaryService from "service/job_salary_service";
 import JobService from "service/job_service";
 import LocationService from "service/location_service";
 import {
@@ -33,6 +34,7 @@ import {
   EmploymentType,
   Job,
   JobIndustry,
+  JobSalary,
   LocationType,
 } from "service/types";
 import { CompanySize } from "service/types/company_type";
@@ -46,6 +48,7 @@ interface JobListPageProps {
   jobTitle?: string;
   jobIndustries: JobIndustry[];
   companySizes: CompanySize[];
+  salaries: JobSalary[];
 }
 
 function JobListPage(props: JobListPageProps) {
@@ -57,6 +60,7 @@ function JobListPage(props: JobListPageProps) {
     jobTitle: userJobTitle,
     jobIndustries = [],
     companySizes = [],
+    salaries = [],
   } = props;
   const router = useRouter();
   const { categories } = useAppStore();
@@ -66,37 +70,10 @@ function JobListPage(props: JobListPageProps) {
   const [sorting, setSorting] = useState<any>(null);
   const [datePosted, setDatePosted] = useState<any>(null);
   const [jobList, setJobList] = useState(jobs);
-  const [salary, setSalary] = useState<any>(null);
+  const [salary, setSalary] = useState<JobSalary[]>();
   const [jobTitle, setJobTitle] = useState(userJobTitle);
   const [cpSize, setCpSize] = useState<CompanySize[]>();
   const [selectedIndustries, setSelectedIndustries] = useState<JobIndustry[]>();
-  const salaries = useMemo(() => {
-    return [
-      {
-        label: "<$50k",
-        start: 0,
-        end: 50000,
-      },
-      { label: "$50k - $80k", start: 50000, end: 80000 },
-      {
-        label: "$80k - $100k",
-        start: 80000,
-        end: 100000,
-      },
-      {
-        label: "$100k - $150k",
-        start: 100000,
-        end: 150000,
-      },
-      {
-        label: "$150k - $180k",
-        start: 150000,
-        end: 180000,
-      },
-      { label: "$180k - $200k", start: 180000, end: 200000 },
-      { label: ">$200k", start: 200000 },
-    ];
-  }, []);
 
   const industries = useMemo(() => {
     const copy = [...jobIndustries];
@@ -153,8 +130,7 @@ function JobListPage(props: JobListPageProps) {
       params.end_date = endDate.toLocaleDateString();
     }
     if (salary) {
-      if (salary.start) params.start_salary = salary.start;
-      if (salary.end) params.end_salary = salary.end;
+      if (salary.length) params.job_salary_id = salary.map((s) => s.id);
     }
     if (categoryIds.length) params.category_id = categoryIds.map((c) => c);
 
@@ -289,7 +265,7 @@ function JobListPage(props: JobListPageProps) {
             ref={locationRef}
           />
           <JobFilter
-            className="md:w-auto min-w-[12rem]"
+            className="md:w-auto min-w-[12rem] max-h-[250px] overflow-y-auto"
             showAction
             multiple
             label="🏢 Industry"
@@ -311,7 +287,7 @@ function JobListPage(props: JobListPageProps) {
             ref={cpSizeRef}
           />
           <JobFilter
-            className="md:w-auto min-w-[12rem]"
+            className="md:w-auto min-w-[12rem] max-h-[250px] overflow-y-auto"
             showAction
             multiple
             label="💼 Category"
@@ -324,9 +300,10 @@ function JobListPage(props: JobListPageProps) {
           <JobFilter
             className="md:w-auto min-w-[12rem]"
             showAction
+            multiple
             label="🔥 Salary"
             options={salaries}
-            renderOption={(opt) => opt.label}
+            renderOption={(opt) => opt.salary}
             ref={salaryListRef}
             getOptionValue={(val) => val?.id}
             onChange={(val) => setSalary(val)}
@@ -438,12 +415,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     LocationService.gets(),
     JobIndustryService.gets(),
     CompanySizeService.gets(),
+    JobSalaryService.gets(),
   ]);
   props.jobs = res[0].data;
   props.employmentTypes = res[1].data;
   props.locations = res[2].data;
   props.jobIndustries = res[3].data;
   props.companySizes = res[4].data;
+  props.salaries = res[5].data;
   if (title) props.jobTitle = title;
 
   return {
