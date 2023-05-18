@@ -165,7 +165,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
             "Job Title*",
             "title",
             "title",
-            "eg. Project Manager, Senior Analyst"
+            "E.g. Project Manager, Senior Analyst"
           )}
         />
 
