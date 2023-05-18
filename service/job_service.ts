@@ -10,8 +10,8 @@ export default class JobService {
     return sendAndHandleRequest(`/jobs/${companyId}/similar`, "get");
   }
 
-  static async get(id: number) {
-    return sendAndHandleRequest(`/jobs/${id}`, "get");
+  static async get(slug: string) {
+    return sendAndHandleRequest(`/jobs/${slug}`, "get");
   }
 
   static async create(formData: any) {

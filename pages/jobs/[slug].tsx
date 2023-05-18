@@ -35,9 +35,9 @@ function JobDetailPage(props: JobDetailPageProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
-  const { id } = context.query;
+  const { slug } = context.query;
 
-  const res = await (await JobService.get(+id!)).data;
+  const res = await (await JobService.get(slug!.toString())).data;
 
   const { job } = res;
   if (!job) {

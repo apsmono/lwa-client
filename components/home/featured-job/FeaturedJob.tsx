@@ -30,7 +30,7 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
   };
 
   const handleClick = (job: Job) => {
-    router.push(`/jobs/${job.id}`);
+    router.push(`/jobs/${job.slug}`);
   };
   return (
     <div className="w-full flex pl-6 lg:pl-24">

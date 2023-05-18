@@ -34,6 +34,7 @@ export type Job = {
   post_ended_at?: string;
   company_size?: string;
   company_size_id?: number;
+  slug: string;
 };
 
 export type TJobVoucher = {

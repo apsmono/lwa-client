@@ -20,12 +20,14 @@ import { AuthService } from "service/auth_service";
 import CompanyService from "service/company_service";
 import EmploymentTypeService from "service/employment_type_service";
 import JobIndustryService from "service/job_industry_service";
+import JobSalaryService from "service/job_salary_service";
 import JobService from "service/job_service";
 import LocationService from "service/location_service";
 import {
   EmploymentType,
   Job,
   JobIndustry,
+  JobSalary,
   LocationType,
   User,
 } from "service/types";
@@ -42,6 +44,7 @@ interface IManageListingPageProps {
   locations: LocationType[];
   employmentTypes: EmploymentType[];
   jobIndustries: JobIndustry[];
+  salaries: JobSalary[];
 }
 
 function ManageListingPage(props: IManageListingPageProps) {
@@ -51,6 +54,7 @@ function ManageListingPage(props: IManageListingPageProps) {
     employmentTypes,
     locations,
     jobIndustries,
+    salaries,
   } = props;
   const [refetch, setRefetch] = useState(false);
   const [status, setStatus] = useState<any>({ val: "", label: "All" });
@@ -94,6 +98,7 @@ function ManageListingPage(props: IManageListingPageProps) {
   const onJobsUpdate = async (payload: any) => {
     try {
       setLoading(true);
+      delete payload.salary;
       const response = await wrappedUpdateJobs(currentJob!.id, payload);
       setOpenEditModal(false);
       showSuccessAlert(response.message);
@@ -314,6 +319,7 @@ function ManageListingPage(props: IManageListingPageProps) {
           categories={categories}
           onSubmit={onJobsUpdate}
           jobIndustries={jobIndustries}
+          salaries={salaries}
           defaultValue={currentJob}
         />
       </Modal>
@@ -329,10 +335,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     EmploymentTypeService.gets(),
     LocationService.gets(),
     JobIndustryService.gets(),
+    JobSalaryService.gets(),
   ]);
   props.employmentTypes = res[0].data;
   props.locations = res[1].data;
   props.jobIndustries = res[2].data;
+  props.salaries = res[3].data;
 
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;

@@ -21,7 +21,7 @@ function Jobs(props: JobsProps) {
   const [offset, setOffset] = useState(2);
   const { setLoading } = useContext(AppContext);
   const handleClick = (job: Job) => {
-    router.push(`/jobs/${job.id}`);
+    router.push(`/jobs/${job.slug}`);
   };
   const handleShowMoreJobs = async () => {
     try {
