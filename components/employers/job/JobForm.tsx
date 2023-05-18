@@ -239,13 +239,8 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           />
         ) : null}
 
-        <InputLabel
-          error={!!errors.job_salary_id}
-          description="Highly recommended! Providing salary will five your job more visibility"
-        >
-          Salary*
-        </InputLabel>
         <Select
+          label="Salary*"
           options={salaries}
           renderOption={(opt) => opt.salary}
           error={!!errors.job_salary_id}

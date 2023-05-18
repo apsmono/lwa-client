@@ -123,7 +123,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
     return (
       <div className={clsx(className)}>
         <TextField
-          labelDescription="Enter your company or oranization's name"
+          labelDescription="Enter your company or organizations name"
           {...getFieldAttribute(
             "Company Name*",
             "company_name",
@@ -139,7 +139,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
             "company_hq",
             "Type here"
           )}
-          labelDescription="Where your company is officialy headquartered"
+          labelDescription="Where your company is officially headquartered"
         />
 
         <Select
