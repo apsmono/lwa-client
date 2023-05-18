@@ -46,7 +46,7 @@ function GuestFooter(props: GuestFooterProps) {
             color="secondary"
             onClick={() => {
               if (window) {
-                window.open("https://facebook.com/LWA_com");
+                window.open("https://www.facebook.com/LWAcom");
               }
             }}
           >
