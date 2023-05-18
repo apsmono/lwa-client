@@ -59,8 +59,7 @@ function FaqPage(props: IFaqPageProps) {
       },
       {
         title: "How long will my job posting be visible on the job board?",
-        content:
-          "The duration of job postings varies dependent on the selected job post. Paid postings may be visible for 30 days, while the free posting will be visible for 7 days.",
+        content: "All job postings will be visible for 30 days.",
       },
       {
         title: "Can I edit or delete my job posting after it has been posted?",
@@ -69,8 +68,14 @@ function FaqPage(props: IFaqPageProps) {
       },
       {
         title: "How do I contact the Let’s Work Anywhere support team?",
-        content:
-          "Click on the Chat Box on the bottom-right of your screen and enter your question or reach us at hello@letsworkanywhere.com and our support team will respond to you as soon as possible.",
+        content: (
+          <>
+            You can reach our support team by emailing us at{" "}
+            <a href="mailto:contact@letsworkanywhere.com">
+              contact@letsworkanywhere.com
+            </a>
+          </>
+        ),
       },
       {
         title: "Is my personal information secure on the job board?",
