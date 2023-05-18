@@ -48,27 +48,27 @@ function Home(props: HomePropsInterface) {
       }
     >
       <div className="flex flex-col md:mb-24 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
-        <div className="max-w-3xl">
+        <div className="max-w-xl">
           <PageTitle className="mb-4">Find Remote Work Today</PageTitle>
 
           <Typography className="mb-4 text-center">
             Your gateway to the best remote jobs from trusted companies and
-            employers. Explore our wide range of categories including
+            employers. <br /> Explore our wide range of categories including
             programming, design, customer service, and more. Find your dream job
             and work remotely!
           </Typography>
-        </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex w-full">
-          <TextField
-            containerProps={{ className: "w-full" }}
-            inputSuffix={<button type="button">🔍</button>}
-            placeholder="Search..."
-            register={register}
-            name="title"
-            rounded
-          />
-        </form>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex w-full">
+            <TextField
+              containerProps={{ className: "w-full" }}
+              inputSuffix={<button type="button">🔍</button>}
+              placeholder="Search keyword, e.g location, full time, programmer"
+              register={register}
+              name="title"
+              rounded
+            />
+          </form>
+        </div>
       </div>
       <div className="mb-6">
         <FeaturedJob jobs={featuredJobs} />

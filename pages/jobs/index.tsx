@@ -208,7 +208,7 @@ function JobListPage(props: JobListPageProps) {
         )}
         <form onSubmit={handleSubmit}>
           <TextField
-            placeholder="Search Job"
+            placeholder="Search keyword, e.g location, full time, programmer"
             value={jobTitle}
             onChange={(e) => setJobTitle(e.target.value)}
           />

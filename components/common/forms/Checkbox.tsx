@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { InputHTMLAttributes } from "react";
+import React, { InputHTMLAttributes, ReactNode } from "react";
 import { UseFormRegister } from "react-hook-form";
 import Typography from "../Typography";
 import InputLabel from "./InputLabel";
@@ -12,6 +12,7 @@ interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   onClick: (val: any) => void;
   checkboxSize?: "sm" | "md" | "lg";
   variant: "black" | "primary";
+  labelComponent?: ReactNode;
 }
 
 function Checkbox(props: Partial<CheckboxProps>) {
@@ -30,6 +31,7 @@ function Checkbox(props: Partial<CheckboxProps>) {
     defaultChecked,
     variant = "primary",
     readOnly,
+    labelComponent,
   } = props;
   const registerAttr = register ? register(props.name ?? "") : {};
 
@@ -62,9 +64,13 @@ function Checkbox(props: Partial<CheckboxProps>) {
           defaultChecked={defaultChecked}
           readOnly={readOnly}
         />
-        <InputLabel htmlFor={id} error={error} className="ml-2 mb-0">
-          {label}
-        </InputLabel>
+        {labelComponent ? (
+          labelComponent
+        ) : (
+          <InputLabel htmlFor={id} error={error} className="ml-2 mb-0">
+            {label}
+          </InputLabel>
+        )}
       </div>
       {helperText && (
         <Typography className="text-red-500 text-medium mt-2" variant="small">

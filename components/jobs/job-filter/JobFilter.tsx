@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Button } from "components/common";
+import { Button, Typography } from "components/common";
 import MyPopOver, { TMyPopOverRef } from "components/common/MyPopOver";
 import { Checkbox, RadioButton } from "components/common/forms";
 import { TAdvanceSelectRef } from "components/common/forms/AdvanceSelect";
@@ -162,6 +162,13 @@ const JobFilter = forwardRef<TAdvanceSelectRef, Partial<IJobFilterProps>>(
                         (v: any) => getOptionValue(v) === getOptionValue(opt)
                       ).length
                     }
+                    labelComponent={
+                      <label htmlFor={`${label}${i}`}>
+                        <Typography variant="small" className="ml-2">
+                          {renderOption(opt)}
+                        </Typography>
+                      </label>
+                    }
                   />
                 </div>
               );
@@ -170,13 +177,19 @@ const JobFilter = forwardRef<TAdvanceSelectRef, Partial<IJobFilterProps>>(
               <div key={i}>
                 <Checkbox
                   readOnly
-                  label={renderOption(opt)}
                   name={`${label}`}
                   id={`${label}${i}`}
                   className="text-primary-500 checked:border-primary-500"
                   onClick={() => handleValueChange(opt)}
                   checked={getOptionValue(opt) === getOptionValue(value)}
                   value={getOptionValue(opt)}
+                  labelComponent={
+                    <label htmlFor={`${label}${i}`}>
+                      <Typography variant="small" className="ml-2">
+                        {renderOption(opt)}
+                      </Typography>
+                    </label>
+                  }
                 />
               </div>
             );

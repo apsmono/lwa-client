@@ -30,7 +30,7 @@ function NavBarDropdown(props: NavBarDropdownPropsInterface) {
           <li className="my-2 px-2" key={index}>
             {item.onClick ? (
               <button onClick={item.onClick}>
-                <Typography>{item.title}</Typography>
+                <Typography variant="small">{item.title}</Typography>
               </button>
             ) : (
               <Link href={item.route}>
