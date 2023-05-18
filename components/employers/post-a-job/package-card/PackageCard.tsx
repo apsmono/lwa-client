@@ -25,11 +25,14 @@ function PackageCard(props: PackageCardProps) {
       )}
     >
       <div className="flex flex-col gap-1">
-        <Typography variant="h5" className="font-medium">
+        <Typography
+          variant="h5"
+          className={clsx("font-medium", { "text-primary-500": isSelected })}
+        >
           {item.name}
         </Typography>
         {item.price > 0 ? (
-          <Typography variant="h2" className="font-bold">
+          <Typography variant="h1" className="font-bold">
             {item.price > 0 ? "+" : ""}${item.price}
           </Typography>
         ) : null}
