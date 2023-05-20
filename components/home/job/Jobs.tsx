@@ -42,14 +42,20 @@ function Jobs(props: JobsProps) {
       {items.map((job, i) => (
         <React.Fragment key={job.id}>
           <div className="mb-6">
-            <JobCard onClick={() => handleClick(job)} job={job} />
+            <JobCard
+              onClick={() => handleClick(job)}
+              job={job}
+              className="max-w-5xl mx-auto"
+            />
           </div>
           {(i + 1) % 4 === 0 ? (
-            <Subscribe
-              className="mb-6"
-              variant="secondary"
-              categories={categories}
-            />
+            <div className="max-w-7xl mx-auto w-full">
+              <Subscribe
+                className="mb-6"
+                variant="secondary"
+                categories={categories}
+              />
+            </div>
           ) : null}
         </React.Fragment>
       ))}

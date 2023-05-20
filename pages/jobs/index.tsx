@@ -194,25 +194,27 @@ function JobListPage(props: JobListPageProps) {
       }
     >
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
-        {category ? (
-          <>
-            <PageTitle className="text-center mb-3">
-              {category.name} Jobs
-            </PageTitle>
-            <Typography className="text-center">
-              {category.description}
-            </Typography>
-          </>
-        ) : (
-          <PageTitle className="text-center mb-3">Jobs</PageTitle>
-        )}
-        <form onSubmit={handleSubmit}>
-          <TextField
-            placeholder="Search keyword, e.g. location, full-time, programmer"
-            value={jobTitle}
-            onChange={(e) => setJobTitle(e.target.value)}
-          />
-        </form>
+        <div className="flex flex-col gap-2">
+          {category ? (
+            <>
+              <PageTitle className="text-center mb-4">
+                {category.name}
+              </PageTitle>
+              <Typography className="text-center mb-4">
+                {category.description}
+              </Typography>
+            </>
+          ) : (
+            <PageTitle className="text-center mb-4">Jobs</PageTitle>
+          )}
+          <form onSubmit={handleSubmit}>
+            <TextField
+              placeholder="Search keyword, e.g. location, full-time, programmer"
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
+            />
+          </form>
+        </div>
         <div className="flex gap-x-4 flex-wrap items-center">
           <JobFilter
             ref={sortingRef}

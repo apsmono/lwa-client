@@ -132,7 +132,7 @@ function GuestLayout(props: GuestLayoutProps) {
         <link rel="icon" href="/favicon.ico" />
         {meta}
       </Head>
-      <div className={clsx("relative", [addBottomSpace && "pb-24"])}>
+      <div className={clsx("relative", [addBottomSpace && "pb-12"])}>
         {sidebar}
         <GuestSidebar
           categories={categories}
@@ -143,7 +143,7 @@ function GuestLayout(props: GuestLayoutProps) {
         <div>
           <div
             className={clsx(
-              "flex flex-col p-6 lg:px-24 gap-6 relative",
+              "flex flex-col p-6 w-full max-w-7xl gap-6 relative mx-auto",
               navBarProps?.className
             )}
           >
@@ -176,6 +176,7 @@ function GuestLayout(props: GuestLayoutProps) {
                 <Button
                   withShadow={false}
                   onClick={() => router.push("/post-a-job")}
+                  className="font-normal"
                 >
                   Post a Job
                 </Button>
@@ -206,7 +207,7 @@ function GuestLayout(props: GuestLayoutProps) {
             </div>
           </div>
 
-          <div className={clsx("md:mt-24", className)}>{children}</div>
+          <div className={clsx("md:mt-16", className)}>{children}</div>
         </div>
       </div>
       <div className="px-6">{bottomComponent}</div>

@@ -11,15 +11,17 @@ interface JobCardProps {
   job: Job;
   onClick?: () => void;
   showStatus?: boolean;
+  className?: string;
 }
 
 function JobCard(props: JobCardProps) {
-  const { job, onClick, showStatus = true } = props;
+  const { job, onClick, showStatus = true, className } = props;
   return (
     <div
       className={clsx(
         "flex gap-2 justify-between px-6 py-4 rounded-xl border-2 border-primary-500 flex-wrap cursor-pointer transition-all",
-        styles["job-card"]
+        styles["job-card"],
+        className
       )}
       onClick={onClick}
     >

@@ -47,8 +47,8 @@ function Home(props: HomePropsInterface) {
         <Subscribe className="max-w-7xl mx-auto" categories={categories} />
       }
     >
-      <div className="flex flex-col md:mb-24 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
-        <div className="max-w-xl">
+      <div className="flex flex-col md:mb-16 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
+        <div className="max-w-xl flex flex-col gap-2">
           <PageTitle className="mb-4">Find Remote Work Today</PageTitle>
 
           <Typography className="mb-4 text-center">
@@ -70,10 +70,10 @@ function Home(props: HomePropsInterface) {
           </form>
         </div>
       </div>
-      <div className="mb-6">
+      <div className="mb-6 p-6">
         <FeaturedJob jobs={featuredJobs} />
       </div>
-      <div className="md:px-6 p-6 max-w-5xl mx-auto">
+      <div className="md:px-6 p-6 mx-auto">
         <Jobs categories={categories} jobs={jobs} totalItems={totalJobs} />
       </div>
     </GuestLayout>
