@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { Button, Typography } from "components/common";
 import { CompanyLogo } from "components/employers/company";
 import Feature from "components/home/featured-job/Feature";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { Job } from "service/types";
@@ -28,7 +29,9 @@ function JobDisplay(props: Partial<JobDisplayProps>) {
             <Typography className="font-bold" variant="h5">
               {job?.title}
             </Typography>
-            <Typography className="my-1">{job?.company_name}</Typography>
+            <Link href={`/companies/${job?.company_id}`}>
+              <Typography className="my-1">{job?.company_name}</Typography>
+            </Link>
             <Typography variant="small" className="text-neutral-500">
               {timeRelative(
                 new Date(),
