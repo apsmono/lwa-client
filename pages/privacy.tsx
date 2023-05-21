@@ -16,25 +16,13 @@ function PrivacyPage(props: IPrivacyPageProps) {
     {
       title: "Use of Personal Information",
       policies: [
-        "We use your personal information to provide you with access to the Platform and its features, to respond to your inquiries, and to provide customer support. We may also use your personal information to send you promotional emails and other communications related to the Platform.",
-      ],
-    },
-    {
-      title: "Disclosure of Personal Information",
-      policies: [
-        "We may disclose your personal information to third-party service providers who assist us in operating the Platform or providing customer support. We may also disclose your personal information if we are required to do so by law or if we believe in good faith that such disclosure is necessary to protect our rights or the rights of others.",
+        "We may use your personal information to provide you with access to the platform and its features, to respond to your inquiries, and to provide customer support. We may also use your personal information to send you promotional emails and other communications related to the platform. We will not disclose your information to third party marketers",
       ],
     },
     {
       title: "Security of Personal Information",
       policies: [
-        "We may disclose your personal information to third-party service providers who assist us in operating the Platform or providing customer support. We may also disclose your personal information if we are required to do so by law or if we believe in good faith that such disclosure is necessary to protect our rights or the rights of others.",
-      ],
-    },
-    {
-      title: "Cookies",
-      policies: [
-        "We use cookies and other similar technologies to track user activity on the Platform and to personalize your experience. You can disable cookies in your browser settings, but this may affect your ability to use certain features of the Platform.",
+        "We take reasonable measures to protect your personal information from unauthorised access, use, or disclosure. It is important to remember that no method of transmission over the internet or electronic storage is completely foolproof and we’re not responsible for any actions from third party that receive such as information. This is why we continuously monitor and update our security measures to stay ahead of potential threats and maintain the highest level of protection for your information.",
       ],
     },
     {
@@ -44,9 +32,21 @@ function PrivacyPage(props: IPrivacyPageProps) {
       ],
     },
     {
+      title: "Updating Information",
+      policies: [
+        `You have the right to update and maintain the accuracy of your personal details by logging in to your account or emailing us on contact@letsworkanywhere.com. If you wish to update your subscription settings or unsubscribe from our marketing communications, you can easily do so by clicking the "unsubscribe" link in our emails.`,
+      ],
+    },
+    {
+      title: "Third Party Privacy Policies",
+      policies: [
+        "This Privacy Policy applies solely to the information collected and disclosed from you on letsworkanywhere.com. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites or services. We cannot be held responsible for the protection and privacy of any information you provide while visiting such sites.",
+      ],
+    },
+    {
       title: "Changes to Privacy Policy",
       policies: [
-        "We may update this Privacy Policy from time to time by posting a new version on the Platform. Your continued use of the Platform after any such changes constitutes your acceptance of the updated Privacy Policy.",
+        "We may update this Privacy Policy from time to time by posting a new version on the platform. Your continued use of the Platform after any such changes constitutes your acceptance of the updated Privacy Policy. We will notify you promptly. We may send you an email notification or display a notice here, or on our website to ensure that you are aware of the updates.",
       ],
     },
   ];
@@ -56,7 +56,7 @@ function PrivacyPage(props: IPrivacyPageProps) {
         <title>Privacy Policy</title>
       </Head>
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
-        <PageTitle>PRIVACY POLICY</PageTitle>
+        <PageTitle>Privacy Policy</PageTitle>
 
         <Typography>
           This Privacy Policy describes how we collect, use, and protect the
