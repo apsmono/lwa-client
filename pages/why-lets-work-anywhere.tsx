@@ -1,6 +1,6 @@
 import { PageTitle, Typography } from "components/common";
-import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React from "react";
 interface IWhyLWAPageProps {}
 
@@ -39,7 +39,10 @@ function WhyLWAPage(props: IWhyLWAPageProps) {
     },
   ];
   return (
-    <GuestLayout title="Why Lets Work Anywhere">
+    <>
+      <Head>
+        <title>Why Lets Work Anywhere</title>
+      </Head>
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
         <PageTitle>WHY LET’S WORK ANYWHERE?</PageTitle>
 
@@ -62,7 +65,7 @@ function WhyLWAPage(props: IWhyLWAPageProps) {
           ))}
         </div>
       </div>
-    </GuestLayout>
+    </>
   );
 }
 

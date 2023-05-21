@@ -1,6 +1,6 @@
 import { PageTitle, Typography } from "components/common";
-import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React, { useMemo } from "react";
 
 interface ICommunityGuidelineProps {}
@@ -52,7 +52,10 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
     ];
   }, []);
   return (
-    <GuestLayout title="Community Guideline">
+    <>
+      <Head>
+        <title>Community Guideline</title>
+      </Head>
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
         <PageTitle>COMMUNITY GUIDELINES</PageTitle>
 
@@ -77,7 +80,7 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
           </div>
         ))}
       </div>
-    </GuestLayout>
+    </>
   );
 }
 

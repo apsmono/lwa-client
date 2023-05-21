@@ -1,4 +1,3 @@
-import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import React, { useRef, useState } from "react";
 import { AuthService } from "service/auth_service";
@@ -30,6 +29,7 @@ import JobIndustryService from "service/job_industry_service";
 import { CompanySize } from "service/types/company_type";
 import CompanySizeService from "service/company_size_service";
 import JobSalaryService from "service/job_salary_service";
+import Head from "next/head";
 
 interface PostJobPageProps {
   locations: LocationType[];
@@ -159,7 +159,10 @@ function PostJobPage(props: PostJobPageProps) {
   };
 
   return (
-    <GuestLayout title="Post a Job">
+    <>
+      <Head>
+        <title>Post a Job</title>
+      </Head>
       <div className="max-w-5xl mx-auto flex flex-col gap-2 p-4">
         <CreateJobWizard
           ref={formWizardRef}
@@ -178,7 +181,7 @@ function PostJobPage(props: PostJobPageProps) {
           titleProps={{ className: "text-3xl text-center" }}
         />
       </div>
-    </GuestLayout>
+    </>
   );
 }
 

@@ -1,6 +1,7 @@
 import { PageTitle, Typography } from "components/common";
-import { GuestLayout } from "components/layout";
+
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React from "react";
 
 interface ITermsAndConditionProps {}
@@ -92,7 +93,10 @@ function TermsAndConditionPage(props: ITermsAndConditionProps) {
     },
   ];
   return (
-    <GuestLayout title="Terms and Conditions">
+    <>
+      <Head>
+        <title>Terms and Conditions</title>
+      </Head>
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
         <PageTitle>TERMS & CONDITIONS</PageTitle>
 
@@ -113,7 +117,7 @@ function TermsAndConditionPage(props: ITermsAndConditionProps) {
           ))}
         </div>
       </div>
-    </GuestLayout>
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 import { PageTitle, Typography } from "components/common";
-import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React from "react";
 
 interface IPrivacyPageProps {}
@@ -51,7 +51,10 @@ function PrivacyPage(props: IPrivacyPageProps) {
     },
   ];
   return (
-    <GuestLayout title="Privacy Policy">
+    <>
+      <Head>
+        <title>Privacy Policy</title>
+      </Head>
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
         <PageTitle>PRIVACY POLICY</PageTitle>
 
@@ -80,7 +83,7 @@ function PrivacyPage(props: IPrivacyPageProps) {
           </Typography>
         </div>
       </div>
-    </GuestLayout>
+    </>
   );
 }
 

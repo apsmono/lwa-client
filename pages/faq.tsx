@@ -1,8 +1,9 @@
 import { Disclosure } from "@headlessui/react";
 import { PageTitle } from "components/common";
 import PackageCard from "components/employers/post-a-job/package-card/PackageCard";
-import { GuestLayout } from "components/layout";
+
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React, { useMemo } from "react";
 import { Minus, Plus } from "react-feather";
 
@@ -85,7 +86,10 @@ function FaqPage(props: IFaqPageProps) {
     ];
   }, [packages]);
   return (
-    <GuestLayout title="Faq">
+    <>
+      <Head>
+        <title>FAQ</title>
+      </Head>
       <PageTitle>FAQ</PageTitle>
 
       <div className="flex flex-col gap-4 max-w-6xl mx-auto p-6">
@@ -107,7 +111,7 @@ function FaqPage(props: IFaqPageProps) {
           </div>
         ))}
       </div>
-    </GuestLayout>
+    </>
   );
 }
 
