@@ -101,11 +101,11 @@ function PurchaseHistory(props: IPurchaseHistoryProps) {
         <div className="border border-neutral-500 rounded-lg p-6 flex flex-col gap-2 w-full md:w-1/3">
           <Typography>Total Orders</Typography>
           <Typography variant="h2" className="font-bold">
-            {Intl.NumberFormat().format(order_summary.total)} Posts
+            {Intl.NumberFormat().format(order_summary?.total || 0)} Posts
           </Typography>
 
           <Typography className="font-bold">
-            {currencyFormat(order_summary.price)}
+            {currencyFormat(order_summary?.price || 0)}
           </Typography>
         </div>
 
