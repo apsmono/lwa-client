@@ -62,7 +62,7 @@ function Home(props: HomePropsInterface) {
             <TextField
               containerProps={{ className: "w-full" }}
               inputSuffix={<button type="button">🔍</button>}
-              placeholder="Search keyword, e.g. location, full-time, programmer"
+              placeholder="Search keyword, e.g. Location, Full-Time, Programmer"
               register={register}
               name="title"
               rounded
