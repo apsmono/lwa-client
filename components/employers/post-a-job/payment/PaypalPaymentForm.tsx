@@ -53,7 +53,7 @@ const PaypalPaymentForm = forwardRef<
             showErrorMsg={submitPaymentRef.current?.showErrorAlert}
           />
 
-          <Typography className="font-medium text-center my-2" variant="h4">
+          {/* <Typography className="font-medium text-center my-2" variant="h4">
             OR
           </Typography>
           <Typography variant="small">
@@ -119,7 +119,7 @@ const PaypalPaymentForm = forwardRef<
                 }}
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

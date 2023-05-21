@@ -85,11 +85,12 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
     }, [user]);
 
     const handleClick = async () => {
+      if (!availableVoucher.includes(packageItem?.id || 0)) return;
       try {
         let orderId = "";
-        if (!cardFields) {
-          throw new Error("Something went wrong");
-        }
+        // if (!cardFields) {
+        //   throw new Error("Something went wrong");
+        // }
         if (!packageItem) return;
 
         if (!accessToken && validateAccountForm) {
@@ -112,19 +113,19 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
         }
         const packageId = packageItem!.id;
 
-        if (!availableVoucher.includes(packageId)) {
-          setLoading(true);
-          const { fields } = cardFields?.getState() || {};
+        // if (!availableVoucher.includes(packageId)) {
+        //   setLoading(true);
+        //   const { fields } = cardFields?.getState() || {};
 
-          const isFormInvalid = Object.values(fields!).some(
-            (field) => !field.isValid
-          );
-          if (isFormInvalid) {
-            throw new Error("Credit card is invalid");
-          }
-          const order = await cardFields?.submit();
-          orderId = order!.orderId;
-        }
+        //   const isFormInvalid = Object.values(fields!).some(
+        //     (field) => !field.isValid
+        //   );
+        //   if (isFormInvalid) {
+        //     throw new Error("Credit card is invalid");
+        //   }
+        //   const order = await cardFields?.submit();
+        //   orderId = order!.orderId;
+        // }
 
         onClick(orderId, packageItem!.id);
       } catch (error) {
@@ -188,7 +189,11 @@ const SubmitPayment = forwardRef<TSubmitPaymentRef, ISubmitPaymentProps>(
 
           <div className="flex justify-end">
             <Button
-              disabled={!packageItem || loading}
+              disabled={
+                !packageItem ||
+                loading ||
+                !availableVoucher.includes(packageItem.id)
+              }
               onClick={handleClick}
               block
               variant="white"

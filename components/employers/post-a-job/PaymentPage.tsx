@@ -185,7 +185,7 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
             vault: false,
           }}
         >
-          <PayPalHostedFieldsProvider
+          {/* <PayPalHostedFieldsProvider
             createOrder={async () => {
               const packageItem = JSON.parse(
                 getCookie("packageItem")!.toString()
@@ -202,39 +202,39 @@ const PaymentPage = forwardRef<TSubmitPaymentRef, PaymentPageProps>(
                 "font-size": "16px",
               },
             }}
-          >
-            <div className="grid grid-cols-1 gap-6 mt-4">
-              <div className="flex flex-col gap-4">
-                <p className={clsx("font-bold mb-4", titleProps?.className)}>
-                  Choose Your Plan
-                </p>
-                <PackageList packages={packages} />
-              </div>
+          > */}
+          <div className="grid grid-cols-1 gap-6 mt-4">
+            <div className="flex flex-col gap-4">
               <p className={clsx("font-bold mb-4", titleProps?.className)}>
-                Want to post more than 10+ jobs?
-                <br />
-                <a href="mailto:youremail@test.com">Contact us</a> for
-                customised packages!
+                Choose Your Plan
               </p>
+              <PackageList packages={packages} />
+            </div>
+            <p className={clsx("font-bold mb-4", titleProps?.className)}>
+              Want to post more than 10+ jobs?
+              <br />
+              <a href="mailto:youremail@test.com">Contact us</a> for customised
+              packages!
+            </p>
 
-              <PaypalPaymentForm
-                ref={submitPaymentRef}
-                onApprove={handlePaymentClick}
-                registerEmployers={registerEmployers}
-                validateHostedField={validateAccountForm}
-                validatePaypalButton={onPaypalPaymentButtonClick}
-              />
-            </div>
-            <AccountFormSection ref={accountFormSectionRef} />
-            <div className="mt-4">
-              <SubmitPayment
-                registerEmployers={registerEmployers}
-                ref={submitPaymentRef}
-                onClick={handlePaymentClick}
-                validateAccountForm={validateAccountForm}
-              />
-            </div>
-          </PayPalHostedFieldsProvider>
+            <PaypalPaymentForm
+              ref={submitPaymentRef}
+              onApprove={handlePaymentClick}
+              registerEmployers={registerEmployers}
+              validateHostedField={validateAccountForm}
+              validatePaypalButton={onPaypalPaymentButtonClick}
+            />
+          </div>
+          <AccountFormSection ref={accountFormSectionRef} />
+          <div className="mt-4">
+            <SubmitPayment
+              registerEmployers={registerEmployers}
+              ref={submitPaymentRef}
+              onClick={handlePaymentClick}
+              validateAccountForm={validateAccountForm}
+            />
+          </div>
+          {/* </PayPalHostedFieldsProvider> */}
         </PayPalScriptProvider>
 
         <div className="mt-4">
