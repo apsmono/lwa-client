@@ -4,6 +4,7 @@ import { Button, Typography } from "components/common";
 import React from "react";
 import { Package } from "service/types";
 import PromoRibbon from "./PromoRibbon";
+import styles from "./Package.module.css";
 
 interface PackageCardProps {
   item: Package;
@@ -47,19 +48,13 @@ function PackageCard(props: PackageCardProps) {
             .filter((perk) => perk.is_active)
             .map((perk) => {
               return (
-                <li key={perk.id} className="flex gap-2 items-center">
-                  <picture className="w-4">
-                    <img
-                      alt="Check"
-                      src={
-                        perk.is_active
-                          ? "/check-active.svg"
-                          : "/check-inactive.svg"
-                      }
-                      className="w-4 h-4"
-                    />
-                  </picture>
-                  <Typography variant="xs">{perk.perks}</Typography>
+                <li
+                  key={perk.id}
+                  className={clsx("flex gap-2 items-center", styles.list)}
+                >
+                  <Typography variant="xs" className="pl-5">
+                    {perk.perks}
+                  </Typography>
                 </li>
               );
             })}

@@ -12,3 +12,8 @@
 .ribbon-container {
   filter: drop-shadow(4px 4px 12px rgba(0, 0, 0, 0.16));
 }
+
+.list::before {
+  content: url("/check-active.svg");
+  position: absolute;
+}

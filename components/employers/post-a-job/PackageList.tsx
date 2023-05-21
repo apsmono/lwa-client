@@ -21,7 +21,7 @@ function PackageList(props: IPackageListProps) {
   const { setJob, package_id } = useJobStore();
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 justify-center max-w-2xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center max-w-2xl mx-auto">
       {packages.map((item, i) => (
         <PackageCard
           key={item.id}
