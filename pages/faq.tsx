@@ -92,7 +92,7 @@ function FaqPage(props: IFaqPageProps) {
       <Head>
         <title>FAQ</title>
       </Head>
-      <PageTitle>FAQ</PageTitle>
+      <PageTitle>Faq</PageTitle>
 
       <div className="flex flex-col gap-4 max-w-6xl mx-auto p-6">
         {faqItems.map((faq, i) => (

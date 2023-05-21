@@ -9,30 +9,6 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
   const items = useMemo(() => {
     return [
       {
-        title: "Respect",
-        guides: [
-          "We expect all members of our community to treat each other with respect and professionalism. This means refraining from personal attacks, harassment, or discrimination based on race, gender, religion, age, or any other personal characteristic.",
-        ],
-      },
-      {
-        title: "HONESTY",
-        guides: [
-          "Employers are expected to provide accurate and honest information about job opportunities, and job seekers are expected to provide accurate and honest information about their skills, experience, and qualifications.",
-        ],
-      },
-      {
-        title: "PROFESSIONALISM",
-        guides: [
-          "Our community is focused on remote work, which requires a high degree of professionalism and self-motivation. Employers are expected to provide clear expectations and guidance to their remote employees, and remote employees are expected to be accountable and productive in their work.",
-        ],
-      },
-      {
-        title: "CONFIDENTIALITY",
-        guides: [
-          "Employers and job seekers are expected to maintain the confidentiality of any sensitive or confidential information shared during the hiring process. This includes, but is not limited to, trade secrets, business strategies, and personal information.",
-        ],
-      },
-      {
         title: "Posting",
         guides: [
           "Job postings should be specifically for remote work opportunities, and should not include job descriptions for non-remote work opportunities.",
@@ -42,9 +18,10 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
         ],
       },
       {
-        title: "REPORTING",
+        title: "Reporting",
         guides: [
           "If you encounter any behavior that violates these community guidelines, please report it to us immediately. We take all reports seriously and will take appropriate action to ensure that our community remains safe and productive for everyone.",
+
           "We reserve the right to remove any content or member from our community that violates these guidelines, without notice or explanation. We also reserve the right to modify these guidelines at any time, without notice.",
           "By using our remote job board, you agree to comply with these community guidelines and to help us maintain a safe and productive community for all members.",
         ],
@@ -57,7 +34,7 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
         <title>Community Guideline</title>
       </Head>
       <div className="w-full max-w-5xl mx-auto p-6 flex flex-col gap-4">
-        <PageTitle>COMMUNITY GUIDELINES</PageTitle>
+        <PageTitle>Community Guidelines</PageTitle>
 
         <Typography>
           Our remote job board is a community of job seekers and employers who
@@ -69,7 +46,7 @@ function CommunityGuidelinePage(props: ICommunityGuidelineProps) {
 
         {items.map((item, i) => (
           <div key={i}>
-            <Typography variant="h5" className="uppercase font-bold mb-2">
+            <Typography variant="h6" className="font-bold mb-2">
               {i + 1}. {item.title}
             </Typography>
             <div className="flex flex-col gap-2">
