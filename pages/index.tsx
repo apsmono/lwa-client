@@ -60,13 +60,15 @@ function Home(props: HomePropsInterface) {
           </form>
         </div>
       </div>
-      <div className="mb-6 p-6">
+      <div className="mb-6 py-6">
         <FeaturedJob jobs={featuredJobs} />
       </div>
       <div className="md:px-6 p-6 mx-auto">
         <Jobs categories={categories} jobs={jobs} totalItems={totalJobs} />
       </div>
-      <Subscribe className="max-w-7xl mx-auto" categories={categories} />
+      <div className="px-6">
+        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
+      </div>
     </>
   );
 }

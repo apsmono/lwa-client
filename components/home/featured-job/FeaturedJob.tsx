@@ -33,7 +33,7 @@ function FeaturedJob({ jobs }: FeaturedJobProps) {
     router.push(`/jobs/${job.slug}`);
   };
   return (
-    <div className="w-full flex pl-6 lg:pl-24">
+    <div className="w-full max-w-7xl flex pl-6 mx-auto">
       <div>
         <p className="text-3xl font-light">
           Featured <br />
