@@ -59,7 +59,7 @@ function PackageCard(props: PackageCardProps) {
                       className="w-4 h-4"
                     />
                   </picture>
-                  <Typography variant="small">{perk.perks}</Typography>
+                  <Typography variant="xs">{perk.perks}</Typography>
                 </li>
               );
             })}
