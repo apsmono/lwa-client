@@ -1,6 +1,5 @@
 import { PageTitle, TextField, Typography } from "components/common";
 import { GetServerSideProps } from "next";
-import CategoryService from "service/category_service";
 import JobService from "service/job_service";
 import { Job } from "service/types";
 import { FeaturedJob, Jobs, Subscribe } from "components/home";
@@ -76,18 +75,12 @@ function Home(props: HomePropsInterface) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const props: any = {};
 
-  const popularCategoriesRes = await CategoryService.gets({
-    offset: 1,
-    limit: 8,
-  });
   const featuredJobs = await (
-    await JobService.gets({ is_featured: true, status: "open" })
+    await JobService.gets({ is_featured: true, status: "open", limit: 8 })
   ).data;
   const jobRes = await JobService.gets({ offset: 1, limit: 7, status: "open" });
 
   props.featuredJobs = featuredJobs;
-  props.popularCategories = popularCategoriesRes.data;
-  props.totalPopularCategories = popularCategoriesRes.page.totalItems;
   props.jobs = jobRes.data;
   props.totalJobs = jobRes.page.totalItems;
 
