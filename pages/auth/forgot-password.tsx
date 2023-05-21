@@ -1,6 +1,6 @@
 import { Button, PageTitle, TextField, Typography } from "components/common";
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import React, { ReactElement, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -10,6 +10,7 @@ import useAlert from "utils/hooks/useAlert";
 import { parseErrorMessage } from "utils/api";
 import BlankLayout from "components/layout/BlankLayout";
 import { AppContext } from "context/appContext";
+import Head from "next/head";
 
 interface ForgotPasswordPageProps {}
 
@@ -44,7 +45,10 @@ function ForgotPasswordPage(props: ForgotPasswordPageProps) {
     }
   };
   return (
-    <BlankLayout title="Forgot Password">
+    <>
+      <Head>
+        <title>Forgot Password</title>
+      </Head>
       <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
         <PageTitle>Reset Password</PageTitle>
         <Typography className="text-center mb-8">
@@ -72,8 +76,12 @@ function ForgotPasswordPage(props: ForgotPasswordPageProps) {
           </form>
         </div>
       </div>
-    </BlankLayout>
+    </>
   );
 }
+
+ForgotPasswordPage.getLayout = function getLayout(page: ReactElement) {
+  return <BlankLayout>{page}</BlankLayout>;
+};
 
 export default ForgotPasswordPage;

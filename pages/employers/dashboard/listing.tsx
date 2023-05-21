@@ -14,7 +14,8 @@ import { JobFilter } from "components/jobs";
 import { EmployersLayout } from "components/layout";
 import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
-import React, { useCallback, useContext, useState } from "react";
+import Head from "next/head";
+import React, { ReactElement, useCallback, useContext, useState } from "react";
 import { MoreHorizontal } from "react-feather";
 import { AuthService } from "service/auth_service";
 import CompanyService from "service/company_service";
@@ -254,59 +255,60 @@ function ManageListingPage(props: IManageListingPageProps) {
 
   return (
     <>
-      <EmployersLayout title="Manage Listing" employers={user}>
-        <div className="flex md:flex-row flex-col justify-between mb-4">
-          <PageTitle>Posted Jobs</PageTitle>
-          <div className="flex flex-col md:flex-row gap-x-2">
-            <JobFilter
-              key={status.label}
-              label="Status"
-              options={[
-                { val: "", label: "All" },
-                { val: "pending", label: "Pending" },
-                { val: "open", label: "Open" },
-                { val: "closed", label: "Closed" },
-                { val: "paused", label: "Paused" },
-              ]}
-              defaultValue={status}
-              onChange={(val) => setStatus(val)}
-              renderOption={(opt) => opt.label}
-              showAction
-              getOptionValue={(val) => val?.val}
-            />
-            <JobFilter
-              label="Sort by"
-              options={[
-                { val: "created_at", label: "Most Recent" },
-                { val: "click_counts", label: "Most Relevant" },
-              ]}
-              defaultValue={sorting}
-              onChange={(val) => setSorting(val)}
-              renderOption={(opt) => opt.label}
-              className="md:w-40 w-full"
-              showAction
-              getOptionValue={(val) => val?.val}
-            />
-            <TextField
-              rounded
-              placeholder="Search job"
-              className="py-1"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              inputSuffix={<span>🔍</span>}
-            />
-          </div>
+      <Head>
+        <title>Manage Listing</title>
+      </Head>
+      <div className="flex md:flex-row flex-col justify-between mb-4">
+        <PageTitle>Posted Jobs</PageTitle>
+        <div className="flex flex-col md:flex-row gap-x-2">
+          <JobFilter
+            key={status.label}
+            label="Status"
+            options={[
+              { val: "", label: "All" },
+              { val: "pending", label: "Pending" },
+              { val: "open", label: "Open" },
+              { val: "closed", label: "Closed" },
+              { val: "paused", label: "Paused" },
+            ]}
+            defaultValue={status}
+            onChange={(val) => setStatus(val)}
+            renderOption={(opt) => opt.label}
+            showAction
+            getOptionValue={(val) => val?.val}
+          />
+          <JobFilter
+            label="Sort by"
+            options={[
+              { val: "created_at", label: "Most Recent" },
+              { val: "click_counts", label: "Most Relevant" },
+            ]}
+            defaultValue={sorting}
+            onChange={(val) => setSorting(val)}
+            renderOption={(opt) => opt.label}
+            className="md:w-40 w-full"
+            showAction
+            getOptionValue={(val) => val?.val}
+          />
+          <TextField
+            rounded
+            placeholder="Search job"
+            className="py-1"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            inputSuffix={<span>🔍</span>}
+          />
         </div>
+      </div>
 
-        <DataTable
-          fetchItems={wrappedFetchCompanyJobs}
-          columns={columns}
-          refetch={refetch}
-          getParams={getParams}
-          limit={5}
-          // defaultValue={defaultJobs}
-        />
-      </EmployersLayout>
+      <DataTable
+        fetchItems={wrappedFetchCompanyJobs}
+        columns={columns}
+        refetch={refetch}
+        getParams={getParams}
+        limit={5}
+        // defaultValue={defaultJobs}
+      />
       <ConfirmationModal onClose={handleDialogClose} open={open} />
       <Modal
         open={openEditModal}
@@ -366,6 +368,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props,
   };
+};
+
+ManageListingPage.getLayout = function getLayout(page: ReactElement) {
+  return <EmployersLayout>{page}</EmployersLayout>;
 };
 
 export default ManageListingPage;

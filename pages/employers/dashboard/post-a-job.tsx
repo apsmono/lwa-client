@@ -8,7 +8,7 @@ import { ROUTE_POST_SUCCESS } from "config/routes";
 import { getCookie, hasCookie, setCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { ReactElement, useRef, useState } from "react";
 import { AuthService } from "service/auth_service";
 import EmploymentTypeService from "service/employment_type_service";
 import JobService from "service/job_service";
@@ -32,6 +32,7 @@ import JobIndustryService from "service/job_industry_service";
 import { CompanySize } from "service/types/company_type";
 import CompanySizeService from "service/company_size_service";
 import JobSalaryService from "service/job_salary_service";
+import Head from "next/head";
 
 interface IPostJobPageProps {
   locations: LocationType[];
@@ -90,7 +91,10 @@ function PostJobPage(props: IPostJobPageProps) {
     }
   };
   return (
-    <EmployersLayout title="Post a Job" employers={user}>
+    <>
+      <Head>
+        <title>Post a Job</title>
+      </Head>
       <div className="max-w-3xl mx-auto px-6">
         <PageTitle>Post a Job</PageTitle>
         <CreateJobWizard
@@ -107,7 +111,7 @@ function PostJobPage(props: IPostJobPageProps) {
           companySizes={companySizes}
         />
       </div>
-    </EmployersLayout>
+    </>
   );
 }
 
@@ -157,6 +161,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props,
   };
+};
+
+PostJobPage.getLayout = function getLayout(page: ReactElement) {
+  return <EmployersLayout>{page}</EmployersLayout>;
 };
 
 export default PostJobPage;

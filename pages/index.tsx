@@ -1,21 +1,14 @@
-import {
-  Button,
-  PageTitle,
-  Select,
-  TextField,
-  Typography,
-} from "components/common";
+import { PageTitle, TextField, Typography } from "components/common";
 import { GetServerSideProps } from "next";
 import CategoryService from "service/category_service";
-import { GuestLayout } from "components/layout";
 import JobService from "service/job_service";
-import { Category, Job } from "service/types";
+import { Job } from "service/types";
 import { FeaturedJob, Jobs, Subscribe } from "components/home";
 import useAppStore from "store/useAppStore";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { getURLSearchParams } from "utils/api";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 interface HomePropsInterface {
   featuredJobs: Job[];
@@ -26,7 +19,6 @@ interface HomePropsInterface {
 function Home(props: HomePropsInterface) {
   const { featuredJobs, jobs, totalJobs } = props;
   const { categories } = useAppStore();
-  const [selectedCategory, setSelectedCategory] = useState<Category>();
   const { register, handleSubmit, setValue } = useForm();
   const router = useRouter();
 
@@ -41,12 +33,10 @@ function Home(props: HomePropsInterface) {
   };
 
   return (
-    <GuestLayout
-      title="Home"
-      bottomComponent={
-        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
-      }
-    >
+    <>
+      <Head>
+        <title>Home</title>
+      </Head>
       <div className="flex flex-col md:mb-16 gap-4 justify-between p-6 items-center max-w-5xl mx-auto">
         <div className="max-w-xl flex flex-col gap-2">
           <PageTitle className="mb-4">Find Remote Work Today</PageTitle>
@@ -76,7 +66,8 @@ function Home(props: HomePropsInterface) {
       <div className="md:px-6 p-6 mx-auto">
         <Jobs categories={categories} jobs={jobs} totalItems={totalJobs} />
       </div>
-    </GuestLayout>
+      <Subscribe className="max-w-7xl mx-auto" categories={categories} />
+    </>
   );
 }
 

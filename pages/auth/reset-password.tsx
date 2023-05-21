@@ -5,13 +5,14 @@ import BlankLayout from "components/layout/BlankLayout";
 import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React, { ReactElement, useContext } from "react";
 import { AuthService } from "service/auth_service";
 import { parseErrorMessage } from "utils/api";
 import { getFormAttribute } from "utils/form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useAlert from "utils/hooks/useAlert";
+import Head from "next/head";
 
 const schema = yup.object().shape({
   password: yup
@@ -56,7 +57,10 @@ function ResetPasswordPage(props: IResetPasswordPageProps) {
     }
   };
   return (
-    <BlankLayout title="Reset Password" onBack={() => router.push("/")}>
+    <>
+      <Head>
+        <title>Reset Password</title>
+      </Head>
       <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
         <PageTitle>Create New Password</PageTitle>
         <Typography className="text-center mb-8">
@@ -90,12 +94,13 @@ function ResetPasswordPage(props: IResetPasswordPageProps) {
           </form>
         </div>
       </div>
-    </BlankLayout>
+    </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { token } = context.query;
+
   if (!token) {
     return {
       notFound: true,
@@ -116,4 +121,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
+
+ResetPasswordPage.getLayout = function useGetLayout(page: ReactElement) {
+  const router = useRouter();
+  return <BlankLayout onBack={() => router.push("/")}>{page}</BlankLayout>;
+};
+
 export default ResetPasswordPage;

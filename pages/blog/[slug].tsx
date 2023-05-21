@@ -1,6 +1,6 @@
 import { PageTitle, Typography } from "components/common";
-import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React from "react";
 import {
   WhatsappShareButton,
@@ -14,8 +14,7 @@ import {
 } from "react-share";
 
 import BlogService from "service/blog_service";
-import CategoryService from "service/category_service";
-import { Blog, Category } from "service/types";
+import { Blog } from "service/types";
 
 interface IBlogDetailPageProps {
   blog: Blog;
@@ -25,15 +24,12 @@ function BlogDetailPage(props: IBlogDetailPageProps) {
   const { blog } = props;
 
   return (
-    <GuestLayout
-      title={`${blog.title} | LWA`}
-      meta={
-        <>
-          <meta name="title" content={blog.title} />
-          <meta name="description" content="Let's work anywhere" />
-        </>
-      }
-    >
+    <>
+      <Head>
+        <title>{`${blog.title} | LWA`}</title>
+        <meta name="title" content={blog.title} />
+        <meta name="description" content="Let's work anywhere" />
+      </Head>
       <div className="max-w-5xl mx-auto p-6">
         <PageTitle>{blog.title}</PageTitle>
 
@@ -99,7 +95,7 @@ function BlogDetailPage(props: IBlogDetailPageProps) {
           </LinkedinShareButton>
         </div>
       </div>
-    </GuestLayout>
+    </>
   );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {

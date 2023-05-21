@@ -8,7 +8,9 @@ import { OrderHistory } from "components/employers/purchase-history";
 import { EmployersLayout } from "components/layout";
 import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React, {
+  ReactElement,
   useCallback,
   useContext,
   useEffect,
@@ -30,7 +32,7 @@ interface IPurchaseHistoryProps {
   pagination: { totalItems: number; page: string };
 }
 
-function Anaytics(props: IPurchaseHistoryProps) {
+function PurchaseHistory(props: IPurchaseHistoryProps) {
   const { user, order_summary, jobs: defaultJobs, pagination } = props;
 
   const wrappedFetchJobs = useWrapHandleInvalidToken((params) =>
@@ -89,7 +91,10 @@ function Anaytics(props: IPurchaseHistoryProps) {
   ];
 
   return (
-    <EmployersLayout employers={user} title="Purchase History">
+    <>
+      <Head>
+        <title>Purchase History</title>
+      </Head>
       <PageTitle>Purchase History</PageTitle>
 
       <div className="flex md:flex-row flex-col gap-4 mb-8">
@@ -124,7 +129,7 @@ function Anaytics(props: IPurchaseHistoryProps) {
       </Typography>
 
       <DataTable fetchItems={wrappedFetchJobs} columns={columns} limit={5} />
-    </EmployersLayout>
+    </>
   );
 }
 
@@ -171,4 +176,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default Anaytics;
+PurchaseHistory.getLayout = function getLayout(page: ReactElement) {
+  return <EmployersLayout>{page}</EmployersLayout>;
+};
+
+export default PurchaseHistory;

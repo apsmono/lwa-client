@@ -1,7 +1,7 @@
 import { Button, PageTitle, Typography } from "components/common";
-import { GuestLayout } from "components/layout";
 import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import Link from "next/link";
 import React, { useContext, useState } from "react";
 import BlogService from "service/blog_service";
@@ -40,7 +40,10 @@ function BlogPage(props: IBlogPageProps) {
   };
 
   return (
-    <GuestLayout title="Blog">
+    <>
+      <Head>
+        <title>Blogs</title>
+      </Head>
       <div className="w-full max-w-5xl mx-auto p-6 pb-48">
         <PageTitle>Blog</PageTitle>
 
@@ -83,7 +86,7 @@ function BlogPage(props: IBlogPageProps) {
           </div>
         )}
       </div>
-    </GuestLayout>
+    </>
   );
 }
 

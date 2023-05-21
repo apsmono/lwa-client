@@ -1,13 +1,17 @@
 import { Button, PageTitle, Typography } from "components/common";
 import BlankLayout from "components/layout/BlankLayout";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { ReactElement } from "react";
 
 function ForgotPasswordSuccess() {
   const router = useRouter();
   return (
-    <BlankLayout title="Sign Up Success">
+    <>
+      <Head>
+        <title>Forgot Password Success</title>
+      </Head>
       <div className="flex flex-col items-center">
         <picture className="my-4">
           <img src="/sign-up-success.png" alt="" className="w-28" />
@@ -25,7 +29,7 @@ function ForgotPasswordSuccess() {
           </button>
         </div>
       </div>
-    </BlankLayout>
+    </>
   );
 }
 
@@ -33,6 +37,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {},
   };
+};
+
+ForgotPasswordSuccess.getLayout = function getLayout(page: ReactElement) {
+  return <BlankLayout>{page}</BlankLayout>;
 };
 
 export default ForgotPasswordSuccess;

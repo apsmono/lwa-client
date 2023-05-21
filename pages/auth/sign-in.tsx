@@ -3,7 +3,7 @@ import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useForm } from "react-hook-form";
 import CategoryService from "service/category_service";
 import { Category } from "service/types";
@@ -19,6 +19,7 @@ import { Eye, EyeOff } from "react-feather";
 import BlankLayout from "components/layout/BlankLayout";
 import { Checkbox } from "components/common/forms";
 import Link from "next/link";
+import Head from "next/head";
 
 interface SignInPageProps {}
 
@@ -80,7 +81,10 @@ function SignInPage(props: SignInPageProps) {
     }
   };
   return (
-    <BlankLayout title="Sign In">
+    <>
+      <Head>
+        <title>Sign In</title>
+      </Head>
       <div className="max-w-5xl mx-auto p-6 min-h-[60vh]">
         <PageTitle>
           Sign In To Your <br /> Employers Account
@@ -139,7 +143,7 @@ function SignInPage(props: SignInPageProps) {
           </form>
         </div>
       </div>
-    </BlankLayout>
+    </>
   );
 }
 
@@ -149,4 +153,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
+SignInPage.getLayout = function getLayout(page: ReactElement) {
+  return <BlankLayout>{page}</BlankLayout>;
+};
 export default SignInPage;

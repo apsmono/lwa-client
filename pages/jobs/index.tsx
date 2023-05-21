@@ -5,14 +5,12 @@ import {
   TextField,
   Typography,
 } from "components/common";
-import AdvanceSelect, {
-  TAdvanceSelectRef,
-} from "components/common/forms/AdvanceSelect";
+import { TAdvanceSelectRef } from "components/common/forms/AdvanceSelect";
 import { Subscribe } from "components/home";
 import JobCard from "components/home/job/JobCard";
 import { JobFilter } from "components/jobs";
-import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, {
   FormEvent,
@@ -187,12 +185,12 @@ function JobListPage(props: JobListPageProps) {
   };
 
   return (
-    <GuestLayout
-      title={title}
-      bottomComponent={
-        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
-      }
-    >
+    <>
+      <Head>
+        <title>
+          {category ? `Remote Jobs - ${category.name}` : "Remote Jobs"}
+        </title>
+      </Head>
       <div className="max-w-5xl p-6 mx-auto flex flex-col gap-2 min-h-[70vh]">
         <div className="flex flex-col gap-2">
           {category ? (
@@ -387,7 +385,10 @@ function JobListPage(props: JobListPageProps) {
           </div>
         ))}
       </div>
-    </GuestLayout>
+      <div className="pt-12 px-6">
+        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
+      </div>
+    </>
   );
 }
 

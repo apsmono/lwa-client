@@ -1,7 +1,13 @@
 import { PageTitle } from "components/common/dashboard";
 import { EmployersLayout } from "components/layout";
 import { GetServerSideProps } from "next";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { AuthService } from "service/auth_service";
 import CompanyService from "service/company_service";
 import { User } from "service/types";
@@ -25,6 +31,7 @@ import {
   TextField,
   Typography,
 } from "components/common";
+import Head from "next/head";
 
 interface IEmployersDashboardProps {
   user: User;
@@ -77,7 +84,10 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
     }
   }, [getPng]);
   return (
-    <EmployersLayout employers={user} title="Dashboard">
+    <>
+      <Head>
+        <title>Dashboard</title>
+      </Head>
       <PageTitle>Dashboard</PageTitle>
       <div className="flex flex-col md:flex-row gap-2 justify-end items-center mb-4">
         <div className="flex flex-col md:flex-row gap-2 items-center">
@@ -129,7 +139,7 @@ function EmployersDashboard(props: IEmployersDashboardProps) {
           </ResponsiveContainer>
         </Card>
       </div>
-    </EmployersLayout>
+    </>
   );
 }
 
@@ -168,6 +178,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props,
   };
+};
+
+EmployersDashboard.getLayout = function getLayout(page: ReactElement) {
+  return <EmployersLayout>{page}</EmployersLayout>;
 };
 
 export default EmployersDashboard;

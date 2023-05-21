@@ -6,12 +6,12 @@ import React, { ReactNode } from "react";
 import { X } from "react-feather";
 
 interface BlankLayoutProps {
-  title: string;
+  title?: string;
   children: ReactNode;
   onBack?: () => void;
 }
 function BlankLayout(props: BlankLayoutProps) {
-  const { title, children, onBack } = props;
+  const { children, onBack } = props;
   const router = useRouter();
   const onBackButtonClick = () => {
     if (onBack) {
@@ -22,9 +22,6 @@ function BlankLayout(props: BlankLayoutProps) {
   };
   return (
     <>
-      <Head>
-        <title>{title}</title>
-      </Head>
       <div className="flex justify-between p-6 items-center">
         <Link href="/" className="flex gap-2 items-center">
           <picture>

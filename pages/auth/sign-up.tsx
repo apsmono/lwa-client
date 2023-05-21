@@ -1,8 +1,7 @@
 import { Button, PageTitle, TextField, Typography } from "components/common";
-import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -16,6 +15,7 @@ import useJobStore from "components/employers/post-a-job/store/useJobStore";
 import JobService from "service/job_service";
 import { removeCookies } from "cookies-next";
 import BlankLayout from "components/layout/BlankLayout";
+import Head from "next/head";
 
 interface SignUpPageProps {
   sourceRef: string;
@@ -120,7 +120,10 @@ function SignUpPage(props: SignUpPageProps) {
     router.push("/auth/sign-in");
   };
   return (
-    <BlankLayout title="Sign Up">
+    <>
+      <Head>
+        <title>Sign Up</title>
+      </Head>
       <div className="max-w-5xl mx-auto p-6">
         <PageTitle>Create an Employer Account</PageTitle>
         <Typography className="text-center mb-8">
@@ -190,7 +193,7 @@ function SignUpPage(props: SignUpPageProps) {
           </form>
         </div>
       </div>
-    </BlankLayout>
+    </>
   );
 }
 
@@ -202,6 +205,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props,
   };
+};
+
+SignUpPage.getLayout = function getLayout(page: ReactElement) {
+  return <BlankLayout>{page}</BlankLayout>;
 };
 
 export default SignUpPage;

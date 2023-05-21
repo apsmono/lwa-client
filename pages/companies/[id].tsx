@@ -5,6 +5,7 @@ import Feature from "components/home/featured-job/Feature";
 import JobCard from "components/home/job/JobCard";
 import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React, { useMemo } from "react";
 import CompanyService from "service/company_service";
 import JobService from "service/job_service";
@@ -24,13 +25,10 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
     return company.jobs.filter((j) => j.status === "open");
   }, [company]);
   return (
-    <GuestLayout
-      title={`Company Detail | ${company.company_name}`}
-      bottomComponent={
-        <Subscribe categories={categories} className="max-w-7xl mx-auto" />
-      }
-      addBottomSpace={false}
-    >
+    <>
+      <Head>
+        <title>Company | {company.company_name}</title>
+      </Head>
       <div className="mx-auto p-6 max-w-5xl">
         <div className="flex sm:flex-row flex-col justify-between gap-4 mb-4">
           <div className="flex items-center gap-2">
@@ -114,7 +112,11 @@ function CompanyDetailPage(props: CompanyDetailPageProps) {
           })}
         </div>
       </div>
-    </GuestLayout>
+
+      <div className="pt-12 px-6">
+        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
+      </div>
+    </>
   );
 }
 

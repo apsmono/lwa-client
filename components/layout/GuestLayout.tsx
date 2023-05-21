@@ -2,27 +2,14 @@ import clsx from "clsx";
 import { Backdrop, Button, TextField, Typography } from "components/common";
 import { GuestSidebar } from "components/navigation";
 import NavBarDropdown from "components/navigation/nav-bar/NavBarDropdown";
-import { AppContext } from "context/appContext";
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, {
-  FormEvent,
-  ReactNode,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { FormEvent, ReactNode, useMemo, useRef, useState } from "react";
 import { Menu } from "react-feather";
-import { AuthService } from "service/auth_service";
 import { User } from "service/types";
 import useAuthStore from "store/useAuthStore";
-import { parseErrorMessage } from "utils/api";
-import useAlert from "utils/hooks/useAlert";
-import useWrapHandleInvalidToken from "utils/hooks/useWrapHandleInvalidToken";
 import GuestFooter from "./footer/GuestFooter";
-import { getCookie, removeCookies } from "cookies-next";
+import { removeCookies } from "cookies-next";
 import useAppStore from "store/useAppStore";
 
 interface GuestLayoutProps {
@@ -38,26 +25,19 @@ interface GuestLayoutProps {
   addBottomSpace?: boolean;
 }
 
-function GuestLayout(props: GuestLayoutProps) {
+function GuestLayout(props: Partial<GuestLayoutProps>) {
   const {
-    title,
     children,
-    customLogo,
     navBarProps,
     sidebar,
     className,
     bottomComponent,
     addBottomSpace = true,
-    meta,
   } = props;
   const router = useRouter();
   const [openSearchBar, setOpenSearchBar] = useState(false);
-  const { showErrorAlert, showSuccessAlert } = useAlert();
-  const { setLoading } = useContext(AppContext);
-  const { user, setAuth, reset } = useAuthStore();
-  const wrappedLogout = useWrapHandleInvalidToken((refreshToken: string) =>
-    AuthService.logout(refreshToken)
-  );
+  const { user, setAuth } = useAuthStore();
+
   const { categories } = useAppStore();
 
   const handleLogout = async () => {
@@ -126,12 +106,6 @@ function GuestLayout(props: GuestLayoutProps) {
   };
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-        {meta}
-      </Head>
       <div className={clsx("relative", [addBottomSpace && "pb-12"])}>
         {sidebar}
         <GuestSidebar

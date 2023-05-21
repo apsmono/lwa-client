@@ -11,8 +11,14 @@ import { AuthService } from "service/auth_service";
 import CategoryService from "service/category_service";
 import useAppStore from "store/useAppStore";
 import { Category } from "service/types";
+import { Page } from "types/page";
+import { GuestLayout } from "components/layout";
 
-export default function App({ Component, pageProps }: AppProps) {
+type Props = AppProps & {
+  Component: Page;
+};
+
+export default function App({ Component, pageProps }: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [alertType, setAlertType] = useState();
@@ -20,7 +26,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const [openUnauthorizedModal, setOpenUnauthorizedModal] = useState(false);
   const { accessToken, setAuth } = useAuthStore();
   const { setAppState } = useAppStore();
-
+  const getLayout =
+    Component.getLayout || ((page) => <GuestLayout>{page}</GuestLayout>);
   useEffect(() => {
     let active = true;
 
@@ -99,7 +106,7 @@ export default function App({ Component, pageProps }: AppProps) {
         value={{ setOpenUnauthorizedModal, openUnauthorizedModal }}
       >
         <AppContext.Provider value={{ loading, setLoading }}>
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
           <UnauthorizedModal open={openUnauthorizedModal} />
         </AppContext.Provider>
       </AuthContext.Provider>

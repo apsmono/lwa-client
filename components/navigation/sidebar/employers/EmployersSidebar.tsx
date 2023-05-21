@@ -22,11 +22,10 @@ import Link from "next/link";
 interface IEmployersSidebarProps {
   open: boolean;
   onClose: () => void;
-  employers: User;
 }
 
 function EmployersSidebar(props: IEmployersSidebarProps) {
-  const { open, onClose, employers } = props;
+  const { open, onClose } = props;
   const router = useRouter();
   const { setLoading } = useContext(AppContext);
   const { setAuth } = useAuthStore();

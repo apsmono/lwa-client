@@ -1,7 +1,7 @@
 import { Subscribe } from "components/home";
 import JobDisplay from "components/jobs/JobDisplay";
-import { GuestLayout } from "components/layout";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React from "react";
 import JobService from "service/job_service";
 import { Job } from "service/types";
@@ -15,12 +15,10 @@ function JobDetailPage(props: JobDetailPageProps) {
   const { job } = props;
   const { categories } = useAppStore();
   return (
-    <GuestLayout
-      title={`Job Detail | ${job.title}`}
-      bottomComponent={
-        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
-      }
-    >
+    <>
+      <Head>
+        <title>Jobs | {`${job.company_name} - ${job.title}`}</title>
+      </Head>
       <div className="mb-12">
         <JobDisplay
           job={job}
@@ -29,7 +27,10 @@ function JobDetailPage(props: JobDetailPageProps) {
           showShareButton
         />
       </div>
-    </GuestLayout>
+      <div className="pt-12 px-6">
+        <Subscribe className="max-w-7xl mx-auto" categories={categories} />
+      </div>
+    </>
   );
 }
 

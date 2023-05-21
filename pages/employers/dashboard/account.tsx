@@ -5,8 +5,9 @@ import { EmployersLayout } from "components/layout";
 import { ROUTE_EMPLOYERS_DASHBOARD } from "config/routes";
 import { AppContext } from "context/appContext";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React, { ReactElement, useContext } from "react";
 import { AuthService } from "service/auth_service";
 import { User } from "service/types";
 import { UserService } from "service/user_service";
@@ -45,7 +46,10 @@ function AccountSettingPage(props: IAccountSettingPage) {
   };
 
   return (
-    <EmployersLayout title="Account Settings" employers={user}>
+    <>
+      <Head>
+        <title>Account Setting</title>
+      </Head>
       <div className="max-w-3xl mx-auto">
         <PageTitle>Account Settings</PageTitle>
 
@@ -56,14 +60,12 @@ function AccountSettingPage(props: IAccountSettingPage) {
           <AccountForm user={user} onSubmit={onSubmit} />
         </div>
       </div>
-    </EmployersLayout>
+    </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props: any = {
-    currentStep: context.query.step || "",
-  };
+  const props: any = {};
   try {
     const user = (await AuthService.fetchMe(context)).data?.user || null;
 
@@ -81,6 +83,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props,
   };
+};
+
+AccountSettingPage.getLayout = function getLayout(page: ReactElement) {
+  return <EmployersLayout>{page}</EmployersLayout>;
 };
 
 export default AccountSettingPage;
