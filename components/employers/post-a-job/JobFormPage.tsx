@@ -22,6 +22,7 @@ import { JobFormRef } from "../job/JobForm";
 import useJobStore from "./store/useJobStore";
 import PackageList from "./PackageList";
 import clsx from "clsx";
+import useAuthStore from "store/useAuthStore";
 
 export interface IPageTitle extends HTMLAttributes<HTMLParagraphElement> {}
 
@@ -52,6 +53,9 @@ function JobFormPage(props: JobFormPageProps) {
     titleProps,
   } = props;
 
+  const { user } = useAuthStore();
+  const isAdmin = user?.email === "contact@letsworkanywhere.com";
+  // console.log("isAdmin", isAdmin);
   const industries = useMemo(() => {
     const copy = [...jobIndustries];
     const other = copy.filter((c) => c.name === "Other")[0];
@@ -93,7 +97,7 @@ function JobFormPage(props: JobFormPageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleContinueToPayment = async () => {
-    if (!package_id) {
+    if (!isAdmin && !package_id) {
       showErrorAlert("Please choose one package");
       containerRef.current!.scrollTop = 0;
       return;
@@ -129,18 +133,21 @@ function JobFormPage(props: JobFormPageProps) {
       setLoading(false);
     }
   };
+
   return (
     <>
       <div
         ref={containerRef}
         className="grid grid-cols-1 gap:6 lg:gap-12 mt-4 mb-48 mx-auto"
       >
-        <div className="flex flex-col gap-4">
-          <p className={clsx("font-bold mb-4", titleProps?.className)}>
-            Choose Your Plan
-          </p>
-          <PackageList packages={packages} />
-        </div>
+        {!isAdmin ? (
+          <div className="flex flex-col gap-4">
+            <p className={clsx("font-bold mb-4", titleProps?.className)}>
+              Choose Your Plan
+            </p>
+            <PackageList packages={packages} />
+          </div>
+        ) : null}
         <div className="flex flex-col gap-4">
           <p className={clsx("font-bold mt-8", titleProps?.className)}>
             Tell us About Your Job

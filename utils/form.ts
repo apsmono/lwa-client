@@ -20,6 +20,25 @@ export const getFormAttribute = (
   };
 };
 
+export const getFormAttributeAdmin = (
+  label: string,
+  name: string,
+  id: string,
+  // register: UseFormRegister<any>,
+  // errors: FieldErrorsImpl<any>,
+  initialValue: any = {}
+) => {
+  return {
+    label,
+    name,
+    id,
+    // register,
+    // error: !!errors[name],
+    // helperText: errors[name]?.message,
+    defaultValue: initialValue[name] ?? "",
+  };
+};
+
 export function purgeInitialFormData(initialFormData: any, baseBlankForm: any) {
   const blankForm = cloneDeep(baseBlankForm);
 

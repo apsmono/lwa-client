@@ -14,9 +14,14 @@ import React, {
 } from "react";
 import { useForm } from "react-hook-form";
 import { Company } from "service/types";
-import { getFormAttribute, purgeInitialFormData } from "utils/form";
+import {
+  getFormAttribute,
+  getFormAttributeAdmin,
+  purgeInitialFormData,
+} from "utils/form";
 import { BASE_BLANK_FORM, schema } from "./constants";
 import { CompanySize } from "service/types/company_type";
+import useAuthStore from "store/useAuthStore";
 
 interface CompanyFormProps {
   defaultValue: Partial<Company>;
@@ -38,6 +43,9 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
       className,
       companySizes = [],
     } = props;
+
+    const { user } = useAuthStore();
+    const isAdmin = user?.email === "contact@letsworkanywhere.com";
 
     const [initialValue] = useState(() => {
       return purgeInitialFormData(defaultValue, BASE_BLANK_FORM);
@@ -69,6 +77,18 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
       id: string,
       placeholder?: string
     ) => {
+      if (isAdmin)
+        return {
+          ...getFormAttributeAdmin(
+            label,
+            name,
+            id,
+            // register,
+            // errors,
+            initialValue
+          ),
+          placeholder,
+        };
       return {
         ...getFormAttribute(label, name, id, register, errors, initialValue),
         placeholder,
@@ -92,7 +112,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
             new Promise((res, rej) => {
               setTimeout(() => {
                 const company: Partial<Company> = { ...getValues() };
-                if (company.company_email) {
+                if (!isAdmin && company.company_email) {
                   const emailDomain = company.company_email.split("@")[1];
                   if (!company.company_url!.includes(emailDomain)) {
                     setError(

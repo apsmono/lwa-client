@@ -6,8 +6,14 @@ interface IAuthStore {
   accessToken: string;
   refreshToken: string;
   user?: User;
+  isAdmin: boolean;
   setAuth: (
-    val: Partial<{ accessToken: string; refreshToken: string; user: User }>
+    val: Partial<{
+      accessToken: string;
+      refreshToken: string;
+      user: User;
+      isAdmin: boolean;
+    }>
   ) => void;
   reset: () => void;
 }
@@ -19,10 +25,12 @@ const useAuthStore = create<IAuthStore>((set) => {
     accessToken: accessToken,
     refreshToken,
     user: undefined,
+    isAdmin: false,
     setAuth: (val) => {
       set((state) => ({
         ...state,
         ...val,
+        isAdmin: val.user?.email === "contact@letsworkanywhere.com",
       }));
     },
     reset: () => {

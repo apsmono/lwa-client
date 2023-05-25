@@ -8,7 +8,12 @@ import {
   TextField,
 } from "components/common";
 import { Radio } from "components/common/forms";
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import {
   Category,
@@ -19,8 +24,13 @@ import {
   LanguageType,
   LocationType,
 } from "service/types";
-import { getFormAttribute, purgeInitialFormData } from "utils/form";
+import {
+  getFormAttribute,
+  getFormAttributeAdmin,
+  purgeInitialFormData,
+} from "utils/form";
 import { BASE_BLANK_FORM, schema } from "./constants";
+import useAuthStore from "store/useAuthStore";
 
 interface JobFormProps {
   categories: Category[];
@@ -52,6 +62,10 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     jobIndustries = [],
     salaries,
   } = props;
+
+  const { user } = useAuthStore();
+  const isAdmin = user?.email === "contact@letsworkanywhere.com";
+  // console.log("isAdmin", isAdmin);
 
   const [initialValue] = useState(() =>
     purgeInitialFormData(defaultValue, BASE_BLANK_FORM)
@@ -101,6 +115,12 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     id: string,
     placeholder?: string
   ) => {
+    if (isAdmin)
+      return {
+        ...getFormAttributeAdmin(label, name, id, initialValue),
+        placeholder,
+      };
+
     return {
       ...getFormAttribute(label, name, id, register, errors, initialValue),
       placeholder,
@@ -146,12 +166,16 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
     onSubmit(val);
   };
 
+  useEffect(() => {
+    console.log(initialValue);
+  }, [initialValue]);
+
   return (
     <form onSubmit={handleSubmit(submitForm)}>
       <div className={clsx(className)}>
         <TextField
           {...getFieldAttribute(
-            "How to apply*",
+            isAdmin ? "How to apply(optional)" : "How to apply*",
             "apply_link",
             "apply_link",
             "Type here"
@@ -162,7 +186,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
 
         <TextField
           {...getFieldAttribute(
-            "Job Title*",
+            isAdmin ? "Job Title(optional)" : "Job Title*",
             "title",
             "title",
             "E.g. Project Manager, Senior Analyst"
@@ -172,7 +196,11 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
         <Select
           options={categories}
           renderOption={(opt) => opt.name}
-          {...getFieldAttribute("Category*", "category_id", "category_id")}
+          {...getFieldAttribute(
+            isAdmin ? "Category(optional)" : "Category*",
+            "category_id",
+            "category_id"
+          )}
           defaultValue={selectedCategory}
           onChange={(val) => setSelectedCategory(val)}
           getInputValue={(val: any) => val?.id || ""}
@@ -197,7 +225,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           options={employmentTypes}
           renderOption={(opt) => opt.name}
           {...getFieldAttribute(
-            "Employment Type*",
+            isAdmin ? "Employment Type(optional)" : "Employment Type*",
             "employment_type_id",
             "employment_type_id"
           )}
@@ -208,7 +236,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
         />
 
         <InputLabel description="Selecting ‘Yes’ means your future hire can work anywhere in the world without any location or time zone restrictions.">
-          Is this role open worldwide *
+          {`Is this role open worldwide ${isAdmin ? "" : "*"}`}
         </InputLabel>
 
         <Radio
@@ -231,7 +259,11 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           <Select
             options={locations.filter((l) => l.id !== 1)}
             renderOption={(opt) => opt.name}
-            {...getFieldAttribute("Region*", "location_id", "location_id")}
+            {...getFieldAttribute(
+              isAdmin ? "Region(optional)" : "Region*",
+              "location_id",
+              "location_id"
+            )}
             getInputValue={(val: any) => val?.id || ""}
             setFormValue={setValue}
             defaultValue={selectedLocation}
@@ -239,24 +271,41 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
           />
         ) : null}
 
-        <Select
-          label="Salary*"
-          options={salaries}
-          renderOption={(opt) => opt.salary}
-          error={!!errors.job_salary_id}
-          register={register}
-          setFormValue={setValue}
-          helperText={errors.job_salary_id?.message}
-          name="job_salary_id"
-          id="job_salary_id"
-          defaultValue={selectedSalary}
-          onChange={(val) => setSelectedSalary(val)}
-          getInputValue={(val) => val?.id || ""}
-        />
+        {isAdmin ? (
+          <Select
+            label={isAdmin ? "Salary(optional)" : "Salary*"}
+            options={salaries}
+            renderOption={(opt) => opt.salary}
+            // error={!!errors.job_salary_id}
+            // register={register}
+            setFormValue={setValue}
+            // helperText={errors.job_salary_id?.message}
+            name="job_salary_id"
+            id="job_salary_id"
+            defaultValue={selectedSalary}
+            onChange={(val) => setSelectedSalary(val)}
+            getInputValue={(val) => val?.id || ""}
+          />
+        ) : (
+          <Select
+            label={isAdmin ? "Salary(optional)" : "Salary*"}
+            options={salaries}
+            renderOption={(opt) => opt.salary}
+            error={!!errors.job_salary_id}
+            register={register}
+            setFormValue={setValue}
+            helperText={errors.job_salary_id?.message}
+            name="job_salary_id"
+            id="job_salary_id"
+            defaultValue={selectedSalary}
+            onChange={(val) => setSelectedSalary(val)}
+            getInputValue={(val) => val?.id || ""}
+          />
+        )}
 
         <TextAreaField
           {...getFieldAttribute(
-            "Job Description*",
+            isAdmin ? "Job Description(optional)" : "Job Description*",
             "description",
             "description",
             "Type here"
