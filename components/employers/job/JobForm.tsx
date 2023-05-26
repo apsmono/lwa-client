@@ -117,7 +117,7 @@ const JobForm = forwardRef<JobFormRef, Partial<JobFormProps>>((props, ref) => {
   ) => {
     if (isAdmin)
       return {
-        ...getFormAttributeAdmin(label, name, id, initialValue),
+        ...getFormAttributeAdmin(label, name, id, register, initialValue),
         placeholder,
       };
 

@@ -83,7 +83,7 @@ const CompanyForm = forwardRef<CompanyFormRef, Partial<CompanyFormProps>>(
             label,
             name,
             id,
-            // register,
+            register,
             // errors,
             initialValue
           ),

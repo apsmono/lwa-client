@@ -24,7 +24,7 @@ export const getFormAttributeAdmin = (
   label: string,
   name: string,
   id: string,
-  // register: UseFormRegister<any>,
+  register: UseFormRegister<any>,
   // errors: FieldErrorsImpl<any>,
   initialValue: any = {}
 ) => {
@@ -32,7 +32,7 @@ export const getFormAttributeAdmin = (
     label,
     name,
     id,
-    // register,
+    register,
     // error: !!errors[name],
     // helperText: errors[name]?.message,
     defaultValue: initialValue[name] ?? "",
